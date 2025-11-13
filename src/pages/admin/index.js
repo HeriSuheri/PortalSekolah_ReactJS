@@ -154,6 +154,10 @@ export default function ManajemenAdmin() {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchAdmins();
   }, [page, rowsPerPage]);
 
