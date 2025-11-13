@@ -136,7 +136,7 @@ export default function ManajemenAdmin() {
     setLoading(true);
     try {
       const response = await AdminService.getAdmin({ page, size: rowsPerPage });
-      console.log("DATA ADMIN:", response);
+      console.log("RESPONSE DATA ADMIN:", response);
       if (response.success) {
         setAdmins(response.data?.content); // asumsi pakai Page<T>
         setTotalAdmins(response.data?.totalElements || 0);
