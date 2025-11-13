@@ -69,6 +69,21 @@ const EditProfile = () => {
   const handleSubmit = async () => {
     if (!foto) return;
 
+    const maxSize = 1 * 1024 * 1024; // 1MB
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+    if (foto.size > maxSize) {
+      setErrorMsg("Ukuran foto maksimal 1MB");
+      setOpenToast(true);
+      return;
+    }
+
+    if (!allowedTypes.includes(foto.type)) {
+      setErrorMsg("Tipe foto harus JPG, JPEG, PNG, atau GIF");
+      setOpenToast(true);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("foto", foto);
 
@@ -76,14 +91,14 @@ const EditProfile = () => {
       const response = await LoginService.uploadFoto(formData, nomorInduk);
       console.log("RESPONSE UPLOAD:", response);
       if (response?.success) {
-        setFotoUrl(response?.data?.foto_url); // ganti preview dengan URL dari backend
+        setFotoUrl(response?.data?.foto_url);
         const user = JSON.parse(localStorage.getItem("userLogin"));
         const dataUser = {
           ...user,
           fotoProfil: response?.data?.foto_url,
         };
         localStorage.setItem("userLogin", JSON.stringify(dataUser));
-        setPreview(null); // hapus preview lokal
+        setPreview(null);
         setSuccessEditFoto(true);
       } else {
         setErrorMsg("Gagal upload foto");
