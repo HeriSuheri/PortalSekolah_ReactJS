@@ -92,10 +92,10 @@ export const sidebarMenu = [
       },
     ],
   },
-  {
-    label: "Profil Saya",
-    path: "/profile",
-    icon: <PersonIcon />,
-    roles: ["admin", "guru", "siswa"],
-  },
+  // {
+  //   label: "Profil Saya",
+  //   path: "/profile",
+  //   icon: <PersonIcon />,
+  //   roles: ["admin", "guru", "siswa"],
+  // },
 ];

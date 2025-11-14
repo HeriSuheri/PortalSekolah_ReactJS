@@ -33,6 +33,33 @@ const DataService = {
     }
   },
 
+  async searchAdmin({ page = 0, size = 10, keyword = "" } = {}) {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.ADMIN}/search`, {
+        params: { page, size, keyword },
+      });
+
+      console.log("RESPONSE API SEARCH ADMIN:", response);
+
+      if (response.status === 200 && response.data?.success) {
+        return {
+          success: true,
+          data: response.data.data, // ini Map<String, Object> dari backend
+          message: response.data.message || "Search Admin Successfully",
+        };
+      }
+
+      return {
+        success: false,
+        message: response.data?.message || "Search Admin Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Search Admin");
+    }
+  },
+
   async createAdmin(payload) {
     try {
       const response = await apiClient.post(API_ENDPOINTS.ADMIN, payload);

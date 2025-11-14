@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
+  const [tokenForgot, setTokenForgot] = useState("");
 
   const isTokenExpired = () => {
     const user = JSON.parse(localStorage.getItem("userLogin"));
@@ -96,7 +97,16 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoading, isLoggedIn, isExpired, setIsExpired, login, logout }}
+      value={{
+        isLoading,
+        isLoggedIn,
+        isExpired,
+        tokenForgot,
+        setTokenForgot,
+        setIsExpired,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

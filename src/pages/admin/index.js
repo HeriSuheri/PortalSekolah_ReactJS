@@ -31,6 +31,7 @@ import PopUpModal from "../../components/PopUpModal";
 import ConfirmModal from "../../components/DialogPopup";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { useDebounce } from "../../hook/UseDebounce";
 
 export default function ManajemenAdmin() {
   const [admins, setAdmins] = useState([]);
@@ -55,6 +56,9 @@ export default function ManajemenAdmin() {
   const [page, setPage] = useState(0); // halaman dimulai dari 0
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalAdmins, setTotalAdmins] = useState(0);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 500);
 
   const user = JSON.parse(localStorage.getItem("userLogin"));
   const allowedNomorInduk = ["A0000001", "A0000002"];
@@ -153,13 +157,53 @@ export default function ManajemenAdmin() {
     }
   };
 
+  const fetchFilteredAdmins = async (keyword) => {
+    setLoading(true);
+    try {
+      const response = await AdminService.searchAdmin({
+        page,
+        size: rowsPerPage,
+        keyword,
+      });
+      console.log("RESPONSE DATA SEARCH ADMIN:", response);
+      if (response.success) {
+        setAdmins(response.data?.content);
+        setTotalAdmins(response.data?.totalElements || 0);
+      } else {
+        setErrorMsg(response.message || "Gagal search data admin");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      console.error("Gagal search data admin:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: "smooth",
+  //   });
+  //   fetchAdmins();
+  // }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    if (debouncedSearch.length >= 2) {
+      fetchFilteredAdmins(debouncedSearch);
+    } else {
+      fetchAdmins();
+    }
+  }, [debouncedSearch, page, rowsPerPage]);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-    fetchAdmins();
-  }, [page, rowsPerPage]);
+  }, []);
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -228,7 +272,6 @@ export default function ManajemenAdmin() {
         </DialogActions>
       </Dialog>
       {/* END CREATE - EDIT ADMIN */}
-
       {/* POP UP SUCCESS */}
       <PopUpModal
         open={successCreateEdit}
@@ -247,7 +290,6 @@ export default function ManajemenAdmin() {
         maxWidth="sm"
         // fullWidth={false}
       />
-
       {/* CONFIRM DELETE */}
       <ConfirmModal
         open={openConfirmDelete}
@@ -265,7 +307,6 @@ export default function ManajemenAdmin() {
           setIdDelete(null);
         }}
       />
-
       {/* POP UP SUKSES DELETE */}
       <PopUpModal
         open={openDeleteModal}
@@ -279,7 +320,6 @@ export default function ManajemenAdmin() {
         maxWidth="sm"
         // fullWidth={false}
       />
-
       <Snackbar
         open={openToast}
         autoHideDuration={3000}
@@ -289,7 +329,6 @@ export default function ManajemenAdmin() {
           {errorMsg}
         </Alert>
       </Snackbar>
-
       <Box
         display="flex"
         justifyContent="space-between"
@@ -321,9 +360,43 @@ export default function ManajemenAdmin() {
           Tambah Admin
         </Button>
       </Box>
-
-      <Divider sx={{ mb: 2 }} />
-
+      <Tooltip
+        title="Cari Nama Admin"
+        placement="top"
+        arrow
+        enterDelay={300}
+        leaveDelay={200}
+        componentsProps={{
+          tooltip: {
+            sx: {
+              bgcolor: "#333", // warna background
+              color: "#fff", // warna teks
+              fontSize: "0.8rem",
+              borderRadius: "4px",
+              boxShadow: 3,
+            },
+          },
+        }}
+      >
+        <TextField
+          label="Cari Admin"
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            if (page >= 0) {
+              setPage(0);
+            }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": {
+              color: "rgba(0, 0, 0, 0.3)",
+            },
+          }}
+        />
+      </Tooltip>
+      <Divider sx={{ mb: 2, mt: 2 }} />
       {loading ? (
         <Box
           display="flex"

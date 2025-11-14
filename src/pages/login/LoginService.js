@@ -5,6 +5,8 @@ const API_ENDPOINTS = {
   CHANGE_PASSWORD: process.env.REACT_APP_CHANGE_PASSWORD,
   ROLE: process.env.REACT_APP_ROLE,
   UPLOAD_FOTO: process.env.REACT_APP_UPLOAD_FOTO,
+  FORGOT_PASSWORD: process.env.REACT_APP_FORGOT_PASSWORD,
+  RESET_PASSWORD: process.env.REACT_APP_RESET_PASSWORD,
 };
 
 const DataService = {
@@ -49,7 +51,7 @@ const DataService = {
         return {
           success: true,
           data: response.data,
-          message: response.data.message || "Change Passwoerd Succesfully",
+          message: response.data.message || "Change Password Succesfully",
         };
       }
       return {
@@ -114,6 +116,56 @@ const DataService = {
       };
     } catch (error) {
       return handleError(error, "upload data");
+    }
+  },
+
+  async forgotPassword(payload) {
+    try {
+      const response = await apiClient.post(
+        API_ENDPOINTS.FORGOT_PASSWORD,
+        payload
+      );
+      console.log("RESPONSE API FORGOT PASSWORD:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Forgot Password Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Forgot Password Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Forgot Password");
+    }
+  },
+
+  async resetPassword(payload) {
+    try {
+      const response = await apiClient.post(
+        API_ENDPOINTS.RESET_PASSWORD,
+        payload
+      );
+      console.log("RESPONSE API RESET PASSWORD:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Reset Password Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Reset Password Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Reset Password");
     }
   },
 };

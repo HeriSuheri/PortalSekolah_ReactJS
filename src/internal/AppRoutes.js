@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 // import { useAuth } from "./AuthContext";
 import LoginPage from "../pages/login/Login";
+import ForgotPasswordPage from "../pages/login/forgotPassword";
+import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
 // import RegisterPage from "../pages/register/register";
 import Container from "../layout/Container";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -26,6 +28,8 @@ export default function AppRoutes() {
         {/* Public route */}
         <Route element={<PublicRoute />}>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           {/* <Route path="/register" element={<RegisterPage />} /> */}
           <Route path="*" element={<NotFound />} />
         </Route>

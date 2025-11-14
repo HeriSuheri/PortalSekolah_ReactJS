@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../internal/AuthContext";
 import { useNavigate } from "react-router-dom";
 import LoginService from "./LoginService";
+import CircularProgress from "@mui/material/CircularProgress";
 import { TextField, Button, Typography } from "@mui/material";
 import "./Login.css";
 
@@ -10,10 +11,12 @@ const LoginPage = () => {
   const [nomorInduk, setNomorInduk] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const payload = {
         nomorInduk,
@@ -38,6 +41,8 @@ const LoginPage = () => {
     } catch (err) {
       console.error("Error Login:", err);
       setError(err.message || "Gagal login");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,8 +100,13 @@ const LoginPage = () => {
             className="mt-4"
             disabled={!nomorInduk || !password}
           >
-            Login
+            {isLoading ? "..." : "Login"}
           </Button>
+          {isLoading && (
+            <div className="flex justify-center mt-4">
+              <CircularProgress size={24} />
+            </div>
+          )}
         </form>
         <p
           style={{
