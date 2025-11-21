@@ -37,6 +37,7 @@ export default function ManajemenAdmin() {
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openToast, setOpenToast] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successCreateEdit, setSuccessCreateEdit] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -88,6 +89,9 @@ export default function ManajemenAdmin() {
   };
 
   const handleSubmit = async () => {
+    if (!formData?.email.includes("@")) {
+      return;
+    }
     try {
       if (isEditMode) {
         const response = await AdminService.updateAdmin(formData); // kamu bikin endpoint PUT
@@ -210,7 +214,9 @@ export default function ManajemenAdmin() {
       {/* MODAL CREATE - EDIT ADMIN */}
       <Dialog
         open={openModal}
-        onClose={() => setOpenModal(false)}
+        onClose={() => {
+          setOpenModal(false);
+        }}
         fullWidth
         maxWidth="sm"
         sx={{
@@ -231,10 +237,12 @@ export default function ManajemenAdmin() {
             fullWidth
             margin="normal"
             value={formData.nomorInduk}
-            onChange={(e) =>
-              setFormData({ ...formData, nomorInduk: e.target.value })
-            }
-            disabled={isEditMode}
+            onChange={(e) => {
+              const raw = e.target.value.toUpperCase(); // konversi ke huruf kapital
+              const filtered = raw.replace(/[^A-Z0-9]/g, ""); // hanya A-Z dan 0-9
+              setFormData({ ...formData, nomorInduk: filtered });
+            }}
+            disabled={isEditMode && user?.nomorInduk !== "A0000001"}
           />
           <TextField
             label="Nama"
@@ -245,11 +253,19 @@ export default function ManajemenAdmin() {
           />
           <TextField
             label="Email"
+            type="email"
             fullWidth
             margin="normal"
             value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value });
+              setIsSubmitted(false);
+            }}
+            error={isSubmitted && !formData.email.includes("@")}
+            helperText={
+              isSubmitted && !formData.email.includes("@")
+                ? "Email harus mengandung @"
+                : ""
             }
           />
           <TextField
@@ -266,7 +282,19 @@ export default function ManajemenAdmin() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenModal(false)}>Batal</Button>
-          <Button variant="contained" onClick={() => handleSubmit()}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleSubmit();
+              setIsSubmitted(true);
+            }}
+            disabled={
+              !formData?.nomorInduk ||
+              !formData?.nama ||
+              !formData?.email ||
+              !formData?.tanggalLahir
+            }
+          >
             {isEditMode ? "Simpan Perubahan" : "Simpan"}
           </Button>
         </DialogActions>
@@ -283,8 +311,14 @@ export default function ManajemenAdmin() {
         }
         onClose={() => {
           setSuccessCreateEdit(false);
-          fetchAdmins();
+          if (debouncedSearch.length >= 2 || page >= 0) {
+            setSearchTerm("");
+            setPage(0);
+          } else {
+            fetchAdmins();
+          }
           setOpenModal(false);
+          setIsSubmitted(false);
         }}
         icon={<CheckCircleOutlinedIcon sx={{ fontSize: 48, color: "green" }} />}
         maxWidth="sm"
@@ -314,7 +348,12 @@ export default function ManajemenAdmin() {
         content="Data admin berhasil dihapus."
         onClose={() => {
           setOpenDeleteModal(false);
-          fetchAdmins();
+          if (debouncedSearch.length >= 2 || page >= 0) {
+            setSearchTerm("");
+            setPage(0);
+          } else {
+            fetchAdmins();
+          }
         }}
         icon={<CheckCircleOutlinedIcon sx={{ fontSize: 48, color: "green" }} />}
         maxWidth="sm"
@@ -416,12 +455,25 @@ export default function ManajemenAdmin() {
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
                 <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    maxWidth: "70px",
+                    textAlign: "center",
+                  }}
+                >
+                  Nomor
+                </TableCell>
+                <TableCell
                   sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
                 >
                   Nomor Induk
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                  }}
                 >
                   Nama
                 </TableCell>
@@ -439,7 +491,7 @@ export default function ManajemenAdmin() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {admins.map((admin) => (
+              {admins.map((admin, index) => (
                 <TableRow
                   key={admin.id}
                   sx={{
@@ -447,16 +499,70 @@ export default function ManajemenAdmin() {
                     "& td": { borderBottom: "1px solid #ddd" },
                   }}
                 >
-                  <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "70px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      textAlign: "center",
+                    }}
+                  >
+                    {page * rowsPerPage + index + 1}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {admin.nomorInduk}
                   </TableCell>
-                  <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {admin.nama}
                   </TableCell>
-                  <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {admin.email}
                   </TableCell>
-                  <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {admin.tanggalLahir}
                   </TableCell>
                   <TableCell>
