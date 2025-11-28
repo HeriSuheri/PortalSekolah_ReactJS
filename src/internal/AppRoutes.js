@@ -14,6 +14,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Kelas from "../pages/kelas";
 import Siswa from "../pages/siswa";
 import Admin from "../pages/admin";
+import Guru from "../pages/guru";
 import Profile from "../pages/profile/Profile";
 import NotFound from "../components/NotFound";
 import PrivateRoute from "./PrivateRoute";
@@ -39,9 +40,10 @@ export default function AppRoutes() {
           <Route element={<Container />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="manajemen/admin" element={<Admin />} />
+            <Route path="manajemen/guru" element={<Guru />} />
             <Route path="akademik/kelas" element={<Kelas />} />
             <Route path="manajemen/siswa" element={<Siswa />} />
-            <Route path="manajemen/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, TextField, Button, Typography, MenuItem } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  MenuItem,
+  Snackbar,
+  Alert,
+  IconButton,
+} from "@mui/material";
 import LoginService from "../login/LoginService";
 import PopUpModal from "../../components/PopUpModal";
-import { Snackbar, Alert } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
+import Tooltip from '@mui/material/Tooltip';
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
 const EditProfile = () => {
@@ -149,7 +159,18 @@ const EditProfile = () => {
           gap: 2,
         }}
       >
-        <Typography variant="h6">Profile</Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Tooltip title="Kembali">
+          <IconButton
+            onClick={() => navigate(-1)}
+            color="primary"
+            aria-label="kembali"
+          >
+            <ArrowBack />
+          </IconButton>
+          </Tooltip>
+          <Typography variant="h6">Profile</Typography>
+        </Box>
 
         {/* buatkan disini field untuk foto nya */}
         <Box

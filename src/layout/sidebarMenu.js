@@ -14,12 +14,11 @@ export const sidebarMenu = [
     label: "Dashboard",
     path: "/dashboard",
     icon: <DashboardIcon />,
-    roles: ["admin", "guru", "siswa"],
+    // tidak perlu roles → otomatis general
   },
   {
     label: "Akademik",
     icon: <ExpandMoreIcon />,
-    roles: ["admin", "guru", "siswa"],
     children: [
       {
         label: "Kelas",
@@ -56,46 +55,43 @@ export const sidebarMenu = [
   {
     label: "Manajemen Data",
     icon: <ExpandMoreIcon />,
-    roles: ["admin"],
     children: [
       {
         label: "Data Siswa",
         path: "/manajemen/siswa",
         icon: <PeopleIcon />,
+        roles: ["admin"],
       },
       {
         label: "Manajemen Guru",
         path: "/manajemen/guru",
         icon: <PersonIcon />,
+        roles: ["admin", "guru"],
       },
       {
         label: "Manajemen Admin",
         path: "/manajemen/admin",
         icon: <PersonIcon />,
+        roles: ["admin"],
       },
     ],
   },
   {
     label: "Pengaturan",
     icon: <ExpandMoreIcon />,
-    roles: ["admin"],
     children: [
       {
         label: "Role",
         path: "/pengaturan/role",
         icon: <PersonIcon />,
+        roles: ["admin", "guru"],
       },
       {
         label: "Menu",
         path: "/pengaturan/menu",
         icon: <SettingsIcon />,
+        roles: ["admin", "guru"],
       },
     ],
   },
-  // {
-  //   label: "Profil Saya",
-  //   path: "/profile",
-  //   icon: <PersonIcon />,
-  //   roles: ["admin", "guru", "siswa"],
-  // },
 ];

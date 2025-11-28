@@ -26,15 +26,15 @@ import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AdminService from "./AdminService";
+import GuruService from "./GuruService";
 import PopUpModal from "../../components/PopUpModal";
 import ConfirmModal from "../../components/DialogPopup";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import { useDebounce } from "../../hook/UseDebounce";
 
-export default function ManajemenAdmin() {
-  const [admins, setAdmins] = useState([]);
+export default function ManajemenGuru() {
+  const [guru, setGuru] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openToast, setOpenToast] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -48,15 +48,15 @@ export default function ManajemenAdmin() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     id: null,
-    nomorInduk: "",
+    nip: "",
     nama: "",
+    tanggalLahir: null,
     email: "",
-    tanggalLahir: "",
   });
 
   const [page, setPage] = useState(0); // halaman dimulai dari 0
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalAdmins, setTotalAdmins] = useState(0);
+  const [totalGuru, setTotalGuru] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
@@ -68,22 +68,22 @@ export default function ManajemenAdmin() {
     setIsEditMode(false);
     setFormData({
       id: null,
-      nomorInduk: "",
+      nip: "",
       nama: "",
+      tanggalLahir: null,
       email: "",
-      tanggalLahir: "",
     });
     setOpenModal(true);
   };
 
-  const handleOpenEdit = (admin) => {
+  const handleOpenEdit = (guru) => {
     setIsEditMode(true);
     setFormData({
-      id: admin.id,
-      nomorInduk: admin.nomorInduk,
-      nama: admin.nama,
-      email: admin.email,
-      tanggalLahir: admin.tanggalLahir,
+      id: guru.id,
+      nip: guru.nip,
+      nama: guru.nama,
+      tanggalLahir: guru.tanggalLahir,
+      email: guru.email,
     });
     setOpenModal(true);
   };
@@ -94,21 +94,21 @@ export default function ManajemenAdmin() {
     }
     try {
       if (isEditMode) {
-        const response = await AdminService.updateAdmin(formData); // kamu bikin endpoint PUT
-        console.log("RESPONSE UPDATE ADMIN:", response);
+        const response = await GuruService.updateGuru(formData); // kamu bikin endpoint PUT
+        console.log("RESPONSE UPDATE GURU:", response);
         if (response.success) {
           setSuccessCreateEdit(true);
         } else {
-          setErrorMsg(response.message || "Gagal update data admin");
+          setErrorMsg(response.message || "Gagal update data guru");
           setOpenToast(true);
         }
       } else {
-        const response = await AdminService.createAdmin(formData);
-        console.log("RESPONSE CREATE ADMIN:", response);
+        const response = await GuruService.createGuru(formData);
+        console.log("RESPONSE CREATE GURU:", response);
         if (response.success) {
           setSuccessCreateEdit(true);
         } else {
-          setErrorMsg(response.message || "Gagal tambah data admin");
+          setErrorMsg(response.message || "Gagal tambah data guru");
           setOpenToast(true);
           setIsSubmitted(false);
         }
@@ -116,80 +116,80 @@ export default function ManajemenAdmin() {
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal simpan admin:", err);
+      console.error("Gagal simpan guru:", err);
     }
   };
 
-  const deleteAdmin = async (adminId) => {
+  const deleteGuru = async (guruId) => {
     setLoading(true);
     try {
-      const response = await AdminService.deleteAdm(adminId);
+      const response = await GuruService.deleteGr(guruId);
       console.log("RES DELETE ADMIN:", response);
       if (response.success) {
         setLoading(false);
         setOpenDeleteModal(true);
       } else {
-        setErrorMsg(response.message || "Gagal hapus admin");
+        setErrorMsg(response.message || "Gagal hapus guru");
         setOpenToast(true);
       }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal hapus admin:", err);
+      console.error("Gagal hapus guru:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchAdmins = async () => {
+  const fetchGuru = async () => {
     setLoading(true);
     try {
-      const response = await AdminService.getAdmin({ page, size: rowsPerPage });
-      console.log("RESPONSE DATA ADMIN:", response);
+      const response = await GuruService.getGuru({ page, size: rowsPerPage });
+      console.log("RESPONSE DATA GURU:", response);
       if (response.success) {
-        // setAdmins(response.data?.content); // asumsi pakai Page<T>
+        // setGuru(response.data?.content); // asumsi pakai Page<T>
         const sorted = [...(response.data?.content || [])].sort((a, b) => {
           // asumsi nip berupa string seperti "G0001", "G0002"
           // kita ambil angka setelah huruf G untuk dibandingkan
-          const numA = parseInt(a.nomorInduk.replace(/\D/g, ""), 10);
-          const numB = parseInt(b.nomorInduk.replace(/\D/g, ""), 10);
+          const numA = parseInt(a.nip.replace(/\D/g, ""), 10);
+          const numB = parseInt(b.nip.replace(/\D/g, ""), 10);
           return numA - numB; // ascending
         });
-        setAdmins(sorted);
-        setTotalAdmins(response.data?.totalElements || 0);
+        setGuru(sorted);
+        setTotalGuru(response.data?.totalElements || 0);
       } else {
-        setErrorMsg(response.message || "Gagal mengambil data admin");
+        setErrorMsg(response.message || "Gagal mengambil data guru");
         setOpenToast(true);
       }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal ambil data admin:", err);
+      console.error("Gagal ambil data guru:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchFilteredAdmins = async (keyword) => {
+  const fetchFilteredGuru = async (keyword) => {
     setLoading(true);
     try {
-      const response = await AdminService.searchAdmin({
+      const response = await GuruService.searchGuru({
         page,
         size: rowsPerPage,
         keyword,
       });
-      console.log("RESPONSE DATA SEARCH ADMIN:", response);
+      console.log("RESPONSE DATA SEARCH GURU:", response);
       if (response.success) {
-        setAdmins(response.data?.content);
-        setTotalAdmins(response.data?.totalElements || 0);
+        setGuru(response.data?.content);
+        setTotalGuru(response.data?.totalElements || 0);
       } else {
-        setErrorMsg(response.message || "Gagal search data admin");
+        setErrorMsg(response.message || "Gagal search data guru");
         setOpenToast(true);
       }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal search data admin:", err);
+      console.error("Gagal search data guru:", err);
     } finally {
       setLoading(false);
     }
@@ -205,9 +205,9 @@ export default function ManajemenAdmin() {
 
   useEffect(() => {
     if (debouncedSearch.length >= 2) {
-      fetchFilteredAdmins(debouncedSearch);
+      fetchFilteredGuru(debouncedSearch);
     } else {
-      fetchAdmins();
+      fetchGuru();
     }
   }, [debouncedSearch, page, rowsPerPage]);
 
@@ -220,7 +220,7 @@ export default function ManajemenAdmin() {
 
   return (
     <Box sx={{ padding: 4 }}>
-      {/* MODAL CREATE - EDIT ADMIN */}
+      {/* MODAL CREATE - EDIT GURU */}
       <Dialog
         open={openModal}
         onClose={() => {
@@ -237,22 +237,23 @@ export default function ManajemenAdmin() {
         }}
       >
         <DialogTitle style={{ fontWeight: "bold" }}>
-          {isEditMode ? "Edit Admin" : "Tambah Admin"}
+          {isEditMode ? "Edit Guru" : "Tambah Guru"}
         </DialogTitle>
         <Divider />
         <DialogContent>
           <TextField
-            label="Nomor Induk"
+            label="NIP"
             fullWidth
             margin="normal"
-            value={formData.nomorInduk}
+            value={formData.nip}
             onChange={(e) => {
               const raw = e.target.value.toUpperCase(); // konversi ke huruf kapital
               const filtered = raw.replace(/[^A-Z0-9]/g, ""); // hanya A-Z dan 0-9
-              setFormData({ ...formData, nomorInduk: filtered });
+              setFormData({ ...formData, nip: filtered });
             }}
             disabled={
-              isEditMode && !allowedNomorInduk.includes(user?.nomorInduk)
+              (isEditMode && user?.role !== "ADMIN") ||
+              (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
             }
           />
           <TextField
@@ -278,6 +279,10 @@ export default function ManajemenAdmin() {
                 ? "Email harus mengandung @"
                 : ""
             }
+            disabled={
+              (isEditMode && user?.role !== "ADMIN") ||
+              (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
+            }
           />
           <TextField
             label="Tanggal Lahir"
@@ -288,6 +293,10 @@ export default function ManajemenAdmin() {
             value={formData.tanggalLahir}
             onChange={(e) =>
               setFormData({ ...formData, tanggalLahir: e.target.value })
+            }
+            disabled={
+              (isEditMode && user?.role !== "ADMIN") ||
+              (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
             }
           />
         </DialogContent>
@@ -307,7 +316,7 @@ export default function ManajemenAdmin() {
               setIsSubmitted(true);
             }}
             disabled={
-              !formData?.nomorInduk ||
+              !formData?.nip ||
               !formData?.nama ||
               !formData?.email ||
               !formData?.tanggalLahir
@@ -317,15 +326,15 @@ export default function ManajemenAdmin() {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* END CREATE - EDIT ADMIN */}
+      {/* END CREATE - EDIT GURU */}
       {/* POP UP SUCCESS */}
       <PopUpModal
         open={successCreateEdit}
         title="Berhasil"
         content={
           isEditMode
-            ? "Data admin berhasil diperbarui."
-            : "Data admin berhasil ditambahkan."
+            ? "Data guru berhasil diperbarui."
+            : "Data guru berhasil ditambahkan."
         }
         onClose={() => {
           setSuccessCreateEdit(false);
@@ -333,7 +342,7 @@ export default function ManajemenAdmin() {
             setSearchTerm("");
             setPage(0);
           } else {
-            fetchAdmins();
+            fetchGuru();
           }
           setOpenModal(false);
           setIsSubmitted(false);
@@ -351,7 +360,7 @@ export default function ManajemenAdmin() {
           <HelpOutlineOutlinedIcon sx={{ fontSize: 75, color: "#f44336" }} />
         }
         onConfirm={() => {
-          deleteAdmin(idDelete);
+          deleteGuru(idDelete);
           setOpenConfirmDelete(false);
         }}
         onCancel={() => {
@@ -363,14 +372,14 @@ export default function ManajemenAdmin() {
       <PopUpModal
         open={openDeleteModal}
         title="Berhasil"
-        content="Data admin berhasil dihapus."
+        content="Data guru berhasil dihapus."
         onClose={() => {
           setOpenDeleteModal(false);
           if (debouncedSearch.length >= 2 || page > 0) {
             setSearchTerm("");
             setPage(0);
           } else {
-            fetchAdmins();
+            fetchGuru();
           }
         }}
         icon={<CheckCircleOutlinedIcon sx={{ fontSize: 48, color: "green" }} />}
@@ -395,7 +404,7 @@ export default function ManajemenAdmin() {
       >
         <Box>
           <Typography variant="h5" fontWeight="bold" color="primary">
-            Manajemen Admin
+            Manajemen Guru
           </Typography>
           {/* <Divider /> */}
           <Typography
@@ -403,7 +412,7 @@ export default function ManajemenAdmin() {
             color="text.secondary"
             style={{ fontStyle: "italic" }}
           >
-            Kelola data admin
+            Kelola data guru
           </Typography>
         </Box>
 
@@ -411,14 +420,14 @@ export default function ManajemenAdmin() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          disabled={!allowedNomorInduk.includes(user?.nomorInduk)}
+          disabled={user?.role !== "ADMIN"}
           sx={{ textTransform: "none", boxShadow: 2 }}
         >
-          Tambah Admin
+          Tambah Guru
         </Button>
       </Box>
       <Tooltip
-        title="Cari Nama Admin"
+        title="Cari Nama Guru"
         placement="top"
         arrow
         enterDelay={300}
@@ -436,14 +445,14 @@ export default function ManajemenAdmin() {
         }}
       >
         <TextField
-          label="Cari Admin"
+          label="Cari Guru"
           variant="outlined"
           size="small"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
             setPage(0);
-            // if (page >= 0) {
+            // if (page > 0) {
             //   setPage(0);
             // }
           }}
@@ -486,7 +495,7 @@ export default function ManajemenAdmin() {
                 <TableCell
                   sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
                 >
-                  Nomor Induk
+                  Nomor Induk Pegawai
                 </TableCell>
                 <TableCell
                   sx={{
@@ -510,9 +519,9 @@ export default function ManajemenAdmin() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {admins.map((admin, index) => (
+              {guru.map((guru, index) => (
                 <TableRow
-                  key={admin.id}
+                  key={guru.id}
                   sx={{
                     "&:hover": { backgroundColor: "#fafafa" },
                     "& td": { borderBottom: "1px solid #ddd" },
@@ -543,7 +552,7 @@ export default function ManajemenAdmin() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {admin.nomorInduk}
+                    {guru.nip}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -556,7 +565,7 @@ export default function ManajemenAdmin() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {admin.nama}
+                    {guru.nama}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -569,7 +578,7 @@ export default function ManajemenAdmin() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {admin.email}
+                    {guru.email}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -582,14 +591,14 @@ export default function ManajemenAdmin() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {admin.tanggalLahir}
+                    {guru.tanggalLahir}
                   </TableCell>
                   <TableCell>
                     <Tooltip title="Edit">
                       <IconButton
                         color="primary"
-                        onClick={() => handleOpenEdit(admin)}
-                        disabled={!allowedNomorInduk.includes(user?.nomorInduk)}
+                        onClick={() => handleOpenEdit(guru)}
+                        disabled={user?.role !== "ADMIN"}
                       >
                         <EditIcon />
                       </IconButton>
@@ -598,10 +607,10 @@ export default function ManajemenAdmin() {
                     <Tooltip title="Delete">
                       <IconButton
                         color="error"
-                        disabled={!allowedNomorInduk.includes(user?.nomorInduk)}
+                        disabled={user?.role !== "ADMIN"}
                         onClick={() => {
                           setOpenConfirmDelete(true);
-                          setIdDelete(admin.id);
+                          setIdDelete(guru.id);
                         }}
                       >
                         <DeleteIcon />
@@ -614,7 +623,7 @@ export default function ManajemenAdmin() {
           </Table>
           <TablePagination
             component="div"
-            count={totalAdmins}
+            count={totalGuru}
             page={page}
             onPageChange={(e, newPage) => setPage(newPage)}
             rowsPerPage={rowsPerPage}

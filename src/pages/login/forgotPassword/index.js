@@ -78,7 +78,9 @@ const ForgotPage = () => {
             margin="normal"
             value={nomorInduk}
             onChange={(e) => {
-              setNomorInduk(e.target.value);
+              const raw = e.target.value.toUpperCase(); // konversi ke huruf kapital
+              const filtered = raw.replace(/[^A-Z0-9]/g, ""); // hanya A-Z dan 0-9
+              setNomorInduk(filtered);
               setError(null);
             }}
           />
