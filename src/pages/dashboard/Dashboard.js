@@ -6,6 +6,13 @@ import {
   CardContent,
   Box,
   Divider,
+  Snackbar,
+  Alert,
+  CircularProgress,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import PopUpModal from "../../components/PopUpModal";
 import PrivacyTipTwoToneIcon from "@mui/icons-material/PrivacyTipTwoTone";
@@ -13,35 +20,70 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import SchoolIcon from "@mui/icons-material/School";
 import PeopleIcon from "@mui/icons-material/People";
 import ClassIcon from "@mui/icons-material/Class";
+import AdminService from "../manajemen/admin/AdminService";
+import GuruService from "../manajemen/guru/GuruService";
 
 export default function DashboardPage() {
   const [needChangePassword, setNeedChangePassword] = useState(false);
+  const [page] = useState(0);
+  const [rowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
+  const [openToast, setOpenToast] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [totalAdmins, setTotalAdmins] = useState(0);
+  const [totalGuru, setTotalGuru] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const loginAwal = localStorage.getItem("loginAwal");
-    if (loginAwal === "true") {
-      setNeedChangePassword(true);
+  const getAdmins = async () => {
+    setLoading(true);
+    try {
+      const response = await AdminService.getAdmin({ page, size: rowsPerPage });
+      if (response.success) {
+        setTotalAdmins(response.data?.totalElements || 0);
+      } else {
+        setErrorMsg(response.message || "Gagal mengambil data admin");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      setOpenToast(true);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
+
+  const getGuru = async () => {
+    setLoading(true);
+    try {
+      const response = await GuruService.getGuru({ page, size: rowsPerPage });
+      if (response.success) {
+        setTotalGuru(response.data?.totalElements || 0);
+      } else {
+        setErrorMsg(response.message || "Gagal mengambil data guru");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      setOpenToast(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const stats = {
-    admin: 5,
-    guru: 120,
-    siswa: 850,
-    kelas: 24,
+    siswa: 850, // nanti ambil dari API
+    kelas: 24, // nanti ambil dari API
   };
 
   const cardData = [
     {
       label: "Admin",
-      value: stats.admin,
+      value: totalAdmins,
       color: "#e3f2fd",
       icon: <SupervisorAccountIcon sx={{ fontSize: 40, color: "#1976d2" }} />,
     },
     {
       label: "Guru",
-      value: stats.guru,
+      value: totalGuru,
       color: "#fce4ec",
       icon: <SchoolIcon sx={{ fontSize: 40, color: "#d81b60" }} />,
     },
@@ -59,8 +101,30 @@ export default function DashboardPage() {
     },
   ];
 
+  useEffect(() => {
+    getAdmins();
+    getGuru();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const loginAwal = localStorage.getItem("loginAwal");
+    if (loginAwal === "true") {
+      setNeedChangePassword(true);
+    }
+  }, []);
+
   return (
     <>
+      {/* Toast error */}
+      <Snackbar
+        open={openToast}
+        autoHideDuration={3000}
+        onClose={() => setOpenToast(false)}
+      >
+        <Alert severity="error" onClose={() => setOpenToast(false)}>
+          {errorMsg}
+        </Alert>
+      </Snackbar>
+
+      {/* Modal ganti password */}
       <PopUpModal
         open={needChangePassword}
         title="Ganti Password"
@@ -73,37 +137,76 @@ export default function DashboardPage() {
         maxWidth="sm"
       />
 
+      {/* Title */}
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
       <Divider sx={{ mb: 3 }} />
-      <Box display="flex" justifyContent="center">
-        <Grid container spacing={3} justifyContent="center" maxWidth="lg">
-          {cardData.map((item, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card sx={{ backgroundColor: item.color, height: "100%" }}>
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: "100%",
-                    padding: 3,
-                  }}
-                >
-                  <Box>
-                    <Typography variant="h6" fontSize={18}>
-                      {item.label}
-                    </Typography>
-                    <Typography variant="h3">{item.value}</Typography>
-                  </Box>
-                  {item.icon}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+
+      {/* Loading spinner */}
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight={200}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box display="flex" justifyContent="center">
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            alignItems="stretch"
+            sx={{ maxWidth: 1200 }}
+          >
+            {cardData.map((item, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Card sx={{ backgroundColor: item.color, height: "100%" }}>
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      height: "100%",
+                      padding: 3,
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="h6" fontSize={18}>
+                        {item.label}
+                      </Typography>
+                      <Typography variant="h3">{item.value}</Typography>
+                    </Box>
+                    {item.icon}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      )}
+
+      {/* Section tambahan: Pengumuman */}
+      <Divider sx={{ my: 4 }} />
+      <Typography variant="h5" gutterBottom>
+        Pengumuman Terbaru
+      </Typography>
+      <Paper sx={{ p: 2 }}>
+        <List>
+          <ListItem>
+            <ListItemText primary="Ujian akhir semester dimulai 10 Desember 2025" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Libur Natal: 24–26 Desember 2025" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Workshop Guru: 15 Januari 2026" />
+          </ListItem>
+        </List>
+      </Paper>
     </>
   );
 }

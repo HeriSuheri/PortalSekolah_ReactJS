@@ -11,10 +11,11 @@ import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
 // import RegisterPage from "../pages/register/register";
 import Container from "../layout/Container";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Kelas from "../pages/kelas";
-import Siswa from "../pages/siswa";
-import Admin from "../pages/admin";
-import Guru from "../pages/guru";
+import Kelas from "../pages/akademik/kelas";
+import Siswa from "../pages/manajemen/siswa";
+import Admin from "../pages/manajemen/admin";
+import Guru from "../pages/manajemen/guru";
+import MgmtKelas from "../pages/manajemen/kelas";
 import Profile from "../pages/profile/Profile";
 import NotFound from "../components/NotFound";
 import PrivateRoute from "./PrivateRoute";
@@ -40,10 +41,11 @@ export default function AppRoutes() {
           <Route element={<Container />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="akademik/kelas" element={<Kelas />} />
             <Route path="manajemen/admin" element={<Admin />} />
             <Route path="manajemen/guru" element={<Guru />} />
-            <Route path="akademik/kelas" element={<Kelas />} />
             <Route path="manajemen/siswa" element={<Siswa />} />
+            <Route path="manajemen/kelas" element={<MgmtKelas />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

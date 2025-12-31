@@ -1,4 +1,4 @@
-import { apiClient, handleError } from "../../service/BaseApi";
+import { apiClient, handleError } from "../../../service/BaseApi";
 
 const API_ENDPOINTS = {
   GURU: process.env.REACT_APP_GURU,

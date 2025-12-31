@@ -16,6 +16,10 @@ import {
   Button,
   Box,
   Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -26,15 +30,15 @@ import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import GuruService from "./GuruService";
-import PopUpModal from "../../components/PopUpModal";
-import ConfirmModal from "../../components/DialogPopup";
+import KelasService from "./KelasService";
+import PopUpModal from "../../../components/PopUpModal";
+import ConfirmModal from "../../../components/DialogPopup";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import { useDebounce } from "../../hook/UseDebounce";
+import { useDebounce } from "../../../hook/UseDebounce";
 
-export default function ManajemenGuru() {
-  const [guru, setGuru] = useState([]);
+export default function ManajemenKelas() {
+  const [kelas, setKelas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openToast, setOpenToast] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -48,15 +52,13 @@ export default function ManajemenGuru() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     id: null,
-    nip: "",
-    nama: "",
-    tanggalLahir: null,
-    email: "",
+    name: "",
+    gradeLevelId: null,
   });
 
   const [page, setPage] = useState(0); // halaman dimulai dari 0
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalGuru, setTotalGuru] = useState(0);
+  const [totalKelas, setTotalKelas] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
@@ -68,47 +70,40 @@ export default function ManajemenGuru() {
     setIsEditMode(false);
     setFormData({
       id: null,
-      nip: "",
-      nama: "",
-      tanggalLahir: null,
-      email: "",
+      name: "",
+      gradeLevelId: null,
     });
     setOpenModal(true);
   };
 
-  const handleOpenEdit = (guru) => {
+  const handleOpenEdit = (el) => {
     setIsEditMode(true);
     setFormData({
-      id: guru.id,
-      nip: guru.nip,
-      nama: guru.nama,
-      tanggalLahir: guru.tanggalLahir,
-      email: guru.email,
+      id: el.id,
+      name: el.name,
+      gradeLevelId: el.gradeLevelId,
     });
     setOpenModal(true);
   };
 
   const handleSubmit = async () => {
-    if (!formData?.email.includes("@")) {
-      return;
-    }
     try {
       if (isEditMode) {
-        const response = await GuruService.updateGuru(formData); // kamu bikin endpoint PUT
-        console.log("RESPONSE UPDATE GURU:", response);
+        const response = await KelasService.updateKelas(formData); // kamu bikin endpoint PUT
+        console.log("RESPONSE UPDATE KELAS:", response);
         if (response.success) {
           setSuccessCreateEdit(true);
         } else {
-          setErrorMsg(response.message || "Gagal update data guru");
+          setErrorMsg(response.message || "Gagal update data kelas");
           setOpenToast(true);
         }
       } else {
-        const response = await GuruService.createGuru(formData);
-        console.log("RESPONSE CREATE GURU:", response);
+        const response = await KelasService.createKelas(formData);
+        console.log("RESPONSE CREATE KELAS:", response);
         if (response.success) {
           setSuccessCreateEdit(true);
         } else {
-          setErrorMsg(response.message || "Gagal tambah data guru");
+          setErrorMsg(response.message || "Gagal tambah data kelas");
           setOpenToast(true);
           setIsSubmitted(false);
         }
@@ -116,47 +111,47 @@ export default function ManajemenGuru() {
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal simpan guru:", err);
+      console.error("Gagal simpan kelas:", err);
     }
   };
 
-  const deleteGuru = async (guruId) => {
+  const deleteKelas = async (kelasId) => {
     setLoading(true);
     try {
-      const response = await GuruService.deleteGr(guruId);
-      console.log("RES DELETE ADMIN:", response);
+      const response = await KelasService.deleteKls(kelasId);
+      console.log("RES DELETE KELAS:", response);
       if (response.success) {
         setLoading(false);
         setOpenDeleteModal(true);
       } else {
-        setErrorMsg(response.message || "Gagal hapus guru");
+        setErrorMsg(response.message || "Gagal hapus kelas");
         setOpenToast(true);
       }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal hapus guru:", err);
+      console.error("Gagal hapus kelas:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchGuru = async () => {
+  const fetchKelas = async () => {
     setLoading(true);
     try {
-      const response = await GuruService.getGuru({ page, size: rowsPerPage });
-      console.log("RESPONSE DATA GURU:", response);
+      const response = await KelasService.getKelas({ page, size: rowsPerPage });
+      console.log("RESPONSE DATA KELAS:", response);
       if (response.success) {
         // setGuru(response.data?.content); // asumsi pakai Page<T>
         const sorted = [...(response.data?.content || [])].sort((a, b) => {
           // asumsi nip berupa string seperti "G0001", "G0002"
           // kita ambil angka setelah huruf G untuk dibandingkan
-          const numA = parseInt(a.nip.replace(/\D/g, ""), 10);
-          const numB = parseInt(b.nip.replace(/\D/g, ""), 10);
+          const numA = parseInt(a.name.replace(/\D/g, ""), 10);
+          const numB = parseInt(b.name.replace(/\D/g, ""), 10);
           return numA - numB; // ascending
         });
-        setGuru(sorted);
-        setTotalGuru(response.data?.totalElements || 0);
+        setKelas(sorted);
+        setTotalKelas(response.data?.totalElements || 0);
       } else {
         setErrorMsg(response.message || "Gagal mengambil data guru");
         setOpenToast(true);
@@ -170,44 +165,42 @@ export default function ManajemenGuru() {
     }
   };
 
-  const fetchFilteredGuru = async (keyword) => {
+  const fetchFilteredKelas = async (keyword) => {
     setLoading(true);
     try {
-      const response = await GuruService.searchGuru({
+      const response = await KelasService.searchKelas({
         page,
         size: rowsPerPage,
         keyword,
       });
-      console.log("RESPONSE DATA SEARCH GURU:", response);
+      console.log("RESPONSE DATA SEARCH KELAS:", response);
       if (response.success) {
-        setGuru(response.data?.content);
-        setTotalGuru(response.data?.totalElements || 0);
+        setKelas(response.data?.content);
+        setTotalKelas(response.data?.totalElements || 0);
       } else {
-        setErrorMsg(response.message || "Gagal search data guru");
+        setErrorMsg(response.message || "Gagal search data kelas");
         setOpenToast(true);
       }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
-      console.error("Gagal search data guru:", err);
+      console.error("Gagal search data kelas:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // useEffect(() => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  //   fetchAdmins();
-  // }, [page, rowsPerPage]);
+  const gradeLevels = [
+    { id: 1, name: "10" },
+    { id: 2, name: "11" },
+    { id: 3, name: "12" },
+  ];
 
   useEffect(() => {
     if (debouncedSearch.length >= 2) {
-      fetchFilteredGuru(debouncedSearch);
+      fetchFilteredKelas(debouncedSearch);
     } else {
-      fetchGuru();
+      fetchKelas();
     }
   }, [debouncedSearch, page, rowsPerPage]);
 
@@ -220,7 +213,7 @@ export default function ManajemenGuru() {
 
   return (
     <Box sx={{ padding: 4 }}>
-      {/* MODAL CREATE - EDIT GURU */}
+      {/* MODAL CREATE - EDIT KELAS */}
       <Dialog
         open={openModal}
         onClose={() => {
@@ -237,68 +230,42 @@ export default function ManajemenGuru() {
         }}
       >
         <DialogTitle style={{ fontWeight: "bold" }}>
-          {isEditMode ? "Edit Guru" : "Tambah Guru"}
+          {isEditMode ? "Edit Kelas" : "Tambah Kelas"}
         </DialogTitle>
         <Divider />
         <DialogContent>
           <TextField
-            label="NIP"
+            label="Nama Kelas"
             fullWidth
             margin="normal"
-            value={formData.nip}
+            value={formData.name}
             onChange={(e) => {
               const raw = e.target.value.toUpperCase(); // konversi ke huruf kapital
               const filtered = raw.replace(/[^A-Z0-9]/g, ""); // hanya A-Z dan 0-9
-              setFormData({ ...formData, nip: filtered });
+              setFormData({ ...formData, name: filtered });
             }}
             disabled={
               (isEditMode && user?.role !== "ADMIN") ||
               (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
             }
           />
-          <TextField
-            label="Nama"
-            fullWidth
-            margin="normal"
-            value={formData.nama}
-            onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-          />
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            margin="normal"
-            value={formData.email}
-            onChange={(e) => {
-              setFormData({ ...formData, email: e.target.value });
-              setIsSubmitted(false);
-            }}
-            error={isSubmitted && !formData.email.includes("@")}
-            helperText={
-              isSubmitted && !formData.email.includes("@")
-                ? "Email harus mengandung @"
-                : ""
-            }
-            disabled={
-              (isEditMode && user?.role !== "ADMIN") ||
-              (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
-            }
-          />
-          <TextField
-            label="Tanggal Lahir"
-            type="date"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            value={formData.tanggalLahir}
-            onChange={(e) =>
-              setFormData({ ...formData, tanggalLahir: e.target.value })
-            }
-            disabled={
-              (isEditMode && user?.role !== "ADMIN") ||
-              (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
-            }
-          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="gradeLevel-label">Tingkat/Jenjang</InputLabel>
+            <Select
+              labelId="gradeLevel-label"
+              label="Tingkat/Jenjang"
+              value={formData.gradeLevelId}
+              onChange={(e) =>
+                setFormData({ ...formData, gradeLevelId: e.target.value })
+              }
+            >
+              {gradeLevels.map((gl) => (
+                <MenuItem key={gl.id} value={gl.id}>
+                  {gl.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -315,26 +282,21 @@ export default function ManajemenGuru() {
               handleSubmit();
               setIsSubmitted(true);
             }}
-            disabled={
-              !formData?.nip ||
-              !formData?.nama ||
-              !formData?.email ||
-              !formData?.tanggalLahir
-            }
+            disabled={!formData?.name || !formData?.gradeLevelId}
           >
             {isEditMode ? "Simpan Perubahan" : "Simpan"}
           </Button>
         </DialogActions>
       </Dialog>
-      {/* END CREATE - EDIT GURU */}
+      {/* END CREATE - EDIT KELAS */}
       {/* POP UP SUCCESS */}
       <PopUpModal
         open={successCreateEdit}
         title="Berhasil"
         content={
           isEditMode
-            ? "Data guru berhasil diperbarui."
-            : "Data guru berhasil ditambahkan."
+            ? "Data kelas berhasil diperbarui."
+            : "Data kelas berhasil ditambahkan."
         }
         onClose={() => {
           setSuccessCreateEdit(false);
@@ -342,7 +304,7 @@ export default function ManajemenGuru() {
             setSearchTerm("");
             setPage(0);
           } else {
-            fetchGuru();
+            fetchKelas();
           }
           setOpenModal(false);
           setIsSubmitted(false);
@@ -360,7 +322,7 @@ export default function ManajemenGuru() {
           <HelpOutlineOutlinedIcon sx={{ fontSize: 75, color: "#f44336" }} />
         }
         onConfirm={() => {
-          deleteGuru(idDelete);
+          deleteKelas(idDelete);
           setOpenConfirmDelete(false);
         }}
         onCancel={() => {
@@ -372,14 +334,14 @@ export default function ManajemenGuru() {
       <PopUpModal
         open={openDeleteModal}
         title="Berhasil"
-        content="Data guru berhasil dihapus."
+        content="Data kelas berhasil dihapus."
         onClose={() => {
           setOpenDeleteModal(false);
           if (debouncedSearch.length >= 2 || page > 0) {
             setSearchTerm("");
             setPage(0);
           } else {
-            fetchGuru();
+            fetchKelas();
           }
         }}
         icon={<CheckCircleOutlinedIcon sx={{ fontSize: 48, color: "green" }} />}
@@ -404,7 +366,7 @@ export default function ManajemenGuru() {
       >
         <Box>
           <Typography variant="h5" fontWeight="bold" color="primary">
-            Manajemen Guru
+            Manajemen Kelas
           </Typography>
           {/* <Divider /> */}
           <Typography
@@ -412,7 +374,7 @@ export default function ManajemenGuru() {
             color="text.secondary"
             style={{ fontStyle: "italic" }}
           >
-            Kelola data guru
+            Kelola data kelas
           </Typography>
         </Box>
 
@@ -420,14 +382,14 @@ export default function ManajemenGuru() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          disabled={user?.role !== "ADMIN"}
+          disabled={!allowedNomorInduk.includes(user.nomorInduk)}
           sx={{ textTransform: "none", boxShadow: 2 }}
         >
-          Tambah Guru
+          Tambah Kelas
         </Button>
       </Box>
       <Tooltip
-        title="Cari Nama Guru"
+        title="Cari Nama Kelas"
         placement="top"
         arrow
         enterDelay={300}
@@ -445,7 +407,7 @@ export default function ManajemenGuru() {
         }}
       >
         <TextField
-          label="Cari Guru"
+          label="Cari Kelas"
           variant="outlined"
           size="small"
           value={searchTerm}
@@ -495,7 +457,7 @@ export default function ManajemenGuru() {
                 <TableCell
                   sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
                 >
-                  Nomor Induk Pegawai
+                  Nama Kelas
                 </TableCell>
                 <TableCell
                   sx={{
@@ -503,25 +465,15 @@ export default function ManajemenGuru() {
                     borderRight: "1px solid #ccc",
                   }}
                 >
-                  Nama
-                </TableCell>
-                <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
-                >
-                  Email
-                </TableCell>
-                <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
-                >
-                  Tanggal Lahir
+                  Tingkatan/Jenjang
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Aksi</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {guru.map((guru, index) => (
+              {kelas.map((kls, index) => (
                 <TableRow
-                  key={guru.id}
+                  key={kls.id}
                   sx={{
                     "&:hover": { backgroundColor: "#fafafa" },
                     "& td": { borderBottom: "1px solid #ddd" },
@@ -552,7 +504,7 @@ export default function ManajemenGuru() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {guru.nip}
+                    {kls.name}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -565,40 +517,14 @@ export default function ManajemenGuru() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {guru.nama}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid #ccc",
-                      maxWidth: "150px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
-                    }}
-                  >
-                    {guru.email}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid #ccc",
-                      maxWidth: "150px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
-                    }}
-                  >
-                    {guru.tanggalLahir}
+                    {kls.gradeLevelName}
                   </TableCell>
                   <TableCell>
                     <Tooltip title="Edit">
                       <IconButton
                         color="primary"
-                        onClick={() => handleOpenEdit(guru)}
-                        disabled={user?.role !== "ADMIN"}
+                        onClick={() => handleOpenEdit(kls)}
+                        disabled={!allowedNomorInduk.includes(user.nomorInduk)}
                       >
                         <EditIcon />
                       </IconButton>
@@ -607,10 +533,10 @@ export default function ManajemenGuru() {
                     <Tooltip title="Delete">
                       <IconButton
                         color="error"
-                        disabled={user?.role !== "ADMIN"}
+                        disabled={!allowedNomorInduk.includes(user.nomorInduk)}
                         onClick={() => {
                           setOpenConfirmDelete(true);
-                          setIdDelete(guru.id);
+                          setIdDelete(kls.id);
                         }}
                       >
                         <DeleteIcon />
@@ -623,7 +549,7 @@ export default function ManajemenGuru() {
           </Table>
           <TablePagination
             component="div"
-            count={totalGuru}
+            count={totalKelas}
             page={page}
             onPageChange={(e, newPage) => setPage(newPage)}
             rowsPerPage={rowsPerPage}

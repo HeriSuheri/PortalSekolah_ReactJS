@@ -27,11 +27,11 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AdminService from "./AdminService";
-import PopUpModal from "../../components/PopUpModal";
-import ConfirmModal from "../../components/DialogPopup";
+import PopUpModal from "../../../components/PopUpModal";
+import ConfirmModal from "../../../components/DialogPopup";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import { useDebounce } from "../../hook/UseDebounce";
+import { useDebounce } from "../../../hook/UseDebounce";
 
 export default function ManajemenAdmin() {
   const [admins, setAdmins] = useState([]);

@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
 
 export const sidebarMenu = [
   {
@@ -72,6 +73,12 @@ export const sidebarMenu = [
         label: "Manajemen Admin",
         path: "/manajemen/admin",
         icon: <PersonIcon />,
+        roles: ["admin"],
+      },
+      {
+        label: "Manajemen Kelas",
+        path: "/manajemen/kelas",
+        icon: <GridViewTwoToneIcon />,
         roles: ["admin"],
       },
     ],
