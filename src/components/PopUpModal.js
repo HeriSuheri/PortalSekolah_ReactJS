@@ -21,7 +21,14 @@ function MyPopupModal({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      // onClose={onClose}
+      onClose={(event, reason) => {
+        // blok kalau close karena klik backdrop atau tekan ESC
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+          onClose();
+        }
+      }}
+      disableEscapeKeyDown
       maxWidth={maxWidth}
       fullWidth={fullWidth}
       sx={{

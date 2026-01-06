@@ -8,7 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
+import GridViewTwoToneIcon from "@mui/icons-material/GridViewTwoTone";
 
 export const sidebarMenu = [
   {
@@ -21,48 +21,49 @@ export const sidebarMenu = [
     label: "Akademik",
     icon: <ExpandMoreIcon />,
     children: [
+      // {
+      //   label: "Kelas",
+      //   path: "/akademik/kelas",
+      //   icon: <ClassIcon />,
+      //   roles: ["admin", "guru"],
+      // },
       {
-        label: "Kelas",
-        path: "/akademik/kelas",
-        icon: <ClassIcon />,
-        roles: ["admin", "guru"],
+        label: "Jadwal",
+        path: "/akademik/jadwal",
+        icon: <CalendarMonthIcon />,
+        roles: ["siswa"],
       },
       {
         label: "Nilai",
         path: "/akademik/nilai",
         icon: <GradeIcon />,
-        roles: ["admin", "guru", "siswa"],
-      },
-      {
-        label: "Jadwal",
-        path: "/akademik/jadwal",
-        icon: <CalendarMonthIcon />,
-        roles: ["admin", "guru", "siswa"],
+        roles: ["siswa"],
       },
       {
         label: "Absensi",
         path: "/akademik/absensi",
         icon: <AssignmentIndIcon />,
-        roles: ["admin", "guru", "siswa"],
+        roles: ["siswa"],
       },
-      {
-        label: "Mata Pelajaran",
-        path: "/akademik/mata-pelajaran",
-        icon: <SchoolIcon />,
-        roles: ["admin", "guru"],
-      },
+      // PEMBAYARAN, TUGAS, UJIAN, DLL
+      // {
+      //   label: "Mata Pelajaran",
+      //   path: "/akademik/mata-pelajaran",
+      //   icon: <SchoolIcon />,
+      //   roles: ["admin", "guru"],
+      // },
     ],
   },
   {
     label: "Manajemen Data",
     icon: <ExpandMoreIcon />,
     children: [
-      {
-        label: "Data Siswa",
-        path: "/manajemen/siswa",
-        icon: <PeopleIcon />,
-        roles: ["admin"],
-      },
+      // {
+      //   label: "Data Siswa",
+      //   path: "/manajemen/siswa",
+      //   icon: <PeopleIcon />,
+      //   roles: ["admin"],
+      // },
       {
         label: "Manajemen Guru",
         path: "/manajemen/guru",
@@ -79,7 +80,13 @@ export const sidebarMenu = [
         label: "Manajemen Kelas",
         path: "/manajemen/kelas",
         icon: <GridViewTwoToneIcon />,
-        roles: ["admin"],
+        roles: ["admin", "guru"],
+      },
+      {
+        label: "Manajemen Mapel",
+        path: "/manajemen/mapel",
+        icon: <SchoolIcon />,
+        roles: ["admin", "guru"],
       },
     ],
   },

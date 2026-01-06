@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 
-export default function Kelas() {
+export default function Mapel() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -11,10 +11,10 @@ export default function Kelas() {
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        KELAS
+        MATA PELAJARAN
       </Typography>
       <Typography>
-        Selamat datang di Portal Sekolah! Ini adalah halaman KELAS
+        Selamat datang di Portal Sekolah! Ini adalah halaman MATA PELAJARAN
       </Typography>
     </>
   );

@@ -12,7 +12,13 @@ function ConfirmModal({ icon, open, onConfirm, onCancel, title, question }) {
   return (
     <Dialog
       open={open}
-      onClose={onCancel}
+      // onClose={onCancel}
+      onClose={(event, reason) => {
+        // blok kalau close karena klik backdrop atau tekan ESC
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+          onCancel();
+        }
+      }}
       maxWidth="sm"
       fullWidth
       sx={{

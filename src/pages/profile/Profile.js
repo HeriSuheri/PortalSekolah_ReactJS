@@ -144,6 +144,7 @@ const EditProfile = () => {
         open={openToast}
         autoHideDuration={3000}
         onClose={() => setOpenToast(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity="error" onClose={() => setOpenToast(false)}>
           {errorMsg}

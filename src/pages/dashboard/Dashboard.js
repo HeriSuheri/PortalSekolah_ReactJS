@@ -118,6 +118,7 @@ export default function DashboardPage() {
         open={openToast}
         autoHideDuration={3000}
         onClose={() => setOpenToast(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity="error" onClose={() => setOpenToast(false)}>
           {errorMsg}

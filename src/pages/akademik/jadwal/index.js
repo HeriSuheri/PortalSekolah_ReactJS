@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 
-export default function Siswa() {
+export default function JadwalPelajaran() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -11,10 +11,10 @@ export default function Siswa() {
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        SISWA
+        JADWAL PELAJARAN
       </Typography>
       <Typography>
-        Selamat datang di Portal Sekolah! Ini adalah halaman SISWA
+        Selamat datang di Portal Sekolah! Ini adalah halaman JADWAL PELAJARAN
       </Typography>
     </>
   );

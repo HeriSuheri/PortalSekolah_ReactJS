@@ -11,8 +11,9 @@ import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
 // import RegisterPage from "../pages/register/register";
 import Container from "../layout/Container";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Kelas from "../pages/akademik/kelas";
-import Siswa from "../pages/manajemen/siswa";
+import JadwalPelajaran from "../pages/akademik/jadwal";
+import DetailKelas from "../pages/manajemen/kelas/DetailKelas";
+import Mapel from "../pages/manajemen/mapel";
 import Admin from "../pages/manajemen/admin";
 import Guru from "../pages/manajemen/guru";
 import MgmtKelas from "../pages/manajemen/kelas";
@@ -41,11 +42,12 @@ export default function AppRoutes() {
           <Route element={<Container />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="akademik/kelas" element={<Kelas />} />
+            <Route path="akademik/jadwal-pelajaran" element={<JadwalPelajaran />} />
             <Route path="manajemen/admin" element={<Admin />} />
             <Route path="manajemen/guru" element={<Guru />} />
-            <Route path="manajemen/siswa" element={<Siswa />} />
+            <Route path="manajemen/mapel" element={<Mapel />} />
             <Route path="manajemen/kelas" element={<MgmtKelas />} />
+            <Route path="manajemen/kelas/:id" element={<DetailKelas />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

@@ -223,9 +223,13 @@ export default function ManajemenAdmin() {
       {/* MODAL CREATE - EDIT ADMIN */}
       <Dialog
         open={openModal}
-        onClose={() => {
-          setOpenModal(false);
+        onClose={(event, reason) => {
+          // blok kalau close karena klik backdrop atau tekan ESC
+          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            setOpenModal(false);
+          }
         }}
+        disableEscapeKeyDown
         fullWidth
         maxWidth="sm"
         sx={{
@@ -381,6 +385,7 @@ export default function ManajemenAdmin() {
         open={openToast}
         autoHideDuration={3000}
         onClose={() => setOpenToast(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity="error" onClose={() => setOpenToast(false)}>
           {errorMsg}

@@ -35,6 +35,8 @@ import PopUpModal from "../../../components/PopUpModal";
 import ConfirmModal from "../../../components/DialogPopup";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../../hook/UseDebounce";
 
 export default function ManajemenKelas() {
@@ -47,13 +49,14 @@ export default function ManajemenKelas() {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
-
+  const [dataGuru, setDataGuru] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     id: null,
     name: "",
     gradeLevelId: null,
+    waliGuruId: null,
   });
 
   const [page, setPage] = useState(0); // halaman dimulai dari 0
@@ -65,6 +68,7 @@ export default function ManajemenKelas() {
 
   const user = JSON.parse(localStorage.getItem("userLogin"));
   const allowedNomorInduk = ["A0000001", "A0000002"];
+  const navigate = useNavigate();
 
   const handleOpenCreate = () => {
     setIsEditMode(false);
@@ -72,6 +76,7 @@ export default function ManajemenKelas() {
       id: null,
       name: "",
       gradeLevelId: null,
+      waliGuruId: null,
     });
     setOpenModal(true);
   };
@@ -82,6 +87,7 @@ export default function ManajemenKelas() {
       id: el.id,
       name: el.name,
       gradeLevelId: el.gradeLevelId,
+      waliGuruId: el.waliGuruId,
     });
     setOpenModal(true);
   };
@@ -190,6 +196,26 @@ export default function ManajemenKelas() {
     }
   };
 
+  const getGuru = async (keyword) => {
+    setLoading(true);
+    try {
+      const response = await KelasService.getAllGuru();
+      console.log("RESPONSE DATA GURU:", response);
+      if (response.success) {
+        setDataGuru(response.data?.data);
+      } else {
+        setErrorMsg(response.message || "Gagal mendapatkan data guru");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      console.error("Gagal mendapatkan data guru:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const gradeLevels = [
     { id: 1, name: "10" },
     { id: 2, name: "11" },
@@ -209,6 +235,7 @@ export default function ManajemenKelas() {
       top: 0,
       behavior: "smooth",
     });
+    getGuru();
   }, []);
 
   return (
@@ -216,9 +243,13 @@ export default function ManajemenKelas() {
       {/* MODAL CREATE - EDIT KELAS */}
       <Dialog
         open={openModal}
-        onClose={() => {
-          setOpenModal(false);
+        onClose={(event, reason) => {
+          // blok kalau close karena klik backdrop atau tekan ESC
+          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            setOpenModal(false);
+          }
         }}
+        disableEscapeKeyDown
         fullWidth
         maxWidth="sm"
         sx={{
@@ -266,6 +297,23 @@ export default function ManajemenKelas() {
               ))}
             </Select>
           </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="waliKelas-label">Wali Kelas</InputLabel>
+            <Select
+              labelId="waliKelas-label"
+              label="Wali Kelas"
+              value={formData.waliGuruId}
+              onChange={(e) =>
+                setFormData({ ...formData, waliGuruId: e.target.value })
+              }
+            >
+              {dataGuru.map((gl) => (
+                <MenuItem key={gl.id} value={gl.id}>
+                  {gl.nama}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -282,7 +330,11 @@ export default function ManajemenKelas() {
               handleSubmit();
               setIsSubmitted(true);
             }}
-            disabled={!formData?.name || !formData?.gradeLevelId}
+            disabled={
+              !formData?.name ||
+              !formData?.gradeLevelId ||
+              !formData?.waliGuruId
+            }
           >
             {isEditMode ? "Simpan Perubahan" : "Simpan"}
           </Button>
@@ -352,6 +404,7 @@ export default function ManajemenKelas() {
         open={openToast}
         autoHideDuration={3000}
         onClose={() => setOpenToast(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity="error" onClose={() => setOpenToast(false)}>
           {errorMsg}
@@ -448,14 +501,19 @@ export default function ManajemenKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
-                    maxWidth: "70px",
+                    maxWidth: "40px",
                     textAlign: "center",
                   }}
                 >
                   Nomor
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    maxWidth: "40px",
+                    textAlign: "center",
+                  }}
                 >
                   Nama Kelas
                 </TableCell>
@@ -463,11 +521,31 @@ export default function ManajemenKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
+                    maxWidth: "50px",
+                    textAlign: "center",
                   }}
                 >
                   Tingkatan/Jenjang
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Aksi</TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    maxWidth: "100px",
+                  }}
+                >
+                  Wali Kelas
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    maxWidth: "40px",
+                  }}
+                >
+                  Aksi
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -482,7 +560,7 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "70px",
+                      maxWidth: "40px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       // whiteSpace: "nowrap",
@@ -496,12 +574,13 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "150px",
+                      maxWidth: "40px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "center",
                     }}
                   >
                     {kls.name}
@@ -509,7 +588,21 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "150px",
+                      maxWidth: "50px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      textAlign: "center",
+                    }}
+                  >
+                    {kls.gradeLevelName}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "100px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       // whiteSpace: "nowrap",
@@ -517,9 +610,9 @@ export default function ManajemenKelas() {
                       wordBreak: "break-word",
                     }}
                   >
-                    {kls.gradeLevelName}
+                    {kls.waliGuruName}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ textAlign: "center", maxWidth: "40px" }}>
                     <Tooltip title="Edit">
                       <IconButton
                         color="primary"
@@ -540,6 +633,18 @@ export default function ManajemenKelas() {
                         }}
                       >
                         <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Detail">
+                      <IconButton
+                        color="secondary"
+                        onClick={() =>
+                          navigate(`/manajemen/kelas/${kls.id}`, {
+                            state: { kelas: kls },
+                          })
+                        }
+                      >
+                        <VisibilityIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
