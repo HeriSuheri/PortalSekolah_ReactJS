@@ -201,7 +201,7 @@ const DataService = {
       }
       return {
         success: false,
-        message: response.data.message || "Get setail kelas Failed",
+        message: response.data.message || "Get detail kelas Failed",
         data: null,
       };
     } catch (error) {
@@ -278,6 +278,50 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Delete siswa");
+    }
+  },
+
+  async getSiswaAll() {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.SISWA}/all`);
+      console.log("RESPONSE API SISWA ALL:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get siswa all Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get siswa all Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get siswa all");
+    }
+  },
+
+  async getClassAll() {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.KELAS}/all`);
+      console.log("RESPONSE API CLASSRROOM ALL:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get classroom all Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get classroom all Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get classroom all");
     }
   },
 };

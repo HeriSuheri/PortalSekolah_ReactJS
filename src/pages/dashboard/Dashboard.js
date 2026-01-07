@@ -22,6 +22,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import ClassIcon from "@mui/icons-material/Class";
 import AdminService from "../manajemen/admin/AdminService";
 import GuruService from "../manajemen/guru/GuruService";
+import KelasService from "../manajemen/kelas/KelasService";
 import ConfirmModal from "../../components/DialogPopup";
 import { useAuth } from "../../internal/AuthContext";
 
@@ -35,6 +36,8 @@ export default function DashboardPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [totalAdmins, setTotalAdmins] = useState(0);
   const [totalGuru, setTotalGuru] = useState(0);
+  const [totalSiswa, setTotalSiswa] = useState(0);
+  const [totalKelas, setTotalKelas] = useState(0);
 
   const getAdmins = async () => {
     setLoading(true);
@@ -72,9 +75,40 @@ export default function DashboardPage() {
     }
   };
 
-  const stats = {
-    siswa: 850, // nanti ambil dari API
-    kelas: 24, // nanti ambil dari API
+  const getSiswa = async () => {
+    setLoading(true);
+    try {
+      const response = await KelasService.getSiswaAll();
+      if (response.success) {
+        setTotalSiswa(response.data.data.length || 0);
+      } else {
+        setErrorMsg(response.message || "Gagal mengambil data siswa");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      setOpenToast(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getClassroom = async () => {
+    setLoading(true);
+    try {
+      const response = await KelasService.getClassAll();
+      if (response.success) {
+        setTotalKelas(response.data.data.length || 0);
+      } else {
+        setErrorMsg(response.message || "Gagal mengambil data classroom");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      setOpenToast(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cardData = [
@@ -92,13 +126,13 @@ export default function DashboardPage() {
     },
     {
       label: "Siswa",
-      value: stats.siswa,
+      value: totalSiswa,
       color: "#e8f5e9",
       icon: <PeopleIcon sx={{ fontSize: 40, color: "#388e3c" }} />,
     },
     {
       label: "Kelas",
-      value: stats.kelas,
+      value: totalKelas,
       color: "#fff3e0",
       icon: <ClassIcon sx={{ fontSize: 40, color: "#f57c00" }} />,
     },
@@ -107,6 +141,8 @@ export default function DashboardPage() {
   useEffect(() => {
     getAdmins();
     getGuru();
+    getSiswa();
+    getClassroom();
     window.scrollTo({ top: 0, behavior: "smooth" });
     const loginAwal = localStorage.getItem("loginAwal");
     if (loginAwal === "true") {
