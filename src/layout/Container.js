@@ -11,16 +11,22 @@ import Footer from "./Footer";
 import PopupModal from "../components/PopUpModal";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ConfirmModal from "../components/DialogPopup";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const drawerWidth = 0;
 
 export default function Container() {
   const navigate = useNavigate();
-  const { logout, isExpired, setIsExpired } = useAuth();
+  const {
+    logout,
+    isExpired,
+    setIsExpired,
+    setOpenModalChangePass,
+    openModalChangePass,
+  } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [openLogout, setOpenLogout] = useState(false);
-  const [openModalChangePass, setOpenModalChangePass] = useState(false);
+  // const [openModalChangePass, setOpenModalChangePass] = useState(false);
   const [successChangePassword, setSuccessChangePassword] = useState(false);
 
   return (
@@ -49,13 +55,13 @@ export default function Container() {
         <PageWrapper>
           <Outlet />
           {/* Modal Change Password */}
-          {openModalChangePass && (
-            <ChangePasswordModal
-              open={openModalChangePass}
-              close={() => setOpenModalChangePass(false)}
-              success={() => setSuccessChangePassword(true)}
-            />
-          )}
+          {/* {openModalChangePass && ( */}
+          <ChangePasswordModal
+            open={openModalChangePass}
+            close={() => setOpenModalChangePass(false)}
+            success={() => setSuccessChangePassword(true)}
+          />
+          {/* )} */}
           {/* Popup Success Change Password */}
           <PopupModal
             open={successChangePassword}

@@ -214,18 +214,14 @@ export default function DetailKelas() {
   const handleDisabled = () => {
     if (user?.role === "ADMIN") {
       if (!allowedNomorInduk.includes(user?.nomorInduk)) {
-        console.log("SATU");
         return true;
       } else {
-        console.log("DUA");
         return false;
       }
     } else if (user?.role === "GURU") {
-      if (user?.nomorInduk !== location?.state?.kelas?.waliGuruNip) {
-        console.log("TIGA");
+      if (user?.nomorInduk !== kelasDetail?.waliGuruNip) {
         return true;
       } else {
-        console.log("EMPAT");
         return false;
       }
     }

@@ -43,7 +43,16 @@ const ChangePasswordModal = ({ open, close, success }) => {
   return (
     <>
       {/* <Button onClick={handleOpen}>Change Password</Button> */}
-      <Modal open={open} onClose={close}>
+      <Modal
+        open={open}
+        onClose={(event, reason) => {
+          // blok kalau close karena klik backdrop atau tekan ESC
+          if (reason === "backdropClick" || reason === "escapeKeyDown") {
+            return; // jangan tutup
+          }
+          close(); // hanya tutup kalau dipanggil dari tombol
+        }}
+      >
         <Box
           sx={{
             width: 400,

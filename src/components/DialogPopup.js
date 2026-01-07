@@ -8,7 +8,17 @@ import {
   Box,
 } from "@mui/material";
 
-function ConfirmModal({ icon, open, onConfirm, onCancel, title, question }) {
+function ConfirmModal({
+  icon,
+  open,
+  onConfirm,
+  onCancel,
+  title,
+  question,
+  useText = false,
+  textCancel,
+  textSubmit,
+}) {
   return (
     <Dialog
       open={open}
@@ -39,12 +49,35 @@ function ConfirmModal({ icon, open, onConfirm, onCancel, title, question }) {
         <Typography align="center">{question}</Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: "center", gap: 2 }}>
-        <Button variant="outlined" onClick={onCancel}>
-          Tidak
-        </Button>
-        <Button variant="contained" color="primary" onClick={onConfirm}>
-          Ya
-        </Button>
+        {useText ? (
+          <>
+            <Typography
+              variant="body1"
+              color="textSecondary"
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={onCancel}
+            >
+              {textCancel}
+            </Typography>
+            <Typography
+              variant="body1"
+              color="primary"
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={onConfirm}
+            >
+              {textSubmit}
+            </Typography>
+          </>
+        ) : (
+          <>
+            <Button variant="outlined" onClick={onCancel}>
+              Tidak
+            </Button>
+            <Button variant="contained" color="primary" onClick={onConfirm}>
+              Ya
+            </Button>
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );

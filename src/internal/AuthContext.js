@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
   const [tokenForgot, setTokenForgot] = useState("");
+  const [openModalChangePass, setOpenModalChangePass] = useState(false);
 
   const isTokenExpired = () => {
     const user = JSON.parse(localStorage.getItem("userLogin"));
@@ -102,10 +103,12 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         isExpired,
         tokenForgot,
+        openModalChangePass,
         setTokenForgot,
         setIsExpired,
         login,
         logout,
+        setOpenModalChangePass
       }}
     >
       {children}

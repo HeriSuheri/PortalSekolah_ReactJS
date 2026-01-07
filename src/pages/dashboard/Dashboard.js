@@ -22,8 +22,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import ClassIcon from "@mui/icons-material/Class";
 import AdminService from "../manajemen/admin/AdminService";
 import GuruService from "../manajemen/guru/GuruService";
+import ConfirmModal from "../../components/DialogPopup";
+import { useAuth } from "../../internal/AuthContext";
 
 export default function DashboardPage() {
+  const { setOpenModalChangePass } = useAuth();
   const [needChangePassword, setNeedChangePassword] = useState(false);
   const [page] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -126,7 +129,7 @@ export default function DashboardPage() {
       </Snackbar>
 
       {/* Modal ganti password */}
-      <PopUpModal
+      {/* <PopUpModal
         open={needChangePassword}
         title="Ganti Password"
         content="Untuk keamanan akun Anda, silakan ganti password Anda dari password default."
@@ -136,6 +139,24 @@ export default function DashboardPage() {
         }}
         icon={<PrivacyTipTwoToneIcon sx={{ fontSize: 48, color: "#f44336" }} />}
         maxWidth="sm"
+      /> */}
+      <ConfirmModal
+        open={needChangePassword}
+        title="Ganti Password Anda"
+        question="Untuk keamanan akun Anda, silakan ganti password Anda dari password default."
+        icon={<PrivacyTipTwoToneIcon sx={{ fontSize: 48, color: "#f44336" }} />}
+        useText={true}
+        textCancel="Nanti aja!"
+        textSubmit="Ok, Ubah sekarang"
+        onConfirm={() => {
+          setOpenModalChangePass(true);
+          setNeedChangePassword(false);
+          localStorage.removeItem("loginAwal");
+        }}
+        onCancel={() => {
+          setNeedChangePassword(false);
+          localStorage.removeItem("loginAwal");
+        }}
       />
 
       {/* Title */}
