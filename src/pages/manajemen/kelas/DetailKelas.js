@@ -420,7 +420,7 @@ export default function DetailKelas() {
       <ConfirmModal
         open={openConfirmDelete}
         title="Konfirmasi Hapus"
-        content="Apakah Anda yakin ?"
+        question="Apakah Anda yakin ?"
         icon={
           <HelpOutlineOutlinedIcon sx={{ fontSize: 75, color: "#f44336" }} />
         }

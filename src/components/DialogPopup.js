@@ -39,14 +39,17 @@ function ConfirmModal({
         },
       }}
     >
+      <Box sx={{ textAlign: "center", mb: 1 }}>
+        {icon && <Box sx={{ mb: 1 }}>{icon}</Box>}
+      </Box>
       <DialogTitle sx={{ textAlign: "center", fontWeight: "bold" }}>
         {title}
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ textAlign: "center", mb: 2 }}>
-          {icon && <Box sx={{ mb: 2 }}>{icon}</Box>}
-        </Box>
         <Typography align="center">{question}</Typography>
+        {/* <Box sx={{ textAlign: "center", mb: 2 }}>
+          {icon && <Box sx={{ mb: 2 }}>{icon}</Box>}
+        </Box> */}
       </DialogContent>
       <DialogActions sx={{ justifyContent: "center", gap: 2 }}>
         {useText ? (

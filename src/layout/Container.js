@@ -96,7 +96,7 @@ export default function Container() {
           <ConfirmModal
             open={openLogout}
             title="Konfirmasi Logout"
-            content="Apakah Anda yakin ingin logout?"
+            question="Apakah Anda yakin ingin logout ?"
             icon={<ExitToAppIcon sx={{ fontSize: 75, color: "#f44336" }} />}
             onConfirm={() => {
               setOpenLogout(false);
