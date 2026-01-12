@@ -62,7 +62,7 @@ export default function Container() {
           p: 3,
           transition: "margin-left 0.3s ease",
           // marginLeft: sidebarOpen ? `${drawerWidth}px` : "-240px",
-          marginLeft: !isMobile && sidebarOpen ? `${drawerWidth}px` : 0
+          marginLeft: !isMobile && sidebarOpen ? `${drawerWidth}px` : "-240px"
         }}
       >
         <Header
