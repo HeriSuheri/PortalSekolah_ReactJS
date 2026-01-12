@@ -124,6 +124,13 @@ const LoginPage = () => {
           dengan format YYYY-MM-DD. <br />
         </p>
 
+
+        <div className="mb-2 mt-4 text-left text-xs">
+            <a href="/" className="text-blue-600 hover:underline">
+              Back to Home...
+            </a>
+        </div>
+
         {/* <div className="mt-4 text-center">
           Belum punya akun ?
           <a href="/register" className="text-blue-600 hover:underline ml-2">

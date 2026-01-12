@@ -118,8 +118,8 @@ const ResetPasswordPage = () => {
             </div>
           )}
           <div className="mb-2 mt-3 text-right text-xs">
-            <a href="/" className="text-green-600 hover:underline ml-2">
-              Back to Home ?
+            <a href="/login" className="text-green-600 hover:underline ml-2">
+              Back to Login ?
             </a>
           </div>
         </form>

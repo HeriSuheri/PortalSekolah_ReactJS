@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Box, Toolbar } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Toolbar, useTheme, useMediaQuery } from "@mui/material";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../internal/AuthContext";
@@ -13,6 +13,8 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ConfirmModal from "../components/DialogPopup";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
+import "../index.css";
+
 const drawerWidth = 0;
 
 export default function Container() {
@@ -24,15 +26,33 @@ export default function Container() {
     setOpenModalChangePass,
     openModalChangePass,
   } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // const [sidebarOpen, setSidebarOpen] = useState(true);
   const [openLogout, setOpenLogout] = useState(false);
   // const [openModalChangePass, setOpenModalChangePass] = useState(false);
   const [successChangePassword, setSuccessChangePassword] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false); // selalu tertutup di mobile
+    } else {
+      setSidebarOpen(true); // default terbuka di desktop
+    }
+  }, [isMobile]);
 
   return (
     <Box sx={{ display: "flex" }}>
       {/* Sidebar */}
-      <Side sidebarOpen={sidebarOpen} />
+      <Side
+        sidebarOpen={sidebarOpen}
+        toggleSidebar={toggleSidebar} 
+        // sx={{ display: { xs: "none", md: "block" } }}
+      />
 
       {/* Konten utama */}
       <Box
@@ -41,13 +61,15 @@ export default function Container() {
           flexGrow: 1,
           p: 3,
           transition: "margin-left 0.3s ease",
-          marginLeft: sidebarOpen ? `${drawerWidth}px` : "-240px",
+          // marginLeft: sidebarOpen ? `${drawerWidth}px` : "-240px",
+          marginLeft: !isMobile && sidebarOpen ? `${drawerWidth}px` : 0
         }}
       >
         <Header
-          toggleSidebar={() => {
-            setSidebarOpen(!sidebarOpen);
-          }}
+          // toggleSidebar={() => {
+          //   setSidebarOpen(!sidebarOpen);
+          // }}
+          toggleSidebar={toggleSidebar}
           openChangePasswordModal={() => setOpenModalChangePass(true)}
           openLogout={() => setOpenLogout(true)}
         />

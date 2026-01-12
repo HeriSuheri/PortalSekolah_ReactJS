@@ -8,6 +8,8 @@ import {
   Box,
   Collapse,
   IconButton,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { sidebarMenu } from "./sidebarMenu";
@@ -49,7 +51,7 @@ const filterMenuByRole = (menu, role) => {
     .filter(Boolean);
 };
 
-export default function Side({ sidebarOpen }) {
+export default function Side({ sidebarOpen, toggleSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem("userLogin"));
@@ -58,14 +60,19 @@ export default function Side({ sidebarOpen }) {
 
   // const filteredMenu = sidebarMenu.filter((item) => item.roles?.includes(role));
   const filteredMenu = filterMenuByRole(sidebarMenu, role);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  console.log("IS MOBILE:", isMobile);
 
   return (
     <>
       <Drawer
-        variant="persistent"
+        // variant="persistent"
+        variant={isMobile ? "temporary" : "persistent"}
         open={sidebarOpen}
+        onClose={toggleSidebar}
         sx={{
-          width: drawerWidth,
+          width: isMobile ? "auto" : drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
@@ -105,9 +112,23 @@ export default function Side({ sidebarOpen }) {
                           return (
                             <ListItemButton
                               key={child.path}
-                              sx={{ pl: 4 }}
+                              // sx={{ pl: 4 }}
+                              sx={{
+                                pl: 4,
+                                "&.Mui-selected": {
+                                  bgcolor: "primary.main",
+                                  color: "white",
+                                },
+                                "&.Mui-selected:hover": {
+                                  bgcolor: "primary.dark",
+                                },
+                              }}
                               selected={isChildActive}
-                              onClick={() => navigate(child.path)}
+                              // onClick={() => navigate(child.path)}
+                              onClick={() => {
+                                navigate(child.path);
+                                if (isMobile) toggleSidebar(); // tutup drawer di mobile
+                              }}
                             >
                               <ListItemIcon>{child.icon}</ListItemIcon>
                               <ListItemText primary={child.label} />
@@ -124,7 +145,18 @@ export default function Side({ sidebarOpen }) {
                 <ListItemButton
                   key={item.path}
                   selected={isActive}
-                  onClick={() => navigate(item.path)}
+                  // onClick={() => navigate(item.path)}
+                  sx={{
+                    "&.Mui-selected": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                    },
+                    "&.Mui-selected:hover": { bgcolor: "primary.dark" },
+                  }}
+                  onClick={() => {
+                    navigate(item.path);
+                    if (isMobile) toggleSidebar(); // tutup drawer di mobile
+                  }}
                 >
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.label} />

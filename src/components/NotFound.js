@@ -13,7 +13,7 @@ export default function NotFound() {
         Maaf, halaman yang Anda cari tidak tersedia atau sudah dipindahkan.
       </Typography>
       <Button variant="contained" onClick={() => navigate("/")}>
-        Kembali ke Login
+        Kembali ke Beranda
       </Button>
     </Box>
   );

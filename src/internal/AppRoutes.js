@@ -5,6 +5,7 @@ import {
   // Navigate,
 } from "react-router-dom";
 // import { useAuth } from "./AuthContext";
+import HomePage from "../pages/home";
 import LoginPage from "../pages/login/Login";
 import ForgotPasswordPage from "../pages/login/forgotPassword";
 import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
@@ -30,7 +31,8 @@ export default function AppRoutes() {
       <Routes>
         {/* Public route */}
         <Route element={<PublicRoute />}>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           {/* <Route path="/register" element={<RegisterPage />} /> */}
