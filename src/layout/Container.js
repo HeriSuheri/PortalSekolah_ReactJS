@@ -15,7 +15,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import "../index.css";
 
-const drawerWidth = 0;
+const drawerWidth = 240;
 
 export default function Container() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function Container() {
       {/* Sidebar */}
       <Side
         sidebarOpen={sidebarOpen}
-        toggleSidebar={toggleSidebar} 
+        toggleSidebar={toggleSidebar}
         // sx={{ display: { xs: "none", md: "block" } }}
       />
 
@@ -61,8 +61,9 @@ export default function Container() {
           flexGrow: 1,
           p: 3,
           transition: "margin-left 0.3s ease",
-          // marginLeft: sidebarOpen ? `${drawerWidth}px` : "-240px",
-          marginLeft: !isMobile && sidebarOpen ? `${drawerWidth}px` : "-240px"
+          // marginLeft: sidebarOpen ? `${drawerWidth}px` : 0,
+          // marginLeft: !isMobile && sidebarOpen ? `${drawerWidth}px` : 0
+          marginLeft: sidebarOpen ? 0 : isMobile && !sidebarOpen ? 0 : "-240px",
         }}
       >
         <Header

@@ -494,7 +494,7 @@ export default function ManajemenKelas() {
           elevation={3}
           sx={{ overflowX: "auto" }}
         >
-          <Table>
+          <Table sx={{ minWidth: 900 }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
                 <TableCell

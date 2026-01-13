@@ -580,7 +580,7 @@ export default function DetailKelas() {
           elevation={3}
           sx={{ mt: 2, overflowX: "auto" }}
         >
-          <Table>
+          <Table sx={{ minWidth: 900 }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f0f0f0" }}>
                 <TableCell
@@ -669,6 +669,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    minWidth: "100px",
                   }}
                 >
                   Alamat
@@ -781,6 +782,7 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "left",
+                        minWidth: "200px",
                       }}
                     >
                       {s.alamat}
