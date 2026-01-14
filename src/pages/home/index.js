@@ -57,7 +57,7 @@ function Beranda() {
     { text: "Berita", href: "#berita" },
     { text: "Agenda", href: "#agenda" },
     { text: "Kontak", href: "#kontak" },
-    { text: "PPDB", href: "/pendaftaran" },
+    { text: "PPDB", href: "/homePPDB" },
     { text: "Login", href: "/login" },
   ];
 
@@ -66,6 +66,13 @@ function Beranda() {
       duration: 1000, // durasi animasi (ms)
       once: true, // animasi jalan sekali saja
       offset: 80,
+    });
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }, []);
 
@@ -241,16 +248,6 @@ function Beranda() {
         >
           Belajar, Berkembang, Berprestasi
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/pendaftaran"
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          Daftar Siswa Baru
-        </Button>
       </Box>
 
       {/* Konten Utama */}

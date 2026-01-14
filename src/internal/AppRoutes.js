@@ -6,6 +6,9 @@ import {
 } from "react-router-dom";
 // import { useAuth } from "./AuthContext";
 import HomePage from "../pages/home";
+import HomePPDB from "../pages/home/HomePPDB";
+import RegisterPPDB from "../pages/home/RegisterPPDB";
+import CekRegisterPPDB from "../pages/home/CekRegisterPPDB";
 import LoginPage from "../pages/login/Login";
 import ForgotPasswordPage from "../pages/login/forgotPassword";
 import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
@@ -32,6 +35,9 @@ export default function AppRoutes() {
         {/* Public route */}
         <Route element={<PublicRoute />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/homePPDB" element={<HomePPDB />} />
+          <Route path="/registerPPDB" element={<RegisterPPDB />} />
+          <Route path="/cekRegisterPPDB" element={<CekRegisterPPDB />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -44,7 +50,10 @@ export default function AppRoutes() {
           <Route element={<Container />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="akademik/jadwal-pelajaran" element={<JadwalPelajaran />} />
+            <Route
+              path="akademik/jadwal-pelajaran"
+              element={<JadwalPelajaran />}
+            />
             <Route path="manajemen/admin" element={<Admin />} />
             <Route path="manajemen/guru" element={<Guru />} />
             <Route path="manajemen/mapel" element={<Mapel />} />
