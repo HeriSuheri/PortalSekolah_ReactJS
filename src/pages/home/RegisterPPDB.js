@@ -206,7 +206,7 @@ export default function PpdbRegisterPage() {
             {response && (
               <Box sx={{ mt: 3 }}>
                 <Box display="flex" alignItems="center" mb={1}>
-                  <Typography variant="subtitle1" sx={{ width: 120 }}>
+                  <Typography variant="subtitle1" sx={{ width: 170 }}>
                     Nomor Pendaftaran
                   </Typography>
                   <Typography variant="subtitle1" sx={{ width: 20 }}>
@@ -218,7 +218,7 @@ export default function PpdbRegisterPage() {
                 </Box>
 
                 <Box display="flex" alignItems="center" mb={1}>
-                  <Typography variant="subtitle1" sx={{ width: 120 }}>
+                  <Typography variant="subtitle1" sx={{ width: 170 }}>
                     Status
                   </Typography>
                   <Typography variant="subtitle1" sx={{ width: 20 }}>
@@ -244,7 +244,7 @@ export default function PpdbRegisterPage() {
                 </Box>
 
                 <Box display="flex" alignItems="center" mb={1}>
-                  <Typography variant="subtitle1" sx={{ width: 120 }}>
+                  <Typography variant="subtitle1" sx={{ width: 170 }}>
                     Status Pembayaran
                   </Typography>
                   <Typography variant="subtitle1" sx={{ width: 20 }}>
