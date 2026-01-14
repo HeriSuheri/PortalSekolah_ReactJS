@@ -235,7 +235,11 @@ function Beranda() {
           gutterBottom
           data-aos="fade-up"
           data-aos-delay="100"
-          sx={{ color: "white", textShadow: "1px 1px 4px rgba(0,0,0,0.7)" }}
+          sx={{
+            color: "white",
+            textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
+            fontSize: "clamp(1.5rem, 4vw, 3rem)",
+          }}
         >
           Selamat Datang di Portal Sekolah
         </Typography>
@@ -244,7 +248,11 @@ function Beranda() {
           gutterBottom
           data-aos="fade-up"
           data-aos-delay="200"
-          sx={{ color: "white", textShadow: "1px 1px 4px rgba(0,0,0,0.7)" }}
+          sx={{
+            color: "white",
+            textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
+            fontSize: "clamp(1rem, 2vw, 2.5rem)",
+          }}
         >
           Belajar, Berkembang, Berprestasi
         </Typography>
@@ -266,10 +274,21 @@ function Beranda() {
               gutterBottom
               data-aos="fade-up"
               data-aos-delay="100"
+              sx={{
+                fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)",
+                fontWeight: "bold",
+              }} // 20px–40px
             >
               Tentang Sekolah
             </Typography>
-            <Typography paragraph data-aos="fade-up" data-aos-delay="100">
+
+            <Typography
+              paragraph
+              variant="subtitle1"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              sx={{ fontSize: "clamp(0.875rem, 2vw, 1.25rem)" }} // 14px–20px
+            >
               Portal Sekolah adalah sistem informasi akademik untuk siswa, guru,
               dan orang tua.
             </Typography>
@@ -278,10 +297,15 @@ function Beranda() {
               gutterBottom
               data-aos="fade-up"
               data-aos-delay="100"
+              sx={{ fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)" }}
             >
               Program Unggulan
             </Typography>
-            <ul data-aos="fade-up" data-aos-delay="100">
+            <ul
+              data-aos="fade-up"
+              data-aos-delay="100"
+              style={{ fontSize: "clamp(0.875rem, 2vw, 1.25rem)" }}
+            >
               <li>Kelas Unggulan</li>
               <li>Ekstrakurikuler</li>
               <li>Laboratorium Modern</li>
@@ -305,10 +329,18 @@ function Beranda() {
               gutterBottom
               data-aos="fade-up"
               data-aos-delay="100"
+              sx={{
+                fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)",
+                fontWeight: "bold",
+              }}
             >
               Berita
             </Typography>
-            <Typography data-aos="fade-up" data-aos-delay="100">
+            <Typography
+              data-aos="fade-up"
+              data-aos-delay="100"
+              sx={{ fontSize: "clamp(0.875rem, 2vw, 1.25rem)" }}
+            >
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
@@ -401,10 +433,18 @@ function Beranda() {
               gutterBottom
               data-aos="fade-up"
               data-aos-delay="100"
+              sx={{
+                fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)",
+                fontWeight: "bold",
+              }}
             >
               Agenda
             </Typography>
-            <Typography data-aos="fade-up" data-aos-delay="100">
+            <Typography
+              data-aos="fade-up"
+              data-aos-delay="100"
+              sx={{ fontSize: "clamp(0.875rem, 2vw, 1.25rem)" }}
+            >
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of

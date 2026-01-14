@@ -26,7 +26,7 @@ const HpmePPDB = () => {
         p: 2,
         minHeight: "100vh",
         // py: { xs: 4, md: 8 }, // padding lebih kecil di mobile
-        py: 8,
+        // py: 8,
         // textAlign: "center",
         backgroundImage: "url('/images/register-profile.jpg')",
         backgroundSize: "cover", // gambar penuh
@@ -44,6 +44,8 @@ const HpmePPDB = () => {
           color: "white",
           textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
           textAlign: "left",
+          fontSize: "clamp(1.5rem, 4vw, 3rem)",
+          //   p: 0,
         }}
       >
         Pendaftaran Siswa Baru Tahun Ajaran 2025/2026
@@ -57,6 +59,7 @@ const HpmePPDB = () => {
           color: "white",
           textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
           textAlign: "left",
+          fontSize: "clamp(1rem, 2vw, 2.5rem)",
         }}
       >
         Mari bergabung bersama kami meraih masa depan yang gemilang

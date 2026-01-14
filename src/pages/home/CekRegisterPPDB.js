@@ -66,13 +66,17 @@ export default function CekRegisterPPDB() {
         }}
       >
         <Box sx={{ flex: 1, pt: 1 }}>
-          <Typography variant="h4" component="h1" sx={{ mb: 1 }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ mb: 1, fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)" }}
+          >
             PPDB PORTAL SEKOLAH 2025
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ fontStyle: "italic" }}
+            sx={{ fontSize: "clamp(0.5rem, 1.5vw, 1rem)", fontStyle: "italic" }}
           >
             “Penerimaan Peserta Didik Baru Tahun Ajaran 2025/2026 – Cek data
             pendaftaran.”
