@@ -517,10 +517,10 @@ function Beranda() {
         id="kontak"
         sx={{ bgcolor: "#1976d2", color: "white", py: 4, textAlign: "center" }}
       >
-        <Typography data-aos="fade-up" data-aos-delay="100">
+        <Typography data-aos="fade-right" data-aos-delay="100">
           Portal Sekolah
         </Typography>
-        <Typography data-aos="fade-up" data-aos-delay="100">
+        <Typography data-aos="fade-right" data-aos-delay="100">
           Jl. Pendidikan No. 123, Jakarta
         </Typography>
 
@@ -544,7 +544,7 @@ function Beranda() {
             }}
           >
             <EmailIcon />
-            <Typography data-aos="fade-up" data-aos-delay="100">
+            <Typography data-aos="fade-right" data-aos-delay="100">
               portalSekolah@gmail.com
             </Typography>
           </Box>
@@ -558,7 +558,7 @@ function Beranda() {
             }}
           >
             <WhatsAppIcon />
-            <Typography data-aos="fade-up" data-aos-delay="100">
+            <Typography data-aos="fade-right" data-aos-delay="100">
               085214210194
             </Typography>
           </Box>
@@ -575,7 +575,7 @@ function Beranda() {
             pl: 4,
           }}
         >
-          <Typography data-aos="fade-up" data-aos-delay="100">
+          <Typography data-aos="fade-left" data-aos-delay="100">
             Connect with us:
           </Typography>
           <Box
@@ -601,7 +601,7 @@ function Beranda() {
           >
             <FacebookIcon />
             <Typography
-              data-aos="fade-up"
+              data-aos="fade-left"
               data-aos-delay="100"
               sx={{
                 fontWeight: 500,
@@ -647,7 +647,7 @@ function Beranda() {
           >
             <TwitterIcon />
             <Typography
-              data-aos="fade-up"
+              data-aos="fade-left"
               data-aos-delay="100"
               sx={{
                 fontWeight: 500,
@@ -681,7 +681,7 @@ function Beranda() {
           >
             <YouTubeIcon />
             <Typography
-              data-aos="fade-up"
+              data-aos="fade-left"
               data-aos-delay="100"
               sx={{
                 fontWeight: 500,
@@ -715,7 +715,7 @@ function Beranda() {
           >
             <InstagramIcon />
             <Typography
-              data-aos="fade-up"
+              data-aos="fade-left"
               data-aos-delay="100"
               sx={{
                 fontWeight: 500,
@@ -733,8 +733,8 @@ function Beranda() {
         {/* Teks di bawah Divider, rata kiri */}
         <Typography
           sx={{ color: "white", textAlign: "left", mt: 1, pl: 4 }}
-          data-aos="fade-up"
-          data-aos-delay="100"
+          // data-aos="fade-up"
+          // data-aos-delay="100"
         >
           © 2026 Portal Sekolah | All Right Reserved
         </Typography>
