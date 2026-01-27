@@ -62,6 +62,7 @@ export default function ManajemenKelas() {
   const [page, setPage] = useState(0); // halaman dimulai dari 0
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalKelas, setTotalKelas] = useState(0);
+  const [dataSiswaKelas, setDataSiswaKelas] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
@@ -501,7 +502,7 @@ export default function ManajemenKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
-                    maxWidth: "40px",
+                    // mWidth: "40px",
                     textAlign: "center",
                   }}
                 >
@@ -511,7 +512,7 @@ export default function ManajemenKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
-                    maxWidth: "40px",
+                    // maxWidth: "40px",
                     textAlign: "center",
                   }}
                 >
@@ -521,7 +522,7 @@ export default function ManajemenKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
-                    maxWidth: "50px",
+                    // maxWidth: "50px",
                     textAlign: "center",
                   }}
                 >
@@ -532,7 +533,7 @@ export default function ManajemenKelas() {
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
                     textAlign: "center",
-                    maxWidth: "100px",
+                    // maxWidth: "100px",
                   }}
                 >
                   Wali Kelas
@@ -540,8 +541,18 @@ export default function ManajemenKelas() {
                 <TableCell
                   sx={{
                     fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    // maxWidth: "40px",
                     textAlign: "center",
-                    maxWidth: "40px",
+                  }}
+                >
+                  Jumlah Siswa
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    minWidth: "40px",
                   }}
                 >
                   Aksi
@@ -561,11 +572,11 @@ export default function ManajemenKelas() {
                     sx={{
                       borderRight: "1px solid #ccc",
                       maxWidth: "40px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
+                      // overflow: "hidden",
+                      // textOverflow: "ellipsis",
+                      // // whiteSpace: "nowrap",
+                      // whiteSpace: "normal",
+                      // wordBreak: "break-word",
                       textAlign: "center",
                     }}
                   >
@@ -574,12 +585,12 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "40px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
+                      // maxWidth: "40px",
+                      // overflow: "hidden",
+                      // textOverflow: "ellipsis",
+                      // // whiteSpace: "nowrap",
+                      // whiteSpace: "normal",
+                      // wordBreak: "break-word",
                       textAlign: "center",
                     }}
                   >
@@ -588,12 +599,12 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "50px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      // whiteSpace: "nowrap",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
+                      // maxWidth: "50px",
+                      // overflow: "hidden",
+                      // textOverflow: "ellipsis",
+                      // // whiteSpace: "nowrap",
+                      // whiteSpace: "normal",
+                      // wordBreak: "break-word",
                       textAlign: "center",
                     }}
                   >
@@ -602,7 +613,7 @@ export default function ManajemenKelas() {
                   <TableCell
                     sx={{
                       borderRight: "1px solid #ccc",
-                      maxWidth: "100px",
+                      // maxWidth: "100px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       // whiteSpace: "nowrap",
@@ -612,7 +623,17 @@ export default function ManajemenKelas() {
                   >
                     {kls.waliGuruName}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center", maxWidth: "40px" }}>
+                  <TableCell
+                    sx={{
+                      // fontWeight: "bold",
+                      borderRight: "1px solid #ccc",
+                      // maxWidth: "40px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {kls.jumlahSiswa}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center", minWidth: "40px" }}>
                     <Tooltip title="Edit">
                       <IconButton
                         color="primary"

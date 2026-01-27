@@ -113,7 +113,7 @@ const DataService = {
   async deleteKls(payload) {
     try {
       const response = await apiClient.delete(
-        `${API_ENDPOINTS.KELAS}/${payload}`
+        `${API_ENDPOINTS.KELAS}/${payload}`,
       );
       console.log("RESPONSE API DELETE KELAS:", response);
       if (response.status === 200) {
@@ -162,7 +162,7 @@ const DataService = {
         `${API_ENDPOINTS.KELAS}/${id}/detail`,
         {
           params: { page, size },
-        }
+        },
       );
       console.log("RESPONSE API DETAIL KELAS:", response);
       if (response.status === 200) {
@@ -183,13 +183,35 @@ const DataService = {
     }
   },
 
+  async getJumlahSiswa(id) {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.KELAS}/${id}/kelasDetail`);
+      console.log("RESPONSE API GET DETAIL SISWA KELAS:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get siswa kelas Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get siswa kelas Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get siswa kelas");
+    }
+  },
+
   async searchSiswa({ id = null, page = 0, size = 10, keyword = "" } = {}) {
     try {
       const response = await apiClient.get(
         `${API_ENDPOINTS.KELAS}/${id}/detail/search`,
         {
           params: { page, size, keyword },
-        }
+        },
       );
       console.log("RESPONSE API DETAIL KELAS:", response);
       if (response.status === 200) {
@@ -210,7 +232,21 @@ const DataService = {
     }
   },
 
-  async createSiswa(payload) {
+  async createSiswa(form) {
+    const payload = {
+      noPendaftaran: form?.noPendaftaran,
+      nama: form.nama,
+      tanggalLahir: form.tanggalLahir,
+      email: form.email,
+      namaAyah: form.namaAyah,
+      namaIbu: form.namaIbu,
+      alamat: form.alamat,
+      noHandphone: form.noHandphone,
+      jumlahBayar: form?.jumlahDibayar,
+      statusPembayaran: form.statusPembayaran,
+      status: form.status,
+      classroomId: form.classroomId,
+    };
     try {
       const response = await apiClient.post(API_ENDPOINTS.SISWA, payload);
       console.log("RESPONSE API CREATE SISWA:", response);
@@ -236,7 +272,7 @@ const DataService = {
     try {
       const response = await apiClient.put(
         `${API_ENDPOINTS.SISWA}/${payload.id}`,
-        payload
+        payload,
       );
       console.log("RESPONSE API UPDATE SISWA:", response);
       if (response.status === 200) {
@@ -260,7 +296,7 @@ const DataService = {
   async deleteSiswa(idSiswa) {
     try {
       const response = await apiClient.delete(
-        `${API_ENDPOINTS.SISWA}/${idSiswa}`
+        `${API_ENDPOINTS.SISWA}/${idSiswa}`,
       );
       console.log("RESPONSE API DELETE SISWA:", response);
       if (response.status === 200) {
@@ -300,6 +336,57 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Get siswa all");
+    }
+  },
+
+  async getSiswaPaging({ page = 0, size = 10 } = {}) {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.SISWA, {
+        params: { page, size },
+      });
+
+      console.log("RESPONSE API GET SISWA:", response);
+
+      if (response.status === 200 && response.data?.success) {
+        return {
+          success: true,
+          data: response.data.data, // ini Map<String, Object> dari backend
+          message: response.data.message || "Get Siswa Successfully",
+        };
+      }
+
+      return {
+        success: false,
+        message: response.data?.message || "Get Siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get Siswa");
+    }
+  },
+
+  async searchDataSiswa({ keyword = "", page = 0, size = 10 } = {}) {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.SISWA}/search`, {
+        params: { keyword, page, size },
+      });
+      console.log("RESPONSE API CARI SISWA:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get search siswa Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get search siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Search siswa");
     }
   },
 

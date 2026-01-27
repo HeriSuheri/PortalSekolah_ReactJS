@@ -53,8 +53,28 @@ export default function CekRegisterPPDB() {
     });
   }, []);
 
+  console.log("FORM:", form);
+
   return (
     <>
+      {loading && (
+        <Box
+          sx={{
+            position: "fixed", // atau "absolute" kalau mau relatif ke parent
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: "rgba(255,255,255,0.7)", // semi transparan background
+            zIndex: 1300, // lebih tinggi dari konten biasa
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       <Box
         sx={{
           // display: "flex",
@@ -94,25 +114,19 @@ export default function CekRegisterPPDB() {
             {/* Input + Label */}
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <Typography sx={{ mr: 2 }}>Input Nomor Pendaftaran</Typography>
-              {loading ? (
-                <Box
-                  sx={{
-                    pl: 8,
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : (
-                <TextField
-                  label="Nomor Pendaftaran"
-                  variant="outlined"
-                  size="small"
-                  onChange={(e) => {
-                    setForm({ ...form, noPendaftaran: e.target.value });
-                    setResponse(null);
-                  }}
-                />
-              )}
+              <TextField
+                label="Nomor Pendaftaran"
+                variant="outlined"
+                size="small"
+                value={form.noPendaftaran || ""}
+                onChange={(e) => {
+                  setForm({
+                    ...form,
+                    noPendaftaran: e.target.value.toUpperCase(),
+                  });
+                  setResponse(null);
+                }}
+              />
             </Box>
 
             {/* Tombol Submit + Cancel */}
@@ -166,15 +180,15 @@ export default function CekRegisterPPDB() {
                       response?.status === "MENUNGGU_VALIDASI"
                         ? "Menunggu Validasi"
                         : response?.status === "DITERIMA"
-                        ? "Diterima"
-                        : "Ditolak"
+                          ? "Diterima"
+                          : "Ditolak"
                     }
                     color={
                       response?.status === "MENUNGGU_VALIDASI"
                         ? "warning"
                         : response?.status === "DITERIMA"
-                        ? "success"
-                        : "error"
+                          ? "success"
+                          : "error"
                     }
                     variant="outlined"
                   />
@@ -192,28 +206,30 @@ export default function CekRegisterPPDB() {
                       response?.statusPembayaran === "MENUNGGU_PEMBAYARAN"
                         ? "Menunggu Pembayaran"
                         : response?.statusPembayaran === "LUNAS"
-                        ? "Lunas"
-                        : "Belum Lunas"
+                          ? "Lunas"
+                          : "Belum Lunas"
                     }
                     color={
                       response?.statusPembayaran === "MENUNGGU_PEMBAYARAN"
                         ? "warning"
                         : response?.statusPembayaran === "LUNAS"
-                        ? "success"
-                        : "error"
+                          ? "success"
+                          : "error"
                     }
                     variant="outlined"
                   />
                 </Box>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  style={{ fontStyle: "italic", color: "red" }}
-                >
-                  *Segera datang ke sekolah untuk melakukan pendaftaran ulang
-                  dengan menunjukan nomor pendaftaran dan membawa berkas yang di
-                  perlukan.
-                </Typography>
+                {response?.status === "MENUNGGU_VALIDASI" && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ fontStyle: "italic", color: "red" }}
+                  >
+                    *Segera datang ke sekolah untuk melakukan pendaftaran ulang
+                    dengan menunjukan nomor pendaftaran dan membawa berkas yang
+                    di perlukan.
+                  </Typography>
+                )}
               </Box>
             )}
           </Box>

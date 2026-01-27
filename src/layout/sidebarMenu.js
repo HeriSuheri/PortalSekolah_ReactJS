@@ -9,6 +9,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import GridViewTwoToneIcon from "@mui/icons-material/GridViewTwoTone";
+import AppRegistration  from "@mui/icons-material/AppRegistration";
 
 export const sidebarMenu = [
   {
@@ -107,5 +108,12 @@ export const sidebarMenu = [
         roles: ["admin", "guru"],
       },
     ],
+  },
+  {
+    label: "PPDB",
+    path: "/ppdb-registrasi",
+    icon: <AppRegistration />,
+    roles: ["admin"],
+    // tidak perlu roles → otomatis general
   },
 ];

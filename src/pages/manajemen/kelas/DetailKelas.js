@@ -20,6 +20,10 @@ import {
   Grid,
   Button,
   TextField,
+  FormControl,
+  MenuItem,
+  Select,
+  InputLabel,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
@@ -54,6 +58,7 @@ export default function DetailKelas() {
   const [dataSiswa, setDataSiswa] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
+  const [dataKelas, setDataKelas] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -65,7 +70,7 @@ export default function DetailKelas() {
     namaAyah: "",
     namaIbu: "",
     noHandphone: "",
-    classroomId: id,
+    classroomId: null,
     email: "",
   });
   const [successCreateEdit, setSuccessCreateEdit] = useState(false);
@@ -89,7 +94,7 @@ export default function DetailKelas() {
         const siswaContent = res.data.data.siswa.content || [];
         // sort ascending berdasarkan nama
         const sortedSiswa = [...siswaContent].sort((a, b) =>
-          a.nama.localeCompare(b.nama, "id", { sensitivity: "base" })
+          a.nama.localeCompare(b.nama, "id", { sensitivity: "base" }),
         );
         setDataSiswa(sortedSiswa);
         setTotalSiswa(res.data.data.siswa?.totalElements);
@@ -130,6 +135,43 @@ export default function DetailKelas() {
     }
   };
 
+  const getClassroom = async () => {
+    try {
+      const response = await KelasService.getClassAll();
+      if (response.success) {
+        let kelas = response.data.data.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }));
+
+        // ✅ custom sort: urutkan berdasarkan angka dulu, lalu huruf
+        kelas.sort((a, b) => {
+          const [numA, charA] = [
+            parseInt(a.name),
+            a.name.replace(/[0-9]/g, ""),
+          ];
+          const [numB, charB] = [
+            parseInt(b.name),
+            b.name.replace(/[0-9]/g, ""),
+          ];
+
+          if (numA === numB) {
+            return charA.localeCompare(charB); // urut huruf A, B, C
+          }
+          return numA - numB; // urut angka 10, 11, 12
+        });
+
+        setDataKelas(kelas);
+      } else {
+        setErrorMsg(response.message || "Gagal mengambil data classroom");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      setOpenToast(true);
+    }
+  };
+
   const handleOpenCreate = () => {
     setIsEditMode(false);
     setFormData({
@@ -158,7 +200,7 @@ export default function DetailKelas() {
       namaAyah: el.namaAyah,
       namaIbu: el.namaIbu,
       noHandphone: el.noHandphone,
-      classroomId: id,
+      classroomId: el.classroomId,
       email: el.email,
     });
     setOpenModal(true);
@@ -211,7 +253,7 @@ export default function DetailKelas() {
     }
   };
 
-  const handleDisabled = () => {
+  const handleDisabledEdit = () => {
     if (user?.role === "ADMIN") {
       if (!allowedNomorInduk.includes(user?.nomorInduk)) {
         return true;
@@ -229,6 +271,25 @@ export default function DetailKelas() {
     return true;
   };
 
+  const handleDisabledDelete = () => {
+    if (user?.role === "ADMIN") {
+      if (!allowedNomorInduk.includes(user?.nomorInduk)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (user?.role === "GURU") {
+      // if (user?.nomorInduk !== kelasDetail?.waliGuruNip) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
+      return true;
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     if (debouncedSearch.length >= 2) {
       fetchFilteredData(debouncedSearch);
@@ -236,6 +297,10 @@ export default function DetailKelas() {
       fetchData();
     }
   }, [id, debouncedSearch, page, rowsPerPage]);
+
+  useEffect(() => {
+    getClassroom();
+  }, []);
 
   if (loading) {
     return (
@@ -252,6 +317,7 @@ export default function DetailKelas() {
 
   console.log("DETAIL KELAS:", kelasDetail);
   console.log("FORM DATA SISWA:", formData);
+  console.log("ID:", id);
 
   return (
     <Box>
@@ -308,6 +374,23 @@ export default function DetailKelas() {
               }
               fullWidth
             />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="kelas-label">Assign Kelas</InputLabel>
+              <Select
+                labelId="kelas-label"
+                label="Assign Kelas"
+                value={formData?.classroomId}
+                onChange={(e) =>
+                  setFormData({ ...formData, classroomId: e.target.value })
+                }
+              >
+                {dataKelas.map((gl) => (
+                  <MenuItem key={gl.id} value={gl.id}>
+                    {gl.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               label="Tanggal Lahir"
               type="date"
@@ -523,7 +606,7 @@ export default function DetailKelas() {
             alignItems="flex-end"
             gap={1}
           >
-            <Button
+            {/* <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={handleOpenCreate}
@@ -534,7 +617,7 @@ export default function DetailKelas() {
               sx={{ textTransform: "none", boxShadow: 2, width: "170px" }}
             >
               Tambah Siswa
-            </Button>
+            </Button> */}
             <Tooltip
               title="Cari Nama Siswa"
               placement="bottom"
@@ -796,7 +879,7 @@ export default function DetailKelas() {
                           //   user?.nomorInduk !==
                           //   location?.state?.kelas?.waliGuruNip
                           // }
-                          disabled={handleDisabled()}
+                          disabled={handleDisabledEdit()}
                         >
                           <EditIcon />
                         </IconButton>
@@ -812,7 +895,7 @@ export default function DetailKelas() {
                           //   user?.nomorInduk !==
                           //   location?.state?.kelas?.waliGuruNip
                           // }
-                          disabled={handleDisabled()}
+                          disabled={handleDisabledDelete()}
                         >
                           <DeleteIcon />
                         </IconButton>

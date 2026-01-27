@@ -21,6 +21,8 @@ import Mapel from "../pages/manajemen/mapel";
 import Admin from "../pages/manajemen/admin";
 import Guru from "../pages/manajemen/guru";
 import MgmtKelas from "../pages/manajemen/kelas";
+// import PPDBRegistrasi from "../pages/ppdb_old";
+import PPDBRegistrasi from "../pages/ppdb";
 import Profile from "../pages/profile/Profile";
 import NotFound from "../components/NotFound";
 import PrivateRoute from "./PrivateRoute";
@@ -58,7 +60,8 @@ export default function AppRoutes() {
             <Route path="manajemen/guru" element={<Guru />} />
             <Route path="manajemen/mapel" element={<Mapel />} />
             <Route path="manajemen/kelas" element={<MgmtKelas />} />
-            <Route path="manajemen/kelas/:id" element={<DetailKelas />} />
+            <Route path="manajemen/kelas/:id" element={<DetailKelas />} /> 
+            <Route path="ppdb-registrasi" element={<PPDBRegistrasi />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

@@ -45,8 +45,11 @@ const filterMenuByRole = (menu, role) => {
           ? { ...item, children: filteredChildren }
           : null;
       }
-      // menu tanpa children → dianggap general
-      return item;
+      // ✅ menu tanpa children → cek roles juga
+      if (!item.roles || item.roles.includes(role)) {
+        return item;
+      }
+      return null;
     })
     .filter(Boolean);
 };

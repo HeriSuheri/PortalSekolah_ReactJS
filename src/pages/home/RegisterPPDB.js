@@ -229,15 +229,15 @@ export default function PpdbRegisterPage() {
                       response?.status === "MENUNGGU_VALIDASI"
                         ? "Menunggu Validasi"
                         : response?.status === "DITERIMA"
-                        ? "Diterima"
-                        : "Ditolak"
+                          ? "Diterima"
+                          : "Ditolak"
                     }
                     color={
                       response?.status === "MENUNGGU_VALIDASI"
                         ? "warning"
                         : response?.status === "DITERIMA"
-                        ? "success"
-                        : "error"
+                          ? "success"
+                          : "error"
                     }
                     variant="outlined"
                   />
@@ -255,15 +255,15 @@ export default function PpdbRegisterPage() {
                       response?.statusPembayaran === "MENUNGGU_PEMBAYARAN"
                         ? "Menunggu Pembayaran"
                         : response?.statusPembayaran === "LUNAS"
-                        ? "Lunas"
-                        : "Belum Lunas"
+                          ? "Lunas"
+                          : "Belum Lunas"
                     }
                     color={
                       response?.statusPembayaran === "MENUNGGU_PEMBAYARAN"
                         ? "warning"
                         : response?.statusPembayaran === "LUNAS"
-                        ? "success"
-                        : "error"
+                          ? "success"
+                          : "error"
                     }
                     variant="outlined"
                   />
@@ -281,23 +281,6 @@ export default function PpdbRegisterPage() {
             )}
           </Box>
         </Box>
-
-        {loading ? (
-          // Saat loading true → tampilkan animasi loading di tengah
-          <Box
-            sx={{
-              p: 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              minHeight: "100vh", // atau "100vh" kalau mau full screen
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        ) : (
-          <></>
-        )}
 
         <Box
           sx={{
@@ -347,6 +330,24 @@ export default function PpdbRegisterPage() {
           {errorMsg}
         </Alert>
       </Snackbar>
+      {loading && (
+        <Box
+          sx={{
+            position: "fixed", // atau "absolute" kalau mau relatif ke parent
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: "rgba(255,255,255,0.7)", // semi transparan background
+            zIndex: 1300, // lebih tinggi dari konten biasa
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 }
