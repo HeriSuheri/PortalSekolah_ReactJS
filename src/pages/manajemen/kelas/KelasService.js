@@ -4,6 +4,7 @@ const API_ENDPOINTS = {
   KELAS: process.env.REACT_APP_KELAS,
   ALL_GURU: process.env.REACT_APP_ALL_GURU,
   SISWA: process.env.REACT_APP_SISWA,
+  REGISTER_URL: process.env.REACT_APP_REGISTER_PPDB,
 };
 
 const DataService = {
@@ -84,12 +85,13 @@ const DataService = {
   },
 
   async updateKelas(payload) {
-    const { id, name, gradeLevelId, waliGuruId } = payload;
+    const { id, name, gradeLevelId, waliGuruId, isActive } = payload;
     try {
       const response = await apiClient.put(`${API_ENDPOINTS.KELAS}/${id}`, {
         name,
         gradeLevelId,
         waliGuruId,
+        isActive,
       });
       console.log("RESPONSE API UPDATE KELAS:", response);
       if (response.status === 200) {
@@ -185,7 +187,9 @@ const DataService = {
 
   async getJumlahSiswa(id) {
     try {
-      const response = await apiClient.get(`${API_ENDPOINTS.KELAS}/${id}/kelasDetail`);
+      const response = await apiClient.get(
+        `${API_ENDPOINTS.KELAS}/${id}/kelasDetail`,
+      );
       console.log("RESPONSE API GET DETAIL SISWA KELAS:", response);
       if (response.status === 200) {
         return {
@@ -249,6 +253,28 @@ const DataService = {
     };
     try {
       const response = await apiClient.post(API_ENDPOINTS.SISWA, payload);
+      console.log("RESPONSE API CREATE SISWA:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Create Siswa Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Create Siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Create Siswa");
+    }
+  },
+
+  async createSiswaPpdb(form) {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.SISWA, form);
       console.log("RESPONSE API CREATE SISWA:", response);
       if (response.status === 200) {
         return {
@@ -409,6 +435,29 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Get classroom all");
+    }
+  },
+
+  async getDataPpdb() {
+    const tahun = new Date().getFullYear();
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.REGISTER_URL}/all?tahun=${tahun}`);
+      console.log("RESPONSE API DATA PPDB:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get data PPDB Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get data PPDB Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get data PPDB");
     }
   },
 };

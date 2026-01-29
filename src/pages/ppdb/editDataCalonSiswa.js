@@ -8,8 +8,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -26,6 +31,9 @@ const EditDataCalonSiswa = ({
 }) => {
   const [errorEditStatus, setErrorEditStatus] = useState(null);
   const [errorEditPembayaran, setErrorEditPembayaran] = useState(null);
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
   console.log("FORM DATA KOMPONEN:", formData);
   return (
     <Dialog
@@ -70,13 +78,44 @@ const EditDataCalonSiswa = ({
             fullWidth
           />
           <TextField
-            label="Alamat"
-            value={formData.alamat}
+            label="Nama Ayah"
+            value={formData.namaAyah}
             onChange={(e) =>
-              setFormData({ ...formData, alamat: e.target.value })
+              setFormData({ ...formData, namaAyah: e.target.value })
             }
             fullWidth
           />
+          <TextField
+            label="Nama Ibu"
+            value={formData.namaIbu}
+            onChange={(e) =>
+              setFormData({ ...formData, namaIbu: e.target.value })
+            }
+            fullWidth
+          />
+          <FormControl>
+            <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="jenisKelamin-label"
+              name="jenisKelamin"
+              value={formData?.jenisKelamin}
+              onChange={(e) =>
+                setFormData({ ...formData, jenisKelamin: e.target.value })
+              }
+            >
+              <FormControlLabel
+                value="LAKI_LAKI"
+                control={<Radio />}
+                label="Laki-laki"
+              />
+              <FormControlLabel
+                value="PEREMPUAN"
+                control={<Radio />}
+                label="Perempuan"
+              />
+            </RadioGroup>
+          </FormControl>
           <TextField
             label="No Handphone"
             value={formData.noHandphone}
@@ -93,13 +132,38 @@ const EditDataCalonSiswa = ({
               setFormData({ ...formData, email: e.target.value })
             }
             fullWidth
+            error={formData?.email && !isValidEmail(formData.email)}
+            helperText={
+              formData?.email && !isValidEmail(formData.email)
+                ? "Format email tidak valid"
+                : ""
+            }
           />
-          <TextField
+          {/* <TextField
             label="Jumlah Bayar"
             value={formData.jumlahDibayar}
             onChange={(e) =>
               setFormData({ ...formData, jumlahDibayar: e.target.value })
             }
+            fullWidth
+          /> */}
+          <TextField
+            label="Jumlah Bayar"
+            value={
+              formData?.jumlahDibayar
+                ? new Intl.NumberFormat("id-ID").format(
+                    formData.jumlahDibayar ?? 0,
+                  )
+                : ""
+            }
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                jumlahDibayar: Number(e.target.value.replace(/\D/g, "")) || 0,
+              })
+            }
+            id="standard-basic"
+            variant="standard"
             fullWidth
           />
           <FormControl fullWidth margin="normal">
@@ -150,14 +214,66 @@ const EditDataCalonSiswa = ({
               </div>
             )}
           </FormControl>
-          <TextField
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="alamat-label"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Alamat:
+            </InputLabel>
+            <TextareaAutosize
+              id="alamat-label"
+              aria-label="Alamat"
+              minRows={3}
+              placeholder="Input alamat"
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                fontFamily: "inherit",
+                outline: "none",
+              }}
+              value={formData?.alamat || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, alamat: e.target.value })
+              }
+            />
+          </div>
+          <div style={{ marginBottom: "16px" }}>
+            <InputLabel
+              id="catatan-label"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Catatan:
+            </InputLabel>
+            <TextareaAutosize
+              id="catatan-label"
+              aria-label="Catatan"
+              minRows={3}
+              placeholder="Input catatan"
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                fontFamily: "inherit",
+                outline: "none",
+              }}
+              value={formData?.catatanValidasi || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, catatanValidasi: e.target.value })
+              }
+            />
+          </div>
+          {/* <TextField
             label="Catatan"
             value={formData.catatanValidasi}
             onChange={(e) =>
               setFormData({ ...formData, catatanValidasi: e.target.value })
             }
             fullWidth
-          />
+          /> */}
         </Box>
       </DialogContent>
 
@@ -185,6 +301,7 @@ const EditDataCalonSiswa = ({
               setErrorEditStatus("Pilihan status belum diubah");
               return;
             }
+            setOpenModal(false);
             handleSubmit();
             setErrorEditStatus(null);
             setErrorEditPembayaran(null);

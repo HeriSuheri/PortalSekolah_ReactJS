@@ -109,10 +109,10 @@ const DataService = {
     }
   },
 
-  async getPpdbPaging({ page = 0, size = 10 } = {}) {
+  async getPpdbPaging({ page = 0, size = 10, tahun = "" } = {}) {
     try {
       const response = await apiClient.get(API_ENDPOINTS.REGISTER_PPDB, {
-        params: { page, size },
+        params: { page, size, tahun },
       });
 
       console.log("RESPONSE API GET CALON SISWA:", response);
@@ -136,12 +136,17 @@ const DataService = {
     }
   },
 
-  async searchDataCalonSiswa({ keyword = "", page = 0, size = 10 } = {}) {
+  async searchDataCalonSiswa({
+    keyword = "",
+    page = 0,
+    size = 10,
+    tahun = "",
+  } = {}) {
     try {
       const response = await apiClient.get(
         `${API_ENDPOINTS.REGISTER_PPDB}/search`,
         {
-          params: { keyword, page, size },
+          params: { keyword, page, size, tahun },
         },
       );
       console.log("RESPONSE API CARI CALON SISWA:", response);

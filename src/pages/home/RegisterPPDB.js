@@ -59,6 +59,10 @@ export default function PpdbRegisterPage() {
     }
   };
 
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -166,6 +170,12 @@ export default function PpdbRegisterPage() {
               margin="normal"
               id="standard-basic"
               variant="standard"
+              error={form?.email && !isValidEmail(form.email)}
+              helperText={
+                form?.email && !isValidEmail(form.email)
+                  ? "Format email tidak valid"
+                  : ""
+              }
             />
             <Box
               sx={{

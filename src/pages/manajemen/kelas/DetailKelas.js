@@ -24,6 +24,10 @@ import {
   MenuItem,
   Select,
   InputLabel,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
@@ -35,10 +39,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import { useDebounce } from "../../../hook/UseDebounce";
 import PopUpModal from "../../../components/PopUpModal";
 import ConfirmModal from "../../../components/DialogPopup";
+import AddNewSiswa from "./AddNewSiswa";
 
 export default function DetailKelas() {
   const navigate = useNavigate();
@@ -61,6 +67,9 @@ export default function DetailKelas() {
   const [dataKelas, setDataKelas] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [dataPpdb, setDataPpdb] = useState([]);
+  const [selectedPpdb, setSelectedPpdb] = useState(null);
+  const [openModalAddNew, setOpenModalAddNew] = useState(false);
   const [formData, setFormData] = useState({
     id: null,
     nama: "",
@@ -70,9 +79,11 @@ export default function DetailKelas() {
     namaAyah: "",
     namaIbu: "",
     noHandphone: "",
+    jenisKelamin: null,
     classroomId: null,
     email: "",
   });
+  const [errorChangeClass, setErrorChangeClass] = useState(null);
   const [successCreateEdit, setSuccessCreateEdit] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
@@ -142,6 +153,7 @@ export default function DetailKelas() {
         let kelas = response.data.data.map((item) => ({
           id: item.id,
           name: item.name,
+          isActive: item?.isActive,
         }));
 
         // ✅ custom sort: urutkan berdasarkan angka dulu, lalu huruf
@@ -173,20 +185,8 @@ export default function DetailKelas() {
   };
 
   const handleOpenCreate = () => {
-    setIsEditMode(false);
-    setFormData({
-      id: null,
-      nama: "",
-      nis: "",
-      tanggalLahir: "",
-      alamat: "",
-      namaAyah: "",
-      namaIbu: "",
-      noHandphone: "",
-      classroomId: id,
-      email: "",
-    });
-    setOpenModal(true);
+    setSelectedPpdb(null);
+    setOpenModalAddNew(true);
   };
 
   const handleOpenEdit = (el) => {
@@ -200,6 +200,7 @@ export default function DetailKelas() {
       namaAyah: el.namaAyah,
       namaIbu: el.namaIbu,
       noHandphone: el.noHandphone,
+      jenisKelamin: el?.jenisKelamin,
       classroomId: el.classroomId,
       email: el.email,
     });
@@ -217,16 +218,17 @@ export default function DetailKelas() {
           setErrorMsg(response.message || "Gagal update siswa");
           setOpenToast(true);
         }
-      } else {
-        const response = await KelasService.createSiswa(formData);
-        console.log("RESPONSE CREATE SISWA:", response);
-        if (response.success) {
-          setSuccessCreateEdit(true);
-        } else {
-          setErrorMsg(response.message || "Gagal tambah data siswa");
-          setOpenToast(true);
-        }
       }
+      // else {
+      //   const response = await KelasService.createSiswa(formData);
+      //   console.log("RESPONSE CREATE SISWA:", response);
+      //   if (response.success) {
+      //     setSuccessCreateEdit(true);
+      //   } else {
+      //     setErrorMsg(response.message || "Gagal tambah data siswa");
+      //     setOpenToast(true);
+      //   }
+      // }
     } catch (err) {
       setOpenToast(true);
       setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
@@ -290,6 +292,65 @@ export default function DetailKelas() {
     return true;
   };
 
+  const getDataPpdb = async () => {
+    try {
+      const response = await KelasService.getDataPpdb();
+      console.log("RESPONSE DATA PPDB:", response);
+      if (response.success) {
+        const data = response.data?.data.filter(
+          (el) => el.status === "DITERIMA" && el.hasClassroom === false,
+        );
+        setDataPpdb(data);
+      } else {
+        setErrorMsg(response.message || "Gagal mendapatkan data PPDB");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      console.error("Gagal mendapatkan data PPDB:", err);
+    }
+  };
+
+  const handleArsipClick = (el) => {};
+
+  const handleSubmitAddNew = async () => {
+    setLoading(true);
+    try {
+      const payload = {
+        nama: selectedPpdb?.nama,
+        email: selectedPpdb?.email,
+        tanggalLahir: selectedPpdb?.tanggalLahir,
+        alamat: selectedPpdb?.alamat,
+        noHandphone: selectedPpdb?.noHandphone,
+        namaAyah: selectedPpdb?.namaAyah,
+        namaIbu: selectedPpdb?.namaIbu,
+        jenisKelamin: selectedPpdb?.jenisKelamin,
+        classroomId: id,
+        ppdbRegistrationId: selectedPpdb?.id,
+      };
+      const response = await KelasService.createSiswaPpdb(payload);
+      console.log("RESPONSE CREATE SISWA:", response);
+      if (response.success) {
+        getDataPpdb();
+        setSuccessCreateEdit(true);
+      } else {
+        setErrorMsg(response.message || "Gagal tambah data siswa");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+      console.error("Gagal simpan siswa:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   useEffect(() => {
     if (debouncedSearch.length >= 2) {
       fetchFilteredData(debouncedSearch);
@@ -300,6 +361,7 @@ export default function DetailKelas() {
 
   useEffect(() => {
     getClassroom();
+    getDataPpdb();
   }, []);
 
   if (loading) {
@@ -318,6 +380,8 @@ export default function DetailKelas() {
   console.log("DETAIL KELAS:", kelasDetail);
   console.log("FORM DATA SISWA:", formData);
   console.log("ID:", id);
+  console.log("SELECTED PPDB:", selectedPpdb);
+  console.log("DATA PPDB:", dataPpdb);
 
   return (
     <Box>
@@ -373,6 +437,7 @@ export default function DetailKelas() {
                 setFormData({ ...formData, nis: e.target.value })
               }
               fullWidth
+              disabled
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="kelas-label">Assign Kelas</InputLabel>
@@ -380,9 +445,19 @@ export default function DetailKelas() {
                 labelId="kelas-label"
                 label="Assign Kelas"
                 value={formData?.classroomId}
-                onChange={(e) =>
-                  setFormData({ ...formData, classroomId: e.target.value })
-                }
+                onChange={(e) => {
+                  const target = e.target.value;
+                  const nonActiveClass = dataKelas.find(
+                    (el) => el?.id === target,
+                  );
+                  if (nonActiveClass && nonActiveClass?.isActive === false) {
+                    setErrorChangeClass(
+                      "Kelas yang dipilih tidak aktif, silahkan aktifkan terlebih dulu",
+                    );
+                    return;
+                  }
+                  setFormData({ ...formData, classroomId: target });
+                }}
               >
                 {dataKelas.map((gl) => (
                   <MenuItem key={gl.id} value={gl.id}>
@@ -390,6 +465,12 @@ export default function DetailKelas() {
                   </MenuItem>
                 ))}
               </Select>
+              {errorChangeClass && (
+                <div className="bg-red-100 text-red-700 p-2 rounded flex justify-between">
+                  <span>{errorChangeClass}</span>
+                  <button onClick={() => setErrorChangeClass(null)}>✕</button>
+                </div>
+              )}
             </FormControl>
             <TextField
               label="Tanggal Lahir"
@@ -401,14 +482,29 @@ export default function DetailKelas() {
               InputLabelProps={{ shrink: true }}
               fullWidth
             />
-            <TextField
-              label="Alamat"
-              value={formData.alamat}
-              onChange={(e) =>
-                setFormData({ ...formData, alamat: e.target.value })
-              }
-              fullWidth
-            />
+            <FormControl>
+              <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="jenisKelamin-label"
+                name="jenisKelamin"
+                value={formData?.jenisKelamin || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, jenisKelamin: e.target.value })
+                }
+              >
+                <FormControlLabel
+                  value="LAKI_LAKI"
+                  control={<Radio />}
+                  label="Laki-laki"
+                />
+                <FormControlLabel
+                  value="PEREMPUAN"
+                  control={<Radio />}
+                  label="Perempuan"
+                />
+              </RadioGroup>
+            </FormControl>
             <TextField
               label="Nama Ayah"
               value={formData.namaAyah}
@@ -441,6 +537,20 @@ export default function DetailKelas() {
                 setFormData({ ...formData, email: e.target.value })
               }
               fullWidth
+              error={formData?.email && !isValidEmail(formData.email)}
+              helperText={
+                formData?.email && !isValidEmail(formData.email)
+                  ? "Format email tidak valid"
+                  : ""
+              }
+            />
+            <TextField
+              label="Alamat"
+              value={formData.alamat}
+              onChange={(e) =>
+                setFormData({ ...formData, alamat: e.target.value })
+              }
+              fullWidth
             />
           </Box>
         </DialogContent>
@@ -467,7 +577,8 @@ export default function DetailKelas() {
               !formData?.email ||
               !formData?.namaAyah ||
               !formData?.namaIbu ||
-              !formData?.noHandphone
+              !formData?.noHandphone ||
+              !formData?.jenisKelamin
             }
           >
             Simpan
@@ -600,63 +711,55 @@ export default function DetailKelas() {
           mb={3}
           px={1}
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-end"
-            gap={1}
+          {/* Kiri: Cari Siswa */}
+          <Tooltip
+            title="Cari Nama Siswa"
+            placement="bottom"
+            arrow
+            enterDelay={300}
+            leaveDelay={200}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: "#333",
+                  color: "#fff",
+                  fontSize: "0.8rem",
+                  borderRadius: "4px",
+                  boxShadow: 3,
+                },
+              },
+            }}
           >
-            {/* <Button
+            <TextField
+              label="Cari Siswa"
+              variant="outlined"
+              size="small"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setPage(0);
+              }}
+              sx={{
+                "& .MuiInputLabel-root": {
+                  color: "rgba(0, 0, 0, 0.3)",
+                },
+                width: "170px",
+              }}
+            />
+          </Tooltip>
+
+          {/* Kanan: Tambah Siswa Baru */}
+          {kelasDetail?.gradeLevelId === 1 && (
+            <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={handleOpenCreate}
-              // disabled={
-              //   user?.nomorInduk !== location?.state?.kelas?.waliGuruNip
-              // }
-              disabled={handleDisabled()}
-              sx={{ textTransform: "none", boxShadow: 2, width: "170px" }}
+              sx={{ textTransform: "none", boxShadow: 2, width: "auto" }}
+              disabled={handleDisabledEdit()}
             >
-              Tambah Siswa
-            </Button> */}
-            <Tooltip
-              title="Cari Nama Siswa"
-              placement="bottom"
-              arrow
-              enterDelay={300}
-              leaveDelay={200}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#333", // warna background
-                    color: "#fff", // warna teks
-                    fontSize: "0.8rem",
-                    borderRadius: "4px",
-                    boxShadow: 3,
-                  },
-                },
-              }}
-            >
-              <TextField
-                label="Cari Siswa"
-                variant="outlined"
-                size="small"
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setPage(0);
-                  // if (page > 0) {
-                  //   setPage(0);
-                  // }
-                }}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    color: "rgba(0, 0, 0, 0.3)",
-                  },
-                  width: "170px",
-                }}
-              />
-            </Tooltip>
-          </Box>
+              Tambah Siswa Baru
+            </Button>
+          )}
         </Box>
         <TableContainer
           component={Paper}
@@ -725,6 +828,16 @@ export default function DetailKelas() {
                   }}
                 >
                   No Telepon
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    // maxWidth: "40px",
+                    textAlign: "center",
+                  }}
+                >
+                  Jenis Kelamin
                 </TableCell>
                 <TableCell
                   sx={{
@@ -844,6 +957,16 @@ export default function DetailKelas() {
                         // fontWeight: "bold",
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {s.jenisKelamin === "LAKI_LAKI" ? "L" : "P"}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        // fontWeight: "bold",
+                        borderRight: "1px solid #ccc",
+                        // maxWidth: "40px",
                         textAlign: "left",
                       }}
                     >
@@ -884,7 +1007,17 @@ export default function DetailKelas() {
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete">
+                      <Tooltip title="Arsip">
+                        <IconButton
+                          color="primary"
+                          onClick={() => handleArsipClick(s)}
+                          disabled={handleDisabledEdit()}
+                        >
+                          <ArchiveIcon />
+                        </IconButton>
+                      </Tooltip>
+
+                      {/* <Tooltip title="Delete">
                         <IconButton
                           color="error"
                           onClick={() => {
@@ -895,11 +1028,12 @@ export default function DetailKelas() {
                           //   user?.nomorInduk !==
                           //   location?.state?.kelas?.waliGuruNip
                           // }
-                          disabled={handleDisabledDelete()}
+                          // disabled={handleDisabledDelete()}
+                          // disabled
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </Tooltip>
+                      </Tooltip> */}
                     </TableCell>
                   </TableRow>
                 ))
@@ -932,6 +1066,14 @@ export default function DetailKelas() {
           )}
         </TableContainer>
       </Box>
+      <AddNewSiswa
+        openModal={openModalAddNew}
+        dataPpdb={dataPpdb}
+        setOpenModal={setOpenModalAddNew}
+        selectedPpdb={selectedPpdb}
+        setSelectedPpdb={setSelectedPpdb}
+        handleSubmit={handleSubmitAddNew}
+      />
     </Box>
   );
 }

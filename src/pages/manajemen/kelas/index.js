@@ -20,6 +20,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -58,7 +61,7 @@ export default function ManajemenKelas() {
     gradeLevelId: null,
     waliGuruId: null,
   });
-
+  const [errorStatus, setErrorStatus] = useState(null);
   const [page, setPage] = useState(0); // halaman dimulai dari 0
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalKelas, setTotalKelas] = useState(0);
@@ -78,6 +81,7 @@ export default function ManajemenKelas() {
       name: "",
       gradeLevelId: null,
       waliGuruId: null,
+      isActive: false,
     });
     setOpenModal(true);
   };
@@ -89,6 +93,8 @@ export default function ManajemenKelas() {
       name: el.name,
       gradeLevelId: el.gradeLevelId,
       waliGuruId: el.waliGuruId,
+      isActive: el?.isActive,
+      jumlahSiswa: el?.jumlahSiswa,
     });
     setOpenModal(true);
   };
@@ -239,6 +245,7 @@ export default function ManajemenKelas() {
     getGuru();
   }, []);
 
+  console.log("FORM DATA:", formData);
   return (
     <Box sx={{ padding: 4 }}>
       {/* MODAL CREATE - EDIT KELAS */}
@@ -315,12 +322,44 @@ export default function ManajemenKelas() {
               ))}
             </Select>
           </FormControl>
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="status"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Status:
+            </InputLabel>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData?.isActive}
+                  onChange={(e) => {
+                    const check = e.target.checked;
+                    if (check === false && formData?.jumlahSiswa > 0) {
+                      setErrorStatus("Kelas ini masih terdapat siswa");
+                      return;
+                    }
+                    setFormData({ ...formData, isActive: check });
+                  }}
+                  color="primary"
+                />
+              }
+              label={formData?.isActive ? "Active" : "Non Active"}
+            />
+            {errorStatus && (
+              <div className="bg-red-100 text-red-700 p-2 rounded flex justify-between">
+                <span>{errorStatus}</span>
+                <button onClick={() => setErrorStatus(null)}>✕</button>
+              </div>
+            )}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
               setOpenModal(false);
               setIsSubmitted(false);
+              setErrorStatus(null);
             }}
           >
             Batal
@@ -330,6 +369,7 @@ export default function ManajemenKelas() {
             onClick={() => {
               handleSubmit();
               setIsSubmitted(true);
+              setErrorStatus(null);
             }}
             disabled={
               !formData?.name ||
@@ -551,6 +591,16 @@ export default function ManajemenKelas() {
                 <TableCell
                   sx={{
                     fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    // maxWidth: "40px",
+                    textAlign: "center",
+                  }}
+                >
+                  STATUS
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
                     textAlign: "center",
                     minWidth: "40px",
                   }}
@@ -633,6 +683,20 @@ export default function ManajemenKelas() {
                   >
                     {kls.jumlahSiswa}
                   </TableCell>
+                  <TableCell
+                    sx={{
+                      // fontWeight: "bold",
+                      borderRight: "1px solid #ccc",
+                      // maxWidth: "40px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {kls.isActive ? (
+                      <Chip label="ACTIVE" color="success" />
+                    ) : (
+                      <Chip label="NON ACTIVE" color="error" />
+                    )}
+                  </TableCell>
                   <TableCell sx={{ textAlign: "center", minWidth: "40px" }}>
                     <Tooltip title="Edit">
                       <IconButton
@@ -644,10 +708,11 @@ export default function ManajemenKelas() {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete">
+                    {/* <Tooltip title="Delete">
                       <IconButton
                         color="error"
-                        disabled={!allowedNomorInduk.includes(user.nomorInduk)}
+                        // disabled={!allowedNomorInduk.includes(user.nomorInduk)}
+                        disabled
                         onClick={() => {
                           setOpenConfirmDelete(true);
                           setIdDelete(kls.id);
@@ -655,15 +720,15 @@ export default function ManajemenKelas() {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip title="Detail">
                       <IconButton
                         color="secondary"
-                        onClick={() =>
+                        onClick={() => {
                           navigate(`/manajemen/kelas/${kls.id}`, {
                             state: { kelas: kls },
-                          })
-                        }
+                          });
+                        }}
                       >
                         <VisibilityIcon />
                       </IconButton>

@@ -27,6 +27,9 @@ import {
   TablePagination,
   IconButton,
   Chip,
+  FormLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -35,6 +38,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CachedIcon from "@mui/icons-material/Cached";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import KelasService from "../manajemen/kelas/KelasService";
 import HomeService from "../home/HomeServive";
 import PopUpModal from "../../components/PopUpModal";
@@ -61,10 +65,19 @@ export default function PPDBRegistrasi() {
     statusPembayaran: "",
     status: "",
     catatanValidasi: "",
+    jenisKelamin: "",
+    namaAyah: "",
+    namaIbu: "",
   });
   const [successCreateSiswa, setSuccessCreateSiswa] = useState(false);
 
   // start tabel siswa
+  const currentYear = new Date().getFullYear();
+  const [tahun, setTahun] = useState(currentYear);
+
+  // bikin array tahun dari currentYear ke belakang
+  const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [dataTabel, setDataTabel] = useState([]);
   const [page, setPage] = useState(0); // halaman dimulai dari 0
@@ -178,6 +191,7 @@ export default function PPDBRegistrasi() {
       const res = await HomeService.getPpdbPaging({
         page,
         size: rowsPerPage,
+        tahun,
       });
       console.log("RESPONSE GET SISWA:", res);
       if (res.success) {
@@ -212,6 +226,7 @@ export default function PPDBRegistrasi() {
         keyword,
         page,
         size: rowsPerPage,
+        tahun,
       });
       console.log("RESPONSE DATA SEARCH SISWA:", response);
       if (response.success) {
@@ -231,7 +246,7 @@ export default function PPDBRegistrasi() {
   };
 
   const handleOpenEdit = (el) => {
-    const data ={...el};
+    const data = { ...el };
     setDataRow(data);
     setIsEditMode(true);
     setFormData(el);
@@ -239,7 +254,7 @@ export default function PPDBRegistrasi() {
   };
 
   const handleOpenTambah = (el) => {
-    const data ={...el};
+    const data = { ...el };
     setDataRow(data);
     setIsEditMode(false);
     setOpenModal(true);
@@ -249,7 +264,7 @@ export default function PPDBRegistrasi() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await HomeService.updatePpdb(formData , dataRow);
+      const response = await HomeService.updatePpdb(formData, dataRow);
       console.log("RESPONSE EDIT CALON SISWA:", response);
       if (response.success) {
         setSuccessAddEditSiswa(true);
@@ -285,13 +300,17 @@ export default function PPDBRegistrasi() {
     }
   };
 
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   useEffect(() => {
     if (debouncedSearch.length >= 2) {
       fetchFilteredData(debouncedSearch);
     } else {
       generateData();
     }
-  }, [debouncedSearch, page, rowsPerPage]);
+  }, [debouncedSearch, page, rowsPerPage, tahun]);
 
   //  END TABEL SISWA
 
@@ -358,6 +377,9 @@ export default function PPDBRegistrasi() {
                 statusPembayaran: "",
                 status: "",
                 catatanValidasi: "",
+                jenisKelamin: "",
+                namaAyah: "",
+                namaIbu: "",
               });
               if (debouncedSearch.length >= 2 || page > 0) {
                 setSearchTerm("");
@@ -411,18 +433,58 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            error={siswaData?.email && !isValidEmail(siswaData.email)}
+            helperText={
+              siswaData?.email && !isValidEmail(siswaData.email)
+                ? "Format email tidak valid"
+                : ""
+            }
           />
 
+          <FormControl>
+            <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="jenisKelamin-label"
+              name="jenisKelamin"
+              value={siswaData?.jenisKelamin}
+              onChange={(e) =>
+                setSiswaData({ ...siswaData, jenisKelamin: e.target.value })
+              }
+            >
+              <FormControlLabel
+                value="LAKI_LAKI"
+                control={<Radio />}
+                label="Laki-laki"
+              />
+              <FormControlLabel
+                value="PEREMPUAN"
+                control={<Radio />}
+                label="Perempuan"
+              />
+            </RadioGroup>
+          </FormControl>
           <TextField
-            label="Alamat"
-            value={siswaData?.alamat || ""}
+            label="Nama Ayah"
+            value={siswaData?.namaAyah || ""}
             onChange={(e) =>
-              setSiswaData({ ...siswaData, alamat: e.target.value })
+              setSiswaData({ ...siswaData, namaAyah: e.target.value })
             }
             id="standard-basic"
             variant="standard"
             fullWidth
           />
+          <TextField
+            label="Nama Ibu"
+            value={siswaData?.namaIbu || ""}
+            onChange={(e) =>
+              setSiswaData({ ...siswaData, namaIbu: e.target.value })
+            }
+            id="standard-basic"
+            variant="standard"
+            fullWidth
+          />
+
           <TextField
             label="No Handphone"
             value={siswaData?.noHandphone || ""}
@@ -433,7 +495,7 @@ export default function PPDBRegistrasi() {
             variant="standard"
             fullWidth
           />
-          <TextField
+          {/* <TextField
             label="Jumlah Bayar"
             value={siswaData?.jumlahDibayar || ""}
             onChange={(e) =>
@@ -442,9 +504,29 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+          /> */}
+          <TextField
+            label="Jumlah Bayar"
+            value={
+              siswaData?.jumlahDibayar
+                ? new Intl.NumberFormat("id-ID").format(
+                    siswaData.jumlahDibayar ?? 0,
+                  )
+                : ""
+            }
+            onChange={(e) =>
+              setSiswaData({
+                ...siswaData,
+                jumlahDibayar: Number(e.target.value.replace(/\D/g, "")) || 0,
+              })
+            }
+            id="standard-basic"
+            variant="standard"
+            fullWidth
           />
+
           {/* statusPembayaran */}
-          <FormControl fullWidth margin="normal">
+          <FormControl sx={{ width: "50%" }} margin="normal">
             <InputLabel id="statusBayar-label">Status Pembayaran</InputLabel>
             <Select
               labelId="statusBayar-label"
@@ -472,7 +554,7 @@ export default function PPDBRegistrasi() {
             )}
           </FormControl>
           {/* status */}
-          <FormControl fullWidth margin="normal">
+          <FormControl sx={{ width: "50%" }} margin="normal">
             <InputLabel id="status-label">Status</InputLabel>
             <Select
               labelId="status-label"
@@ -496,16 +578,59 @@ export default function PPDBRegistrasi() {
               </div>
             )}
           </FormControl>
-          <TextField
-            label="Catatan"
-            value={siswaData?.catatanValidasi || ""}
-            onChange={(e) =>
-              setSiswaData({ ...siswaData, catatanValidasi: e.target.value })
-            }
-            id="standard-basic"
-            variant="standard"
-            fullWidth
-          />
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="alamat-label"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Alamat:
+            </InputLabel>
+            <TextareaAutosize
+              id="alamat-label"
+              aria-label="Alamat"
+              minRows={3}
+              placeholder="Input alamat"
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                fontFamily: "inherit",
+                outline: "none",
+              }}
+              value={siswaData?.alamat || ""}
+              onChange={(e) =>
+                setSiswaData({ ...siswaData, alamat: e.target.value })
+              }
+            />
+          </div>
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="catatan-label"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Catatan:
+            </InputLabel>
+            <TextareaAutosize
+              id="catatan-label"
+              aria-label="Catatan"
+              minRows={3}
+              placeholder="Input catatan"
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                fontFamily: "inherit",
+                outline: "none",
+              }}
+              value={siswaData?.catatanValidasi || ""}
+              onChange={(e) =>
+                setSiswaData({ ...siswaData, catatanValidasi: e.target.value })
+              }
+            />
+          </div>
+
           <Box
             sx={{
               // mt: 2,
@@ -529,7 +654,10 @@ export default function PPDBRegistrasi() {
                 !siswaData.jumlahDibayar ||
                 !siswaData.statusPembayaran ||
                 !siswaData.status ||
-                !siswaData.noHandphone
+                !siswaData.noHandphone ||
+                !siswaData.jenisKelamin ||
+                !siswaData.namaAyah ||
+                !siswaData.namaIbu
               }
             >
               SAVE
@@ -550,6 +678,9 @@ export default function PPDBRegistrasi() {
                   statusPembayaran: "",
                   status: "",
                   catatanValidasi: "",
+                  jenisKelamin: "",
+                  namaAyah: "",
+                  namaIbu: "",
                 });
                 setNotRegister(false);
                 window.scrollTo({
@@ -582,7 +713,7 @@ export default function PPDBRegistrasi() {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            mb={3}
+            mb={1}
             px={1}
           >
             <Box>
@@ -609,40 +740,65 @@ export default function PPDBRegistrasi() {
               Generate Data
             </Button>
           </Box>
-          <Tooltip
-            title="Ketik No Pendaftaran atau Nama"
-            placement="top"
-            arrow
-            enterDelay={300}
-            leaveDelay={200}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  bgcolor: "#333", // warna background
-                  color: "#fff", // warna teks
-                  fontSize: "0.8rem",
-                  borderRadius: "4px",
-                  boxShadow: 3,
-                },
-              },
-            }}
+          <Box
+            display="flex"
+            flexDirection={"column"}
+            width={250}
+            // justifyContent="space-between"
+            // alignItems="center"
+            mb={3}
+            px={1}
           >
-            <TextField
-              label="No Pendaftaran / Nama"
-              variant="outlined"
-              size="small"
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setPage(0);
-              }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  color: "rgba(0, 0, 0, 0.3)",
+            <FormControl margin="normal">
+              <InputLabel id="tahun-label">Pilih Tahun PPDB</InputLabel>
+              <Select
+                labelId="tahun-label"
+                label="Pilih Tahun PPDB"
+                value={tahun}
+                onChange={(e) => setTahun(e.target.value)}
+              >
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>
+                    {y}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Tooltip
+              title="Ketik No Pendaftaran atau Nama"
+              placement="top"
+              arrow
+              enterDelay={300}
+              leaveDelay={200}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "#333", // warna background
+                    color: "#fff", // warna teks
+                    fontSize: "0.8rem",
+                    borderRadius: "4px",
+                    boxShadow: 3,
+                  },
                 },
               }}
-            />
-          </Tooltip>
+            >
+              <TextField
+                label="No Pendaftaran / Nama"
+                variant="outlined"
+                size="small"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setPage(0);
+                }}
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    color: "rgba(0, 0, 0, 0.3)",
+                  },
+                }}
+              />
+            </Tooltip>
+          </Box>
           <Divider sx={{ mb: 2, mt: 2 }} />
           {/* TABEL SISWA */}
           <TableContainer
@@ -702,6 +858,36 @@ export default function PPDBRegistrasi() {
                     }}
                   >
                     Tanggal Lahir
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: "bold",
+                      borderRight: "1px solid #ccc",
+                      // maxWidth: "40px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Jenis Kelamin
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: "bold",
+                      borderRight: "1px solid #ccc",
+                      // maxWidth: "40px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Nama Ayah
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: "bold",
+                      borderRight: "1px solid #ccc",
+                      // maxWidth: "40px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Nama Ibu
                   </TableCell>
                   <TableCell
                     sx={{
@@ -842,6 +1028,36 @@ export default function PPDBRegistrasi() {
                           // fontWeight: "bold",
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
+                          textAlign: "left",
+                        }}
+                      >
+                        {s.jenisKelamin === "LAKI_LAKI" ? "L" : "P"}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          // fontWeight: "bold",
+                          borderRight: "1px solid #ccc",
+                          // maxWidth: "40px",
+                          textAlign: "left",
+                        }}
+                      >
+                        {s.namaAyah}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          // fontWeight: "bold",
+                          borderRight: "1px solid #ccc",
+                          // maxWidth: "40px",
+                          textAlign: "left",
+                        }}
+                      >
+                        {s.namaIbu}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          // fontWeight: "bold",
+                          borderRight: "1px solid #ccc",
+                          // maxWidth: "40px",
                           textAlign: "center",
                         }}
                       >
@@ -864,10 +1080,14 @@ export default function PPDBRegistrasi() {
                           // fontWeight: "bold",
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
-                          textAlign: "center",
+                          textAlign: "right",
                         }}
                       >
-                        {s.jumlahDibayar}
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(s.jumlahDibayar ?? 0)}
                       </TableCell>
                       <TableCell
                         sx={{
@@ -877,18 +1097,42 @@ export default function PPDBRegistrasi() {
                           textAlign: "center",
                         }}
                       >
-                        {s.statusPembayaran}
+                        {/* {s.statusPembayaran} */}
+                        {s.statusPembayaran === "MENUNGGU_PEMBAYARAN" ? (
+                          <Chip
+                            label="MENUNGGU PEMBAYARAN"
+                            color="warning"
+                            variant="outlined"
+                          />
+                        ) : s.statusPembayaran === "BELUM_LUNAS" ? (
+                          <Chip
+                            label="BELUM LUNAS"
+                            color="error"
+                            variant="outlined"
+                          />
+                        ) : (
+                          <Chip
+                            label={s.statusPembayaran}
+                            color="success"
+                            variant="outlined"
+                          />
+                        )}
                       </TableCell>
                       <TableCell
                         sx={{
-                          // fontWeight: "bold",
                           borderRight: "1px solid #ccc",
-                          // maxWidth: "40px",
                           textAlign: "center",
                         }}
                       >
-                        {s.status}
+                        {s.status === "MENUNGGU_VALIDASI" ? (
+                          <Chip label="MENUNGGU VALIDASI" color="warning" />
+                        ) : s.status === "DITERIMA" ? (
+                          <Chip label="DITERIMA" color="success" />
+                        ) : (
+                          <Chip label={s.status} color="error" />
+                        )}
                       </TableCell>
+
                       <TableCell
                         sx={{
                           // fontWeight: "bold",
@@ -915,7 +1159,7 @@ export default function PPDBRegistrasi() {
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Delete">
+                            {/* <Tooltip title="Delete">
                               <IconButton
                                 color="error"
                                 onClick={() => {
@@ -923,6 +1167,7 @@ export default function PPDBRegistrasi() {
                                   setIdDelete(s.id);
                                   // setJumlahSiswa(null);
                                 }}
+                                disabled
                                 // disabled={
                                 //   user?.nomorInduk !==
                                 //   location?.state?.kelas?.waliGuruNip
@@ -931,7 +1176,7 @@ export default function PPDBRegistrasi() {
                               >
                                 <DeleteIcon />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
                           </>
                         ) : (
                           <>
@@ -943,7 +1188,7 @@ export default function PPDBRegistrasi() {
                                 <AddIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Delete">
+                            {/* <Tooltip title="Delete">
                               <IconButton
                                 color="error"
                                 onClick={() => {
@@ -951,6 +1196,7 @@ export default function PPDBRegistrasi() {
                                   setIdDelete(s.id);
                                   // setJumlahSiswa(null);
                                 }}
+                                disabled
                                 // disabled={
                                 //   user?.nomorInduk !==
                                 //   location?.state?.kelas?.waliGuruNip
@@ -959,7 +1205,7 @@ export default function PPDBRegistrasi() {
                               >
                                 <DeleteIcon />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
                           </>
                         )}
                       </TableCell>
@@ -1023,6 +1269,9 @@ export default function PPDBRegistrasi() {
             statusPembayaran: "",
             status: "",
             catatanValidasi: "",
+            jenisKelamin: "",
+            namaAyah: "",
+            namaIbu: "",
           });
           if (debouncedSearch.length >= 2 || page > 0) {
             setSearchTerm("");

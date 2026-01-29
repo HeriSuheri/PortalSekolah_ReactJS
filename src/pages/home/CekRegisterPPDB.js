@@ -230,6 +230,15 @@ export default function CekRegisterPPDB() {
                     di perlukan.
                   </Typography>
                 )}
+                {response?.status === "DIBATALKAN" && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ fontStyle: "italic", color: "red" }}
+                  >
+                    *Pendaftaran anda telah dibatalkan.
+                  </Typography>
+                )}
               </Box>
             )}
           </Box>

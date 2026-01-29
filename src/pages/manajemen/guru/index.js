@@ -609,7 +609,7 @@ export default function ManajemenGuru() {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete">
+                    {/* <Tooltip title="Delete">
                       <IconButton
                         color="error"
                         disabled={user?.role !== "ADMIN"}
@@ -620,7 +620,7 @@ export default function ManajemenGuru() {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </TableCell>
                 </TableRow>
               ))}

@@ -600,7 +600,7 @@ export default function ManajemenAdmin() {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete">
+                    {/* <Tooltip title="Delete">
                       <IconButton
                         color="error"
                         disabled={!allowedNomorInduk.includes(user?.nomorInduk)}
@@ -611,7 +611,7 @@ export default function ManajemenAdmin() {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </TableCell>
                 </TableRow>
               ))}
