@@ -83,13 +83,14 @@ const DataService = {
   },
 
   async updateAdmin(payload) {
-    const { id, nomorInduk, nama, email, tanggalLahir } = payload;
+    const { id, nomorInduk, nama, email, tanggalLahir, isActive } = payload;
     try {
       const response = await apiClient.put(`${API_ENDPOINTS.ADMIN}/${id}`, {
         nomorInduk,
         nama,
         email,
         tanggalLahir,
+        isActive,
       });
       console.log("RESPONSE API UPDATE ADMIN:", response);
       if (response.status === 200) {

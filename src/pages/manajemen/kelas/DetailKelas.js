@@ -429,6 +429,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, nama: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               label="NIS"
@@ -437,9 +445,29 @@ export default function DetailKelas() {
                 setFormData({ ...formData, nis: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
               disabled
             />
-            <FormControl fullWidth margin="normal">
+            <FormControl
+              fullWidth
+              margin="normal"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiSelect-select": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                  // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+                },
+              }}
+            >
               <InputLabel id="kelas-label">Assign Kelas</InputLabel>
               <Select
                 labelId="kelas-label"
@@ -481,8 +509,26 @@ export default function DetailKelas() {
               }
               InputLabelProps={{ shrink: true }}
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
-            <FormControl>
+            <FormControl
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiSelect-select": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                  // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+                },
+              }}
+            >
               <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
               <RadioGroup
                 row
@@ -494,11 +540,21 @@ export default function DetailKelas() {
                 }
               >
                 <FormControlLabel
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                    },
+                  }}
                   value="LAKI_LAKI"
                   control={<Radio />}
                   label="Laki-laki"
                 />
                 <FormControlLabel
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                    },
+                  }}
                   value="PEREMPUAN"
                   control={<Radio />}
                   label="Perempuan"
@@ -512,6 +568,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, namaAyah: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               label="Nama Ibu"
@@ -520,6 +584,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, namaIbu: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               label="No Handphone"
@@ -528,6 +600,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, noHandphone: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               label="Email"
@@ -537,6 +617,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, email: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
               error={formData?.email && !isValidEmail(formData.email)}
               helperText={
                 formData?.email && !isValidEmail(formData.email)
@@ -551,6 +639,14 @@ export default function DetailKelas() {
                 setFormData({ ...formData, alamat: e.target.value })
               }
               fullWidth
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
           </Box>
         </DialogContent>
@@ -652,46 +748,107 @@ export default function DetailKelas() {
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate("/manajemen/kelas")}
-          sx={{ textTransform: "none" }}
+          sx={{
+            textTransform: "none",
+            boxShadow: 2,
+            borderRadius: 4,
+            // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+            // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+            fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+            width: { xs: "20%", sm: "auto" }, // di mobile full width, di desktop auto
+          }}
         >
           Kembali
         </Button>
       </Box>
 
-      <Typography variant="h5" gutterBottom>
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{
+          fontSize: { xs: "0.75rem", sm: "1rem", md: "1.25rem" }, // responsif
+        }}
+      >
         Detail Kelas
       </Typography>
       <Box>
         <Box display="flex" alignItems="center" mb={1}>
-          <Typography variant="subtitle1" sx={{ width: 120 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 120,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             Nama Kelas
           </Typography>
-          <Typography variant="subtitle1" sx={{ width: 20 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 20,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             :
           </Typography>
-          <Typography variant="subtitle1">{kelasDetail.name}</Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+          >
+            {kelasDetail.name}
+          </Typography>
         </Box>
 
         <Box display="flex" alignItems="center" mb={1}>
-          <Typography variant="subtitle1" sx={{ width: 120 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 120,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             Tingkatan
           </Typography>
-          <Typography variant="subtitle1" sx={{ width: 20 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 20,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             :
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography
+            variant="subtitle1"
+            sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+          >
             {kelasDetail.gradeLevelName}
           </Typography>
         </Box>
 
         <Box display="flex" alignItems="center" mb={1}>
-          <Typography variant="subtitle1" sx={{ width: 120 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 120,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             Wali Kelas
           </Typography>
-          <Typography variant="subtitle1" sx={{ width: 20 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              width: 20,
+              fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+            }}
+          >
             :
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography
+            variant="subtitle1"
+            sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+          >
             {kelasDetail.waliGuruName}
           </Typography>
         </Box>
@@ -699,7 +856,14 @@ export default function DetailKelas() {
 
       <Divider sx={{ mb: 1, mt: 1 }} />
       <Box sx={{ textAlign: "center" }}>
-        <Typography variant="h5" fontWeight="bold" color="primary">
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          color="primary"
+          sx={{
+            fontSize: { xs: "0.95rem", sm: "1,25rem", md: "1.5rem" },
+          }}
+        >
           Daftar Siswa {kelasDetail.name}
         </Typography>
       </Box>
@@ -723,7 +887,7 @@ export default function DetailKelas() {
                 sx: {
                   bgcolor: "#333",
                   color: "#fff",
-                  fontSize: "0.8rem",
+                  fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
                   borderRadius: "4px",
                   boxShadow: 3,
                 },
@@ -742,7 +906,9 @@ export default function DetailKelas() {
               sx={{
                 "& .MuiInputLabel-root": {
                   color: "rgba(0, 0, 0, 0.3)",
+                  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
                 },
+                fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
                 width: "170px",
               }}
             />
@@ -754,7 +920,16 @@ export default function DetailKelas() {
               variant="contained"
               startIcon={<AddIcon />}
               onClick={handleOpenCreate}
-              sx={{ textTransform: "none", boxShadow: 2, width: "auto" }}
+              // sx={{ textTransform: "none", boxShadow: 2, width: "auto" }}
+              sx={{
+                textTransform: "none",
+                boxShadow: 2,
+                borderRadius: 4,
+                // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+                // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+                fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+                width: { xs: "40%", sm: "auto" }, // di mobile full width, di desktop auto
+              }}
               disabled={handleDisabledEdit()}
             >
               Tambah Siswa Baru
@@ -775,6 +950,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nomor
@@ -785,6 +961,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nama
@@ -793,8 +970,9 @@ export default function DetailKelas() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
-                    maxWidth: "40px",
+                    // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   NIS
@@ -805,6 +983,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Email
@@ -815,6 +994,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Tanggal Lahir
@@ -825,6 +1005,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   No Telepon
@@ -835,6 +1016,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Jenis Kelamin
@@ -845,6 +1027,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nama Ayah
@@ -855,6 +1038,7 @@ export default function DetailKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nama Ibu
@@ -866,6 +1050,7 @@ export default function DetailKelas() {
                     // maxWidth: "40px",
                     textAlign: "center",
                     minWidth: "100px",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Alamat
@@ -876,6 +1061,7 @@ export default function DetailKelas() {
                     // borderRight: "1px solid #ccc",
                     maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Aksi
@@ -898,6 +1084,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "center",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {index + 1}
@@ -908,6 +1099,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "left",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.nama}
@@ -918,6 +1114,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "center",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.nis}
@@ -928,6 +1129,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "left",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.email}
@@ -938,6 +1144,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "center",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.tanggalLahir}
@@ -948,6 +1159,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "center",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.noHandphone}
@@ -958,6 +1174,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "center",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.jenisKelamin === "LAKI_LAKI" ? "L" : "P"}
@@ -968,6 +1189,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "left",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.namaAyah}
@@ -978,6 +1204,11 @@ export default function DetailKelas() {
                         borderRight: "1px solid #ccc",
                         // maxWidth: "40px",
                         textAlign: "left",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.namaIbu}
@@ -989,6 +1220,11 @@ export default function DetailKelas() {
                         // maxWidth: "40px",
                         textAlign: "left",
                         minWidth: "200px",
+                        fontSize: {
+                          xs: "0.50rem",
+                          sm: "0.65rem",
+                          md: "0.85rem",
+                        },
                       }}
                     >
                       {s.alamat}

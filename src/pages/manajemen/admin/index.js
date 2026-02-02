@@ -16,6 +16,10 @@ import {
   Button,
   Box,
   Divider,
+  Chip,
+  InputLabel,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -52,6 +56,7 @@ export default function ManajemenAdmin() {
     nama: "",
     email: "",
     tanggalLahir: "",
+    isActive: false,
   });
 
   const [page, setPage] = useState(0); // halaman dimulai dari 0
@@ -72,6 +77,7 @@ export default function ManajemenAdmin() {
       nama: "",
       email: "",
       tanggalLahir: "",
+      isActive: false,
     });
     setOpenModal(true);
   };
@@ -84,6 +90,7 @@ export default function ManajemenAdmin() {
       nama: admin.nama,
       email: admin.email,
       tanggalLahir: admin.tanggalLahir,
+      isActive: admin?.isActive,
     });
     setOpenModal(true);
   };
@@ -195,6 +202,10 @@ export default function ManajemenAdmin() {
     }
   };
 
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   // useEffect(() => {
   //   window.scrollTo({
   //     top: 0,
@@ -219,7 +230,7 @@ export default function ManajemenAdmin() {
   }, []);
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box>
       {/* MODAL CREATE - EDIT ADMIN */}
       <Dialog
         open={openModal}
@@ -248,6 +259,14 @@ export default function ManajemenAdmin() {
           <TextField
             label="Nomor Induk"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.nomorInduk}
             onChange={(e) => {
@@ -262,6 +281,14 @@ export default function ManajemenAdmin() {
           <TextField
             label="Nama"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.nama}
             onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
@@ -270,16 +297,24 @@ export default function ManajemenAdmin() {
             label="Email"
             type="email"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.email}
             onChange={(e) => {
               setFormData({ ...formData, email: e.target.value });
               setIsSubmitted(false);
             }}
-            error={isSubmitted && !formData.email.includes("@")}
+            error={formData?.email && !isValidEmail(formData.email)}
             helperText={
-              isSubmitted && !formData.email.includes("@")
-                ? "Email harus mengandung @"
+              formData?.email && !isValidEmail(formData.email)
+                ? "Format email tidak valid"
                 : ""
             }
           />
@@ -287,6 +322,14 @@ export default function ManajemenAdmin() {
             label="Tanggal Lahir"
             type="date"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             InputLabelProps={{ shrink: true }}
             value={formData.tanggalLahir}
@@ -294,6 +337,32 @@ export default function ManajemenAdmin() {
               setFormData({ ...formData, tanggalLahir: e.target.value })
             }
           />
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="status"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Status:
+            </InputLabel>
+            <FormControlLabel
+              sx={{
+                "& .MuiFormControlLabel-label": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+              }}
+              control={
+                <Switch
+                  checked={formData?.isActive}
+                  onChange={(e) => {
+                    const check = e.target.checked;
+                    setFormData({ ...formData, isActive: check });
+                  }}
+                  color="primary"
+                />
+              }
+              label={formData?.isActive ? "Active" : "Non Active"}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button
@@ -308,7 +377,7 @@ export default function ManajemenAdmin() {
             variant="contained"
             onClick={() => {
               handleSubmit();
-              setIsSubmitted(true);
+              // setIsSubmitted(true);
             }}
             disabled={
               !formData?.nomorInduk ||
@@ -399,14 +468,24 @@ export default function ManajemenAdmin() {
         px={1}
       >
         <Box>
-          <Typography variant="h5" fontWeight="bold" color="primary">
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="primary"
+            sx={{
+              fontSize: { xs: "0.95rem", sm: "1,25rem", md: "1.5rem" },
+            }}
+          >
             Manajemen Admin
           </Typography>
           {/* <Divider /> */}
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ fontStyle: "italic" }}
+            style={{
+              fontStyle: "italic",
+              fontSize: { xs: "0.3rem", sm: "0.65rem", md: "0.75rem" },
+            }}
           >
             Kelola data admin
           </Typography>
@@ -417,7 +496,15 @@ export default function ManajemenAdmin() {
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
           disabled={!allowedNomorInduk.includes(user?.nomorInduk)}
-          sx={{ textTransform: "none", boxShadow: 2 }}
+          sx={{
+            textTransform: "none",
+            boxShadow: 2,
+            borderRadius: 4,
+            // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+            // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+            fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+            width: { xs: "40%", sm: "auto" }, // di mobile full width, di desktop auto
+          }}
         >
           Tambah Admin
         </Button>
@@ -433,7 +520,7 @@ export default function ManajemenAdmin() {
             sx: {
               bgcolor: "#333", // warna background
               color: "#fff", // warna teks
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
               borderRadius: "4px",
               boxShadow: 3,
             },
@@ -455,7 +542,9 @@ export default function ManajemenAdmin() {
           sx={{
             "& .MuiInputLabel-root": {
               color: "rgba(0, 0, 0, 0.3)",
+              fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
             },
+            fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
           }}
         />
       </Tooltip>
@@ -484,12 +573,18 @@ export default function ManajemenAdmin() {
                     borderRight: "1px solid #ccc",
                     maxWidth: "70px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nomor
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                  }}
                 >
                   Nomor Induk
                 </TableCell>
@@ -497,21 +592,51 @@ export default function ManajemenAdmin() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nama
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                  }}
                 >
                   Email
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                  }}
                 >
                   Tanggal Lahir
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Aksi</TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                  }}
+                >
+                  Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                  }}
+                >
+                  Aksi
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -533,6 +658,7 @@ export default function ManajemenAdmin() {
                       whiteSpace: "normal",
                       wordBreak: "break-word",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {page * rowsPerPage + index + 1}
@@ -546,6 +672,8 @@ export default function ManajemenAdmin() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {admin.nomorInduk}
@@ -559,6 +687,8 @@ export default function ManajemenAdmin() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "left",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {admin.nama}
@@ -572,6 +702,8 @@ export default function ManajemenAdmin() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "left",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {admin.email}
@@ -585,9 +717,52 @@ export default function ManajemenAdmin() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {admin.tanggalLahir}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    }}
+                  >
+                    {admin.isActive ? (
+                      <Chip
+                        label="AKTIF"
+                        color="success"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
+                    ) : (
+                      <Chip
+                        label="NON AKTIF"
+                        color="error"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
+                    )}
                   </TableCell>
                   <TableCell>
                     <Tooltip title="Edit">

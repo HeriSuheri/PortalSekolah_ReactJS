@@ -16,6 +16,10 @@ import {
   Button,
   Box,
   Divider,
+  Chip,
+  InputLabel,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -52,6 +56,7 @@ export default function ManajemenGuru() {
     nama: "",
     tanggalLahir: null,
     email: "",
+    isActive: false,
   });
 
   const [page, setPage] = useState(0); // halaman dimulai dari 0
@@ -72,6 +77,7 @@ export default function ManajemenGuru() {
       nama: "",
       tanggalLahir: null,
       email: "",
+      isActive: false,
     });
     setOpenModal(true);
   };
@@ -84,6 +90,7 @@ export default function ManajemenGuru() {
       nama: guru.nama,
       tanggalLahir: guru.tanggalLahir,
       email: guru.email,
+      isActive: guru?.isActive,
     });
     setOpenModal(true);
   };
@@ -219,7 +226,7 @@ export default function ManajemenGuru() {
   }, []);
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box>
       {/* MODAL CREATE - EDIT GURU */}
       <Dialog
         open={openModal}
@@ -248,6 +255,14 @@ export default function ManajemenGuru() {
           <TextField
             label="NIP"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.nip}
             onChange={(e) => {
@@ -263,6 +278,14 @@ export default function ManajemenGuru() {
           <TextField
             label="Nama"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.nama}
             onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
@@ -271,6 +294,14 @@ export default function ManajemenGuru() {
             label="Email"
             type="email"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             value={formData.email}
             onChange={(e) => {
@@ -292,6 +323,14 @@ export default function ManajemenGuru() {
             label="Tanggal Lahir"
             type="date"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             margin="normal"
             InputLabelProps={{ shrink: true }}
             value={formData.tanggalLahir}
@@ -303,6 +342,32 @@ export default function ManajemenGuru() {
               (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
             }
           />
+          <div style={{ marginBottom: "10px" }}>
+            <InputLabel
+              id="status"
+              style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+            >
+              Status:
+            </InputLabel>
+            <FormControlLabel
+              sx={{
+                "& .MuiFormControlLabel-label": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+              }}
+              control={
+                <Switch
+                  checked={formData?.isActive}
+                  onChange={(e) => {
+                    const check = e.target.checked;
+                    setFormData({ ...formData, isActive: check });
+                  }}
+                  color="primary"
+                />
+              }
+              label={formData?.isActive ? "Active" : "Non Active"}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button
@@ -324,6 +389,7 @@ export default function ManajemenGuru() {
               !formData?.nama ||
               !formData?.email ||
               !formData?.tanggalLahir
+              // !formData?.isActive
             }
           >
             {isEditMode ? "Simpan Perubahan" : "Simpan"}
@@ -408,14 +474,24 @@ export default function ManajemenGuru() {
         px={1}
       >
         <Box>
-          <Typography variant="h5" fontWeight="bold" color="primary">
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="primary"
+            sx={{
+              fontSize: { xs: "0.95rem", sm: "1,25rem", md: "1.5rem" },
+            }}
+          >
             Manajemen Guru
           </Typography>
           {/* <Divider /> */}
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ fontStyle: "italic" }}
+            style={{
+              fontStyle: "italic",
+              fontSize: { xs: "0.3rem", sm: "0.65rem", md: "0.75rem" },
+            }}
           >
             Kelola data guru
           </Typography>
@@ -426,7 +502,15 @@ export default function ManajemenGuru() {
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
           disabled={user?.role !== "ADMIN"}
-          sx={{ textTransform: "none", boxShadow: 2 }}
+          sx={{
+            textTransform: "none",
+            boxShadow: 2,
+            borderRadius: 4,
+            // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+            // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+            fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+            width: { xs: "40%", sm: "auto" }, // di mobile full width, di desktop auto
+          }}
         >
           Tambah Guru
         </Button>
@@ -442,7 +526,7 @@ export default function ManajemenGuru() {
             sx: {
               bgcolor: "#333", // warna background
               color: "#fff", // warna teks
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
               borderRadius: "4px",
               boxShadow: 3,
             },
@@ -464,7 +548,9 @@ export default function ManajemenGuru() {
           sx={{
             "& .MuiInputLabel-root": {
               color: "rgba(0, 0, 0, 0.3)",
+              fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
             },
+            fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
           }}
         />
       </Tooltip>
@@ -493,12 +579,18 @@ export default function ManajemenGuru() {
                     borderRight: "1px solid #ccc",
                     maxWidth: "70px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nomor
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
+                  }}
                 >
                   Nomor Induk Pegawai
                 </TableCell>
@@ -506,21 +598,51 @@ export default function ManajemenGuru() {
                   sx={{
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
                   }}
                 >
                   Nama
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
+                  }}
                 >
                   Email
                 </TableCell>
                 <TableCell
-                  sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
+                  }}
                 >
                   Tanggal Lahir
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Aksi</TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    borderRight: "1px solid #ccc",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
+                  }}
+                >
+                  Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                    textAlign: "center",
+                  }}
+                >
+                  Aksi
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -542,6 +664,7 @@ export default function ManajemenGuru() {
                       whiteSpace: "normal",
                       wordBreak: "break-word",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {page * rowsPerPage + index + 1}
@@ -555,6 +678,8 @@ export default function ManajemenGuru() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                      textAlign: "center",
                     }}
                   >
                     {guru.nip}
@@ -568,6 +693,8 @@ export default function ManajemenGuru() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                      textAlign: "left",
                     }}
                   >
                     {guru.nama}
@@ -581,6 +708,8 @@ export default function ManajemenGuru() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                      textAlign: "left",
                     }}
                   >
                     {guru.email}
@@ -594,9 +723,52 @@ export default function ManajemenGuru() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                      textAlign: "center",
                     }}
                   >
                     {guru.tanggalLahir}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid #ccc",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      // whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
+                      textAlign: "center",
+                    }}
+                  >
+                    {guru.isActive ? (
+                      <Chip
+                        label="AKTIF"
+                        color="success"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
+                    ) : (
+                      <Chip
+                        label="NON AKTIF"
+                        color="error"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
+                    )}
                   </TableCell>
                   <TableCell>
                     <Tooltip title="Edit">

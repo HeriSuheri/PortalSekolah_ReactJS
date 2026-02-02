@@ -8,7 +8,7 @@ import {
 import HomePage from "../pages/home";
 import HomePPDB from "../pages/home/HomePPDB";
 import RegisterPPDB from "../pages/home/RegisterPPDB";
-import CekRegisterPPDB from "../pages/home/CekRegisterPPDB";
+import CekRegisPPDB from "../pages/home/CekRegister";
 import LoginPage from "../pages/login/Login";
 import ForgotPasswordPage from "../pages/login/forgotPassword";
 import ResetPasswordPage from "../pages/login/forgotPassword/ResetPassword";
@@ -39,7 +39,7 @@ export default function AppRoutes() {
           <Route path="/" element={<HomePage />} />
           <Route path="/homePPDB" element={<HomePPDB />} />
           <Route path="/registerPPDB" element={<RegisterPPDB />} />
-          <Route path="/cekRegisterPPDB" element={<CekRegisterPPDB />} />
+          <Route path="/cekRegisterPPDB" element={<CekRegisPPDB />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -60,7 +60,7 @@ export default function AppRoutes() {
             <Route path="manajemen/guru" element={<Guru />} />
             <Route path="manajemen/mapel" element={<Mapel />} />
             <Route path="manajemen/kelas" element={<MgmtKelas />} />
-            <Route path="manajemen/kelas/:id" element={<DetailKelas />} /> 
+            <Route path="manajemen/kelas/:id" element={<DetailKelas />} />
             <Route path="ppdb-registrasi" element={<PPDBRegistrasi />} />
             <Route path="*" element={<NotFound />} />
           </Route>

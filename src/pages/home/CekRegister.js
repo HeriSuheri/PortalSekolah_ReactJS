@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import HomeService from "./HomeServive";
 
-export default function CekRegisterPPDB() {
+export default function CekRegister() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     noPendaftaran: "",

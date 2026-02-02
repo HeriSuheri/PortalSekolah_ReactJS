@@ -66,6 +66,14 @@ const EditDataCalonSiswa = ({
             value={formData.nama}
             onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Tanggal Lahir"
@@ -76,6 +84,14 @@ const EditDataCalonSiswa = ({
             }
             InputLabelProps={{ shrink: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Nama Ayah"
@@ -84,6 +100,14 @@ const EditDataCalonSiswa = ({
               setFormData({ ...formData, namaAyah: e.target.value })
             }
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Nama Ibu"
@@ -92,9 +116,32 @@ const EditDataCalonSiswa = ({
               setFormData({ ...formData, namaIbu: e.target.value })
             }
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
-          <FormControl>
-            <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
+          <FormControl
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
+            <FormLabel
+              id="jenisKelamin-label"
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+            >
+              Jenis Kelamin
+            </FormLabel>
             <RadioGroup
               row
               aria-labelledby="jenisKelamin-label"
@@ -108,11 +155,21 @@ const EditDataCalonSiswa = ({
                 value="LAKI_LAKI"
                 control={<Radio />}
                 label="Laki-laki"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
               <FormControlLabel
                 value="PEREMPUAN"
                 control={<Radio />}
                 label="Perempuan"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
             </RadioGroup>
           </FormControl>
@@ -123,6 +180,14 @@ const EditDataCalonSiswa = ({
               setFormData({ ...formData, noHandphone: e.target.value })
             }
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Email"
@@ -132,6 +197,14 @@ const EditDataCalonSiswa = ({
               setFormData({ ...formData, email: e.target.value })
             }
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             error={formData?.email && !isValidEmail(formData.email)}
             helperText={
               formData?.email && !isValidEmail(formData.email)
@@ -165,9 +238,34 @@ const EditDataCalonSiswa = ({
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="statusBayar-label">Status Pembayaran</InputLabel>
+          <FormControl
+            fullWidth
+            margin="normal"
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
+            <InputLabel
+              id="statusBayar-label"
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+            >
+              Status Pembayaran
+            </InputLabel>
             <Select
               labelId="statusBayar-label"
               label="Status Pembayaran"
@@ -190,8 +288,25 @@ const EditDataCalonSiswa = ({
               </div>
             )}
           </FormControl>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="status-label">Status</InputLabel>
+          <FormControl
+            fullWidth
+            margin="normal"
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
+            <InputLabel
+              id="status-label"
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+            >
+              Status
+            </InputLabel>
             <Select
               labelId="status-label"
               label="Status"
@@ -218,6 +333,7 @@ const EditDataCalonSiswa = ({
             <InputLabel
               id="alamat-label"
               style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
             >
               Alamat:
             </InputLabel>
@@ -233,6 +349,7 @@ const EditDataCalonSiswa = ({
                 borderRadius: "4px",
                 fontFamily: "inherit",
                 outline: "none",
+                fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
               }}
               value={formData?.alamat || ""}
               onChange={(e) =>
@@ -244,6 +361,7 @@ const EditDataCalonSiswa = ({
             <InputLabel
               id="catatan-label"
               style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+              sx={{ fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" } }}
             >
               Catatan:
             </InputLabel>
@@ -259,6 +377,7 @@ const EditDataCalonSiswa = ({
                 borderRadius: "4px",
                 fontFamily: "inherit",
                 outline: "none",
+                fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
               }}
               value={formData?.catatanValidasi || ""}
               onChange={(e) =>

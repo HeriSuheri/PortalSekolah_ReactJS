@@ -59,6 +59,7 @@ export default function Container() {
         component="main"
         sx={{
           flexGrow: 1,
+          overflowX: "auto" ,
           p: 3,
           transition: "margin-left 0.3s ease",
           // marginLeft: sidebarOpen ? `${drawerWidth}px` : 0,

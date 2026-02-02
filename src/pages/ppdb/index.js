@@ -314,6 +314,13 @@ export default function PPDBRegistrasi() {
 
   //  END TABEL SISWA
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   console.log("SISWA DATA:", siswaData);
   console.log("DATA TABEL SISWA:", dataTabel);
   console.log("FORM DATA EDIT:", formData);
@@ -338,14 +345,24 @@ export default function PPDBRegistrasi() {
         </Box>
       )}
       <Box>
-        <Typography variant="h5" fontWeight="bold" color="primary">
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          color="primary"
+          sx={{
+            fontSize: { xs: "0.75rem", sm: "1rem", md: "1.25rem" }, // responsif
+          }}
+        >
           Registrasi PPDB
         </Typography>
         {/* <Divider /> */}
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ fontStyle: "italic" }}
+          sx={{
+            fontStyle: "italic",
+            fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // mobile lebih kecil
+          }}
         >
           Kelola data registrasi PPDB
         </Typography>
@@ -361,6 +378,11 @@ export default function PPDBRegistrasi() {
       </Box>
 
       <FormControlLabel
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+          },
+        }}
         control={
           <Checkbox
             checked={notRegister}
@@ -411,6 +433,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Tanggal Lahir"
@@ -423,6 +453,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Email"
@@ -433,6 +471,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             error={siswaData?.email && !isValidEmail(siswaData.email)}
             helperText={
               siswaData?.email && !isValidEmail(siswaData.email)
@@ -441,8 +487,23 @@ export default function PPDBRegistrasi() {
             }
           />
 
-          <FormControl>
-            <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
+          <FormControl
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
+            <FormLabel
+              id="jenisKelamin-label"
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+            >
+              Jenis Kelamin
+            </FormLabel>
             <RadioGroup
               row
               aria-labelledby="jenisKelamin-label"
@@ -456,11 +517,21 @@ export default function PPDBRegistrasi() {
                 value="LAKI_LAKI"
                 control={<Radio />}
                 label="Laki-laki"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
               <FormControlLabel
                 value="PEREMPUAN"
                 control={<Radio />}
                 label="Perempuan"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
             </RadioGroup>
           </FormControl>
@@ -473,6 +544,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Nama Ibu"
@@ -483,6 +562,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
 
           <TextField
@@ -494,6 +581,14 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           {/* <TextField
             label="Jumlah Bayar"
@@ -523,10 +618,30 @@ export default function PPDBRegistrasi() {
             id="standard-basic"
             variant="standard"
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
 
           {/* statusPembayaran */}
-          <FormControl sx={{ width: "50%" }} margin="normal">
+          <FormControl
+            margin="normal"
+            sx={{
+              width: "50%",
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
             <InputLabel id="statusBayar-label">Status Pembayaran</InputLabel>
             <Select
               labelId="statusBayar-label"
@@ -554,7 +669,19 @@ export default function PPDBRegistrasi() {
             )}
           </FormControl>
           {/* status */}
-          <FormControl sx={{ width: "50%" }} margin="normal">
+          <FormControl
+            sx={{
+              width: "50%",
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+            margin="normal"
+          >
             <InputLabel id="status-label">Status</InputLabel>
             <Select
               labelId="status-label"
@@ -582,6 +709,7 @@ export default function PPDBRegistrasi() {
             <InputLabel
               id="alamat-label"
               style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
             >
               Alamat:
             </InputLabel>
@@ -597,6 +725,7 @@ export default function PPDBRegistrasi() {
                 borderRadius: "4px",
                 fontFamily: "inherit",
                 outline: "none",
+                fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
               }}
               value={siswaData?.alamat || ""}
               onChange={(e) =>
@@ -604,10 +733,11 @@ export default function PPDBRegistrasi() {
               }
             />
           </div>
-          <div style={{ marginBottom: "10px" }}>
+          <div style={{ marginBottom: "0px" }}>
             <InputLabel
               id="catatan-label"
               style={{ marginBottom: "4px" }} // atur jarak label ke textarea
+              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
             >
               Catatan:
             </InputLabel>
@@ -623,6 +753,7 @@ export default function PPDBRegistrasi() {
                 borderRadius: "4px",
                 fontFamily: "inherit",
                 outline: "none",
+                fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
               }}
               value={siswaData?.catatanValidasi || ""}
               onChange={(e) =>
@@ -644,7 +775,16 @@ export default function PPDBRegistrasi() {
               variant="contained"
               color="primary"
               startIcon={<CheckRoundedIcon />}
-              sx={{ borderRadius: "16px" }}
+              // sx={{ borderRadius: "16px" }}
+              sx={{
+                textTransform: "none",
+                boxShadow: 2,
+                borderRadius: 4,
+                // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+                // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+                fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+                width: { xs: "20%", sm: "auto" }, // di mobile full width, di desktop auto
+              }}
               onClick={handleSave}
               disabled={
                 !siswaData.nama ||
@@ -665,7 +805,16 @@ export default function PPDBRegistrasi() {
             <Button
               variant="contained"
               color="inherit"
-              sx={{ borderRadius: "16px" }}
+              // sx={{ borderRadius: "16px" }}
+              sx={{
+                textTransform: "none",
+                boxShadow: 2,
+                borderRadius: 4,
+                // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+                // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+                fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+                width: { xs: "20%", sm: "auto" }, // di mobile full width, di desktop auto
+              }}
               onClick={() => {
                 setSiswaData({
                   noPendaftaran: null,
@@ -702,7 +851,10 @@ export default function PPDBRegistrasi() {
             // flexDirection: "row",
             minHeight: "100vh",
             // alignItems: "center",
-            p: 2,
+            // p: 2,
+            pt: 2,
+            pl: 2,
+            pr: 2,
             mt: 3,
             backgroundColor: loading ? "grey.300" : "background.default",
             borderRadius: 4,
@@ -717,14 +869,24 @@ export default function PPDBRegistrasi() {
             px={1}
           >
             <Box>
-              <Typography variant="h5" fontWeight="bold" color="primary">
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="primary"
+                sx={{
+                  fontSize: { xs: "0.75rem", sm: "1rem", md: "1.25rem" }, // responsif
+                }}
+              >
                 Manajemen Calon Siswa
               </Typography>
               {/* <Divider /> */}
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{ fontStyle: "italic" }}
+                sx={{
+                  fontStyle: "italic",
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+                }}
               >
                 Kelola data calon siswa
               </Typography>
@@ -734,8 +896,15 @@ export default function PPDBRegistrasi() {
               variant="contained"
               startIcon={<CachedIcon />}
               onClick={generateData}
-              // disabled={!allowedNomorInduk.includes(user.nomorInduk)}
-              sx={{ textTransform: "none", boxShadow: 2, borderRadius: 4 }}
+              sx={{
+                textTransform: "none",
+                boxShadow: 2,
+                borderRadius: 4,
+                // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+                // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+                fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+                width: { xs: "40%", sm: "auto" }, // di mobile full width, di desktop auto
+              }}
             >
               Generate Data
             </Button>
@@ -775,7 +944,7 @@ export default function PPDBRegistrasi() {
                   sx: {
                     bgcolor: "#333", // warna background
                     color: "#fff", // warna teks
-                    fontSize: "0.8rem",
+                    fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
                     borderRadius: "4px",
                     boxShadow: 3,
                   },
@@ -794,7 +963,9 @@ export default function PPDBRegistrasi() {
                 sx={{
                   "& .MuiInputLabel-root": {
                     color: "rgba(0, 0, 0, 0.3)",
+                    fontSize: { xs: "0.75rem", sm: "0.80rem", md: "0.8rem" },
                   },
+                  fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
                 }}
               />
             </Tooltip>
@@ -815,6 +986,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Nomor
@@ -825,6 +997,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     No Pendaftaran
@@ -835,6 +1008,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Nama
@@ -845,6 +1019,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Email
@@ -855,6 +1030,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Tanggal Lahir
@@ -865,6 +1041,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Jenis Kelamin
@@ -875,6 +1052,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Nama Ayah
@@ -885,6 +1063,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Nama Ibu
@@ -895,6 +1074,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     No Telepon
@@ -906,6 +1086,7 @@ export default function PPDBRegistrasi() {
                       // maxWidth: "40px",
                       textAlign: "center",
                       minWidth: "100px",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Alamat
@@ -916,6 +1097,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Jumlah Bayar
@@ -926,6 +1108,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Status Pembayaran
@@ -936,6 +1119,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Status
@@ -946,6 +1130,7 @@ export default function PPDBRegistrasi() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Catatan
@@ -956,6 +1141,7 @@ export default function PPDBRegistrasi() {
                       // borderRight: "1px solid #ccc",
                       maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     Aksi
@@ -978,6 +1164,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {index + 1}
@@ -988,6 +1179,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "left",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.noPendaftaran}
@@ -998,6 +1194,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "left",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.nama}
@@ -1009,6 +1210,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "left",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.email}
@@ -1019,6 +1225,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.tanggalLahir}
@@ -1028,7 +1239,12 @@ export default function PPDBRegistrasi() {
                           // fontWeight: "bold",
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
-                          textAlign: "left",
+                          textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.jenisKelamin === "LAKI_LAKI" ? "L" : "P"}
@@ -1039,6 +1255,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "left",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.namaAyah}
@@ -1049,6 +1270,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "left",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.namaIbu}
@@ -1059,6 +1285,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.noHandphone}
@@ -1071,6 +1302,11 @@ export default function PPDBRegistrasi() {
                           // maxWidth: "40px",
                           textAlign: "left",
                           minWidth: "200px",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.alamat}
@@ -1081,6 +1317,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "right",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {new Intl.NumberFormat("id-ID", {
@@ -1095,6 +1336,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {/* {s.statusPembayaran} */}
@@ -1103,18 +1349,42 @@ export default function PPDBRegistrasi() {
                             label="MENUNGGU PEMBAYARAN"
                             color="warning"
                             variant="outlined"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
                           />
                         ) : s.statusPembayaran === "BELUM_LUNAS" ? (
                           <Chip
                             label="BELUM LUNAS"
                             color="error"
                             variant="outlined"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
                           />
                         ) : (
                           <Chip
                             label={s.statusPembayaran}
                             color="success"
                             variant="outlined"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
                           />
                         )}
                       </TableCell>
@@ -1122,14 +1392,52 @@ export default function PPDBRegistrasi() {
                         sx={{
                           borderRight: "1px solid #ccc",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.status === "MENUNGGU_VALIDASI" ? (
-                          <Chip label="MENUNGGU VALIDASI" color="warning" />
+                          <Chip
+                            label="MENUNGGU VALIDASI"
+                            color="warning"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
+                          />
                         ) : s.status === "DITERIMA" ? (
-                          <Chip label="DITERIMA" color="success" />
+                          <Chip
+                            label="DITERIMA"
+                            color="success"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
+                          />
                         ) : (
-                          <Chip label={s.status} color="error" />
+                          <Chip
+                            label={s.status}
+                            color="error"
+                            sx={{
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              },
+                              height: 24,
+                            }}
+                          />
                         )}
                       </TableCell>
 
@@ -1139,6 +1447,11 @@ export default function PPDBRegistrasi() {
                           borderRight: "1px solid #ccc",
                           // maxWidth: "40px",
                           textAlign: "center",
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
                         }}
                       >
                         {s.catatanValidasi}

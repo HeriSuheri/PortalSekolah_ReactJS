@@ -68,6 +68,14 @@ const AddSiswa = ({
                 label="Cari Calon Siswa"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                  },
+                }}
               />
             )}
             sx={{ width: 300 }}
@@ -80,6 +88,14 @@ const AddSiswa = ({
             InputProps={{ readOnly: true }}
             InputLabelProps={{ shrink: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Tanggal Lahir"
@@ -87,6 +103,14 @@ const AddSiswa = ({
             value={selectedPpdb?.tanggalLahir || ""}
             InputLabelProps={{ shrink: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             InputProps={{ readOnly: true }} // kalau mau hanya baca
           />
           <TextField
@@ -95,6 +119,14 @@ const AddSiswa = ({
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Email"
@@ -103,8 +135,26 @@ const AddSiswa = ({
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
-          <FormControl>
+          <FormControl
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
             <FormLabel id="jenisKelamin-label">Jenis Kelamin</FormLabel>
             <RadioGroup
               row
@@ -117,11 +167,21 @@ const AddSiswa = ({
                 value="LAKI_LAKI"
                 control={<Radio />}
                 label="Laki-laki"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
               <FormControlLabel
                 value="PEREMPUAN"
                 control={<Radio />}
                 label="Perempuan"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
               />
             </RadioGroup>
           </FormControl>
@@ -131,6 +191,14 @@ const AddSiswa = ({
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Nama Ibu"
@@ -138,6 +206,14 @@ const AddSiswa = ({
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
           />
           <TextField
             label="Alamat"
@@ -145,6 +221,14 @@ const AddSiswa = ({
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: true }}
             fullWidth
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             error={selectedPpdb?.email && !isValidEmail(selectedPpdb.email)}
             helperText={
               selectedPpdb?.email && !isValidEmail(selectedPpdb.email)

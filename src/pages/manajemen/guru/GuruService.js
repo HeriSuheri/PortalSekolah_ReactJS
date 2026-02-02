@@ -83,13 +83,14 @@ const DataService = {
   },
 
   async updateGuru(payload) {
-    const { id, nip, nama, tanggalLahir, email } = payload;
+    const { id, nip, nama, tanggalLahir, email, isActive } = payload;
     try {
       const response = await apiClient.put(`${API_ENDPOINTS.GURU}/${id}`, {
         nip,
         nama,
         email,
         tanggalLahir,
+        isActive,
       });
       console.log("RESPONSE API UPDATE GURU:", response);
       if (response.status === 200) {
@@ -113,7 +114,7 @@ const DataService = {
   async deleteGr(payload) {
     try {
       const response = await apiClient.delete(
-        `${API_ENDPOINTS.GURU}/${payload}`
+        `${API_ENDPOINTS.GURU}/${payload}`,
       );
       console.log("RESPONSE API DELETE GURU:", response);
       if (response.status === 200) {

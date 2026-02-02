@@ -247,7 +247,7 @@ export default function ManajemenKelas() {
 
   console.log("FORM DATA:", formData);
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box>
       {/* MODAL CREATE - EDIT KELAS */}
       <Dialog
         open={openModal}
@@ -275,6 +275,15 @@ export default function ManajemenKelas() {
         <DialogContent>
           <TextField
             label="Nama Kelas"
+            size="small"
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
             fullWidth
             margin="normal"
             value={formData.name}
@@ -288,7 +297,19 @@ export default function ManajemenKelas() {
               (isEditMode && !allowedNomorInduk.includes(user?.nomorInduk))
             }
           />
-          <FormControl fullWidth margin="normal">
+          <FormControl
+            fullWidth
+            margin="normal"
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiSelect-select": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi select responsif
+                // padding: { xs: "6px 8px", sm: "8px 10px", md: "10px 12px" }, // padding responsif
+              },
+            }}
+          >
             <InputLabel id="gradeLevel-label">Tingkat/Jenjang</InputLabel>
             <Select
               labelId="gradeLevel-label"
@@ -305,7 +326,18 @@ export default function ManajemenKelas() {
               ))}
             </Select>
           </FormControl>
-          <FormControl fullWidth margin="normal">
+          <FormControl
+            fullWidth
+            margin="normal"
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+              },
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+              },
+            }}
+          >
             <InputLabel id="waliKelas-label">Wali Kelas</InputLabel>
             <Select
               labelId="waliKelas-label"
@@ -330,6 +362,11 @@ export default function ManajemenKelas() {
               Status:
             </InputLabel>
             <FormControlLabel
+              sx={{
+                "& .MuiFormControlLabel-label": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+              }}
               control={
                 <Switch
                   checked={formData?.isActive}
@@ -459,14 +496,24 @@ export default function ManajemenKelas() {
         px={1}
       >
         <Box>
-          <Typography variant="h5" fontWeight="bold" color="primary">
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="primary"
+            sx={{
+              fontSize: { xs: "0.95rem", sm: "1,25rem", md: "1.5rem" },
+            }}
+          >
             Manajemen Kelas
           </Typography>
           {/* <Divider /> */}
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ fontStyle: "italic" }}
+            style={{
+              fontStyle: "italic",
+              fontSize: { xs: "0.3rem", sm: "0.65rem", md: "0.75rem" },
+            }}
           >
             Kelola data kelas
           </Typography>
@@ -476,8 +523,17 @@ export default function ManajemenKelas() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          disabled={!allowedNomorInduk.includes(user.nomorInduk)}
-          sx={{ textTransform: "none", boxShadow: 2 }}
+          // disabled={!allowedNomorInduk.includes(user.nomorInduk)}
+          disabled={user?.role === "GURU" || user?.role === "SISWA"}
+          sx={{
+            textTransform: "none",
+            boxShadow: 2,
+            borderRadius: 4,
+            // px: { xs: 2, sm: 3, md: 4 }, // padding horizontal menyesuaikan layar
+            // py: { xs: 1, sm: 1.5 }, // padding vertical menyesuaikan layar
+            fontSize: { xs: "0.50rem", sm: "0.75rem", md: "1rem" }, // font size adaptif
+            width: { xs: "40%", sm: "auto" }, // di mobile full width, di desktop auto
+          }}
         >
           Tambah Kelas
         </Button>
@@ -493,7 +549,7 @@ export default function ManajemenKelas() {
             sx: {
               bgcolor: "#333", // warna background
               color: "#fff", // warna teks
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
               borderRadius: "4px",
               boxShadow: 3,
             },
@@ -515,7 +571,9 @@ export default function ManajemenKelas() {
           sx={{
             "& .MuiInputLabel-root": {
               color: "rgba(0, 0, 0, 0.3)",
+              fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
             },
+            fontSize: { xs: "0.5rem", sm: "0.7rem", md: "0.8rem" },
           }}
         />
       </Tooltip>
@@ -544,6 +602,7 @@ export default function ManajemenKelas() {
                     borderRight: "1px solid #ccc",
                     // mWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nomor
@@ -554,6 +613,7 @@ export default function ManajemenKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Nama Kelas
@@ -564,6 +624,7 @@ export default function ManajemenKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "50px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Tingkatan/Jenjang
@@ -573,6 +634,7 @@ export default function ManajemenKelas() {
                     fontWeight: "bold",
                     borderRight: "1px solid #ccc",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     // maxWidth: "100px",
                   }}
                 >
@@ -584,6 +646,7 @@ export default function ManajemenKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Jumlah Siswa
@@ -594,15 +657,17 @@ export default function ManajemenKelas() {
                     borderRight: "1px solid #ccc",
                     // maxWidth: "40px",
                     textAlign: "center",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
-                  STATUS
+                  Status
                 </TableCell>
                 <TableCell
                   sx={{
                     fontWeight: "bold",
                     textAlign: "center",
-                    minWidth: "40px",
+                    // minWidth: "40px",
+                    fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                   }}
                 >
                   Aksi
@@ -628,6 +693,7 @@ export default function ManajemenKelas() {
                       // whiteSpace: "normal",
                       // wordBreak: "break-word",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {page * rowsPerPage + index + 1}
@@ -641,7 +707,8 @@ export default function ManajemenKelas() {
                       // // whiteSpace: "nowrap",
                       // whiteSpace: "normal",
                       // wordBreak: "break-word",
-                      textAlign: "center",
+                      textAlign: "left",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {kls.name}
@@ -656,6 +723,7 @@ export default function ManajemenKelas() {
                       // whiteSpace: "normal",
                       // wordBreak: "break-word",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {kls.gradeLevelName}
@@ -669,6 +737,8 @@ export default function ManajemenKelas() {
                       // whiteSpace: "nowrap",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
+                      textAlign: "left",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {kls.waliGuruName}
@@ -679,6 +749,7 @@ export default function ManajemenKelas() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {kls.jumlahSiswa}
@@ -689,12 +760,35 @@ export default function ManajemenKelas() {
                       borderRight: "1px solid #ccc",
                       // maxWidth: "40px",
                       textAlign: "center",
+                      fontSize: { xs: "0.50rem", sm: "0.65rem", md: "0.85rem" },
                     }}
                   >
                     {kls.isActive ? (
-                      <Chip label="ACTIVE" color="success" />
+                      <Chip
+                        label="ACTIVE"
+                        color="success"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
                     ) : (
-                      <Chip label="NON ACTIVE" color="error" />
+                      <Chip
+                        label="NON ACTIVE"
+                        color="error"
+                        sx={{
+                          fontSize: {
+                            xs: "0.50rem",
+                            sm: "0.65rem",
+                            md: "0.85rem",
+                          },
+                          height: 24,
+                        }}
+                      />
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center", minWidth: "40px" }}>
@@ -702,7 +796,10 @@ export default function ManajemenKelas() {
                       <IconButton
                         color="primary"
                         onClick={() => handleOpenEdit(kls)}
-                        disabled={!allowedNomorInduk.includes(user.nomorInduk)}
+                        // disabled={!allowedNomorInduk.includes(user.nomorInduk)}
+                        disabled={
+                          user?.role === "GURU" || user?.role === "SISWA"
+                        }
                       >
                         <EditIcon />
                       </IconButton>
