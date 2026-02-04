@@ -150,7 +150,7 @@ export default function ManajemenKelas() {
   };
 
   const fetchKelas = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await KelasService.getKelas({ page, size: rowsPerPage });
       console.log("RESPONSE DATA KELAS:", response);
@@ -179,7 +179,7 @@ export default function ManajemenKelas() {
   };
 
   const fetchFilteredKelas = async (keyword) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await KelasService.searchKelas({
         page,

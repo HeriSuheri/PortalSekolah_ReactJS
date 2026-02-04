@@ -113,7 +113,14 @@ export default function CekRegister() {
           <Box sx={{ p: 3 }}>
             {/* Input + Label */}
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <Typography sx={{ mr: 2 }}>Input Nomor Pendaftaran</Typography>
+              <Typography
+                sx={{
+                  mr: 2,
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" },
+                }}
+              >
+                Input Nomor Pendaftaran
+              </Typography>
               <TextField
                 label="Nomor Pendaftaran"
                 variant="outlined"
@@ -125,6 +132,14 @@ export default function CekRegister() {
                     noPendaftaran: e.target.value.toUpperCase(),
                   });
                   setResponse(null);
+                }}
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                  },
                 }}
               />
             </Box>

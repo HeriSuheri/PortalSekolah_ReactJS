@@ -149,7 +149,7 @@ export default function ManajemenAdmin() {
   };
 
   const fetchAdmins = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await AdminService.getAdmin({ page, size: rowsPerPage });
       console.log("RESPONSE DATA ADMIN:", response);
@@ -178,7 +178,7 @@ export default function ManajemenAdmin() {
   };
 
   const fetchFilteredAdmins = async (keyword) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await AdminService.searchAdmin({
         page,
@@ -358,6 +358,7 @@ export default function ManajemenAdmin() {
                     setFormData({ ...formData, isActive: check });
                   }}
                   color="primary"
+                  disabled={formData?.nomorInduk === "A0000001"}
                 />
               }
               label={formData?.isActive ? "Active" : "Non Active"}

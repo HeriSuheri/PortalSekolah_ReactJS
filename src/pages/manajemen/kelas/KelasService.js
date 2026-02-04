@@ -416,6 +416,128 @@ const DataService = {
     }
   },
 
+  // arsip berhenti
+  async getSiswaPagingBerhenti({ page = 0, size = 10, tahun = "" } = {}) {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.SISWA}/berhenti`, {
+        params: { tahunBerhenti: tahun, page, size },
+      });
+
+      console.log("RESPONSE API GET SISWA:", response);
+
+      if (response.status === 200 && response.data?.success) {
+        return {
+          success: true,
+          data: response.data.data, // ini Map<String, Object> dari backend
+          message: response.data.message || "Get Siswa Successfully",
+        };
+      }
+
+      return {
+        success: false,
+        message: response.data?.message || "Get Siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get Siswa");
+    }
+  },
+
+  async searchDataSiswaBerhenti({
+    keyword = "",
+    page = 0,
+    size = 10,
+    tahun = "",
+  } = {}) {
+    try {
+      const response = await apiClient.get(
+        `${API_ENDPOINTS.SISWA}/berhenti/search`,
+        {
+          params: { keyword, tahunBerhenti: tahun, page, size },
+        },
+      );
+      console.log("RESPONSE API CARI SISWA:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get search siswa Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get search siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Search siswa");
+    }
+  },
+  // end arsip berhenti
+
+  // arsip lulus
+  async getSiswaPagingLulus({ page = 0, size = 10, tahun = "" } = {}) {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.SISWA}/lulus`, {
+        params: { angkatan: tahun, page, size },
+      });
+
+      console.log("RESPONSE API GET SISWA:", response);
+
+      if (response.status === 200 && response.data?.success) {
+        return {
+          success: true,
+          data: response.data.data, // ini Map<String, Object> dari backend
+          message: response.data.message || "Get Siswa Successfully",
+        };
+      }
+
+      return {
+        success: false,
+        message: response.data?.message || "Get Siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get Siswa");
+    }
+  },
+
+  async searchDataSiswaLulus({
+    keyword = "",
+    page = 0,
+    size = 10,
+    tahun = "",
+  } = {}) {
+    try {
+      const response = await apiClient.get(
+        `${API_ENDPOINTS.SISWA}/lulus/search`,
+        {
+          params: { keyword, angkatan: tahun, page, size },
+        },
+      );
+      console.log("RESPONSE API CARI SISWA:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get search siswa Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get search siswa Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Search siswa");
+    }
+  },
+  // end arsip siswa lulus
+
   async getClassAll() {
     try {
       const response = await apiClient.get(`${API_ENDPOINTS.KELAS}/all`);
@@ -441,7 +563,9 @@ const DataService = {
   async getDataPpdb() {
     const tahun = new Date().getFullYear();
     try {
-      const response = await apiClient.get(`${API_ENDPOINTS.REGISTER_URL}/all?tahun=${tahun}`);
+      const response = await apiClient.get(
+        `${API_ENDPOINTS.REGISTER_URL}/all?tahun=${tahun}`,
+      );
       console.log("RESPONSE API DATA PPDB:", response);
       if (response.status === 200) {
         return {
@@ -458,6 +582,90 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Get data PPDB");
+    }
+  },
+
+  async postArchive(selected, status, dataAlasan) {
+    try {
+      let response = null;
+      if (status === "BERHENTI") {
+        response = await apiClient.post(
+          `${API_ENDPOINTS.SISWA}/${selected?.id}/berhenti`,
+          { alasan: dataAlasan },
+        );
+      } else {
+        response = await apiClient.post(
+          `${API_ENDPOINTS.SISWA}/${selected?.id}/lulus`,
+          { alasan: dataAlasan },
+        );
+      }
+
+      console.log("RESPONSE API KIRIM ARSIP:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Arsip Data Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Arsip Data Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Arsip Data");
+    }
+  },
+
+  async undoBerhenti(data) {
+    try {
+      const response = await apiClient.put(
+        `${API_ENDPOINTS.SISWA}/berhenti/undo/${data?.id}`,
+      );
+
+      console.log("RESPONSE API UNDO BERHENTI:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Undo berhenti Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Undo berhenti Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Undo berhenti");
+    }
+  },
+
+  async undoLulus(data) {
+    try {
+      const response = await apiClient.put(
+        `${API_ENDPOINTS.SISWA}/lulus/undo/${data?.id}`,
+      );
+
+      console.log("RESPONSE API UNDO LULUS:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Undo lulus Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Undo lulus Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Undo lulus");
     }
   },
 };

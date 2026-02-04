@@ -45,6 +45,7 @@ import { useDebounce } from "../../../hook/UseDebounce";
 import PopUpModal from "../../../components/PopUpModal";
 import ConfirmModal from "../../../components/DialogPopup";
 import AddNewSiswa from "./AddNewSiswa";
+import SnackBarAlert from "../../../components/SnackbarAlert";
 
 export default function DetailKelas() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function DetailKelas() {
   const allowedNomorInduk = ["A0000001", "A0000002"];
   console.log("USERLOGIN:", user);
   const { id } = useParams(); // ambil classroomId dari URL
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [openToast, setOpenToast] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [kelasDetail, setKelasDetail] = useState([]);
@@ -89,8 +90,17 @@ export default function DetailKelas() {
   const [idDelete, setIdDelete] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
+  // ARSIP
+  const [openArsip, setOpenArsip] = useState(false);
+  const [selectedSiswa, setSelectedSiswa] = useState(null);
+  const [status, setStatus] = useState(null);
+  const [alasan, setAlasan] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastSeverity, setToastSeverity] = useState("success");
+
   const fetchData = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const res = await KelasService.getKelasDetail({
         id,
@@ -121,7 +131,7 @@ export default function DetailKelas() {
   };
 
   const fetchFilteredData = async (keyword) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await KelasService.searchSiswa({
         id,
@@ -312,8 +322,6 @@ export default function DetailKelas() {
     }
   };
 
-  const handleArsipClick = (el) => {};
-
   const handleSubmitAddNew = async () => {
     setLoading(true);
     try {
@@ -359,32 +367,99 @@ export default function DetailKelas() {
     }
   }, [id, debouncedSearch, page, rowsPerPage]);
 
+  // start arsip
+  const handleArsipClick = (siswa) => {
+    setSelectedSiswa(siswa);
+    setOpenArsip(true);
+  };
+
+  const handleCloseArsip = () => {
+    setOpenArsip(false);
+    setSelectedSiswa(null);
+    setAlasan("");
+    setStatus(null);
+  };
+
+  const handleArchive = async () => {
+    setLoading(true);
+    try {
+      const response = await KelasService.postArchive(
+        selectedSiswa,
+        status,
+        alasan,
+      );
+      console.log("RESPONSE ARSIP DATA:", response);
+      if (response.success) {
+        setToastMessage("Siswa berhasil diarsipkan");
+        setToastSeverity("success");
+        setToastOpen(true);
+        handleCloseArsip();
+        if (debouncedSearch.length > 0 || page > 0) {
+          setSearchTerm("");
+          setPage(0);
+        } else {
+          fetchData();
+        }
+      } else {
+        setToastMessage(response?.message || "Gagal arsip data");
+        setToastSeverity("error");
+        setToastOpen(true);
+      }
+    } catch (err) {
+      setToastMessage("Error: " + err.message);
+      setToastSeverity("error");
+      setToastOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // end arsip
+
   useEffect(() => {
     getClassroom();
     getDataPpdb();
   }, []);
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="200px"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box
+  //       display="flex"
+  //       justifyContent="center"
+  //       alignItems="center"
+  //       height="200px"
+  //     >
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   console.log("DETAIL KELAS:", kelasDetail);
   console.log("FORM DATA SISWA:", formData);
   console.log("ID:", id);
   console.log("SELECTED PPDB:", selectedPpdb);
   console.log("DATA PPDB:", dataPpdb);
+  console.log("SELECTED SISWA:", selectedSiswa);
 
   return (
     <Box>
+      {loading && (
+        <Box
+          sx={{
+            position: "fixed", // atau "absolute" kalau mau relatif ke parent
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: "rgba(255,255,255,0.7)", // semi transparan background
+            zIndex: 1300, // lebih tinggi dari konten biasa
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       <Snackbar
         open={openToast}
         autoHideDuration={3000}
@@ -396,7 +471,7 @@ export default function DetailKelas() {
         </Alert>
       </Snackbar>
 
-      {/* add/edit siswa */}
+      {/* edit siswa */}
       <Dialog
         open={openModal}
         onClose={(event, reason) => {
@@ -1309,6 +1384,98 @@ export default function DetailKelas() {
         selectedPpdb={selectedPpdb}
         setSelectedPpdb={setSelectedPpdb}
         handleSubmit={handleSubmitAddNew}
+      />
+      {/* ARSIP SISWA */}
+      <Dialog
+        open={openArsip}
+        onClose={(event, reason) => {
+          // blok kalau close karena klik backdrop atau tekan ESC
+          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            handleCloseArsip();
+          }
+        }}
+        disableEscapeKeyDown
+        fullWidth
+        maxWidth="sm"
+        sx={{
+          "& .MuiPaper-root": {
+            borderRadius: 3,
+            border: "2px solid #1976d2",
+            padding: 2,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+        >
+          {`Arsipkan Siswa atas Nama ${selectedSiswa?.nama}`}
+        </DialogTitle>
+        <DialogContent>
+          <RadioGroup
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <FormControlLabel
+              value="BERHENTI"
+              control={<Radio />}
+              label="Berhenti"
+              sx={{
+                "& .MuiFormControlLabel-label": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+              }}
+            />
+            {kelasDetail?.gradeLevelId === 3 && (
+              <FormControlLabel
+                value="LULUS"
+                control={<Radio />}
+                label="Lulus"
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                  },
+                }}
+              />
+            )}
+          </RadioGroup>
+          <TextField
+            label="Alasan"
+            fullWidth
+            multiline
+            rows={3}
+            value={alasan}
+            onChange={(e) => setAlasan(e.target.value)}
+            margin="normal"
+            sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" } }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseArsip}>Batal</Button>
+          <Button
+            onClick={handleArchive}
+            variant="contained"
+            color="primary"
+            disabled={!status || alasan === ""}
+          >
+            Konfirmasi
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <SnackBarAlert
+        open={toastOpen}
+        setOpen={setToastOpen}
+        message={toastMessage}
+        setMessage={setToastMessage}
+        severity={toastSeverity}
+        setSeverity={setToastSeverity}
+        handleClose={(event, reason) => {
+          if (reason === "clickaway") return;
+          setToastOpen(false);
+        }}
+        // onCloseIcon={() => {
+        //   setOpenToast(false);
+        //   // setSelectedSiswa(null);
+        // }}
       />
     </Box>
   );

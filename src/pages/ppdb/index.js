@@ -186,7 +186,7 @@ export default function PPDBRegistrasi() {
 
   // START TABEL SISWA
   const generateData = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const res = await HomeService.getPpdbPaging({
         page,
@@ -220,7 +220,7 @@ export default function PPDBRegistrasi() {
   };
 
   const fetchFilteredData = async (keyword) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await HomeService.searchDataCalonSiswa({
         keyword,
@@ -924,7 +924,13 @@ export default function PPDBRegistrasi() {
                 labelId="tahun-label"
                 label="Pilih Tahun PPDB"
                 value={tahun}
-                onChange={(e) => setTahun(e.target.value)}
+                onChange={(e) => {
+                  setTahun(e.target.value);
+                  if (debouncedSearch.length > 0 || page > 0) {
+                    setSearchTerm("");
+                    setPage(0);
+                  }
+                }}
               >
                 {years.map((y) => (
                   <MenuItem key={y} value={y}>

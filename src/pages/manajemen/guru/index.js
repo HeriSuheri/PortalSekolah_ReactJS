@@ -149,7 +149,7 @@ export default function ManajemenGuru() {
   };
 
   const fetchGuru = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await GuruService.getGuru({ page, size: rowsPerPage });
       console.log("RESPONSE DATA GURU:", response);
@@ -178,7 +178,7 @@ export default function ManajemenGuru() {
   };
 
   const fetchFilteredGuru = async (keyword) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await GuruService.searchGuru({
         page,

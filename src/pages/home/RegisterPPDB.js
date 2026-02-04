@@ -72,7 +72,13 @@ export default function PpdbRegisterPage() {
 
   return (
     <>
-      <Box sx={{ pt: 2, pl: 5 }}>
+      <Box
+        sx={{
+          pt: 2,
+          pl: 5,
+          fontSize: { xs: "0.65rem", sm: "0.85rem", md: "1.25rem" },
+        }}
+      >
         Telah mendaftar ?{" "}
         <Link href="cekRegisterPPDB" color="primary" underline="hover">
           Cek disini...
@@ -89,7 +95,13 @@ export default function PpdbRegisterPage() {
           backgroundColor: loading ? "grey.300" : "background.default",
         }}
       >
-        <Box sx={{ flex: 1, p: 3 }}>
+        <Box
+          sx={{
+            flex: 1,
+            p: 3,
+            fontSize: { xs: "0.65rem", sm: "0.85rem", md: "1.25rem" },
+          }}
+        >
           <Typography
             variant="h4"
             component="h1"
@@ -126,6 +138,14 @@ export default function PpdbRegisterPage() {
               margin="normal"
               id="standard-basic"
               variant="standard"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -138,6 +158,14 @@ export default function PpdbRegisterPage() {
               id="standard-basic"
               variant="standard"
               label="Tanggal Lahir"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
               //   placeholder="Tanggal Lahir"
             />
             <TextField
@@ -149,6 +177,14 @@ export default function PpdbRegisterPage() {
               margin="normal"
               id="standard-basic"
               variant="standard"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -159,6 +195,14 @@ export default function PpdbRegisterPage() {
               margin="normal"
               id="standard-basic"
               variant="standard"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -176,6 +220,14 @@ export default function PpdbRegisterPage() {
                   ? "Format email tidak valid"
                   : ""
               }
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // label responsif
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.75rem", sm: "0.875rem", md: "1rem" }, // isi input responsif
+                },
+              }}
             />
             <Box
               sx={{

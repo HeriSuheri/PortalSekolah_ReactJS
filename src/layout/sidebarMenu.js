@@ -10,6 +10,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import GridViewTwoToneIcon from "@mui/icons-material/GridViewTwoTone";
 import AppRegistration  from "@mui/icons-material/AppRegistration";
+import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 
 export const sidebarMenu = [
   {
@@ -115,5 +116,11 @@ export const sidebarMenu = [
     icon: <AppRegistration />,
     roles: ["admin"],
     // tidak perlu roles → otomatis general
+  },
+   {
+    label: "Arsip",
+    path: "/arsip",
+    icon: <ArchiveTwoToneIcon />,
+    roles: ["admin"],
   },
 ];
