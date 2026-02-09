@@ -219,6 +219,15 @@ function Beranda() {
                     component={item.href.startsWith("/") ? Link : "a"}
                     to={item.href.startsWith("/") ? item.href : undefined}
                     href={item.href.startsWith("/") ? undefined : item.href}
+                    sx={{
+                      borderRadius: "20px",
+                      mx: 1,
+                      transition: "all 0.3s",
+                      "&:hover": {
+                        bgcolor: "primary.light",
+                        borderColor: "primary.dark",
+                      },
+                    }}
                   >
                     {item.text}
                   </Button>
@@ -407,10 +416,7 @@ function Beranda() {
               />
             </Box>
             {/* berita */}
-            <Box
-              id="berita"
-              sx={{ scrollMarginTop: "64px", minHeight: "100vh" }}
-            >
+            <Box id="berita" sx={{ scrollMarginTop: "64px" }}>
               <Typography
                 variant="h4"
                 gutterBottom
@@ -471,10 +477,7 @@ function Beranda() {
               />
             </Box>
             {/* agenda */}
-            <Box
-              id="agenda"
-              sx={{ scrollMarginTop: "64px", minHeight: "100vh" }}
-            >
+            <Box id="agenda" sx={{ scrollMarginTop: "64px" }}>
               <Typography
                 variant="h4"
                 gutterBottom
@@ -500,31 +503,45 @@ function Beranda() {
                   }
                   // pastikan param_value di DB berupa JSON array
                   return (
-                    <List
+                    <Box
                       data-aos="fade-up"
                       data-aos-delay="100"
                       sx={{
-                        fontSize: { xs: "0.875rem", md: "1rem" },
-                        listStyleType: "decimal", // nomor otomatis
-                        pl: 3,
+                        bgcolor: "background.default", // warna agak gelap
+                        // color: "white", // teks putih biar kontras
+                        borderRadius: 4, // sudut melengkung
+                        p: 2, // padding dalam box
+                        mb: 2, // jarak antar berita
+                        border: "1.5px solid #1976d2",
+                        // minHeight: "80vh"
                       }}
                     >
-                      {arr.map((item, idx) => (
-                        <ListItem
-                          key={idx}
-                          sx={{ display: "list-item", py: 0.5 }} // biar nomor muncul & jarak rapat
-                        >
-                          <ListItemText
-                            primary={item}
-                            sx={{
-                              "& .MuiListItemText-primary": {
-                                fontSize: { xs: "0.875rem", md: "1rem" },
-                              },
-                            }}
-                          />
-                        </ListItem>
-                      ))}
-                    </List>
+                      <List
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        sx={{
+                          fontSize: { xs: "0.875rem", md: "1rem" },
+                          listStyleType: "decimal", // nomor otomatis
+                          pl: 3,
+                        }}
+                      >
+                        {arr.map((item, idx) => (
+                          <ListItem
+                            key={idx}
+                            sx={{ display: "list-item", py: 0.5 }} // biar nomor muncul & jarak rapat
+                          >
+                            <ListItemText
+                              primary={item}
+                              sx={{
+                                "& .MuiListItemText-primary": {
+                                  fontSize: { xs: "0.875rem", md: "1rem" },
+                                },
+                              }}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Box>
                   );
                 } catch {
                   return null;
@@ -576,12 +593,24 @@ function Beranda() {
               </Typography>
             </Box>
             <Box
+              component="a"
+              href="https://wa.me/6285214210194"
+              target="_blank"
+              rel="noopener noreferrer"
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-start",
-                width: "200px",
+                // width: "200px",
                 gap: 1,
+                transition: "all 0.3s",
+                "&:hover": {
+                  textDecoration: "none",
+                  bgcolor: "primary.dark", // teks & icon berubah warna saat hover
+                  color: "white",
+                  boxShadow: 3,
+                  transform: "translateY(-2px) scale(1.05)", // sedikit naik
+                },
               }}
             >
               <WhatsAppIcon />

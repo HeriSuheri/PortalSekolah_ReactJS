@@ -22,6 +22,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import ClassIcon from "@mui/icons-material/Class";
 import AdminService from "../manajemen/admin/AdminService";
 import GuruService from "../manajemen/guru/GuruService";
+import HomeService from "../home/HomeServive";
 import KelasService from "../manajemen/kelas/KelasService";
 import ConfirmModal from "../../components/DialogPopup";
 import { useAuth } from "../../internal/AuthContext";
@@ -38,6 +39,7 @@ export default function DashboardPage() {
   const [totalGuru, setTotalGuru] = useState(0);
   const [totalSiswa, setTotalSiswa] = useState(0);
   const [totalKelas, setTotalKelas] = useState(0);
+  const [content, setDataContent] = useState([]);
 
   const getAdmins = async () => {
     setLoading(true);
@@ -111,6 +113,27 @@ export default function DashboardPage() {
     }
   };
 
+  const getDataContent = async () => {
+    try {
+      const response = await HomeService.getContent();
+      if (response.success) {
+        // sort ascending berdasarkan id
+        const sortedData = [...(response?.data || [])].sort(
+          (a, b) => a.id - b.id,
+        );
+        setDataContent(sortedData);
+      } else {
+        setErrorMsg(response.message || "Gagal get data");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const cardData = [
     {
       label: "Admin",
@@ -143,6 +166,7 @@ export default function DashboardPage() {
     getGuru();
     getSiswa();
     getClassroom();
+    getDataContent();
     window.scrollTo({ top: 0, behavior: "smooth" });
     const loginAwal = localStorage.getItem("loginAwal");
     if (loginAwal === "true") {
@@ -196,7 +220,14 @@ export default function DashboardPage() {
       />
 
       {/* Title */}
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)",
+          fontWeight: "bold",
+        }}
+      >
         Dashboard
       </Typography>
       <Divider sx={{ mb: 3 }} />
@@ -249,21 +280,67 @@ export default function DashboardPage() {
 
       {/* Section tambahan: Pengumuman */}
       <Divider sx={{ my: 4 }} />
-      <Typography variant="h5" gutterBottom>
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        gutterBottom
+        sx={{ fontSize: { xs: "0.85rem", sm: "1rem", md: "1.25rem" } }}
+      >
         Pengumuman Terbaru
       </Typography>
-      <Paper sx={{ p: 2 }}>
-        <List>
-          <ListItem>
-            <ListItemText primary="Ujian akhir semester dimulai 10 Desember 2025" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Libur Natal: 24–26 Desember 2025" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Workshop Guru: 15 Januari 2026" />
-          </ListItem>
-        </List>
+      <Paper sx={{ p: 2, borderRadius: 4 }}>
+        {(() => {
+          const agenda = content.find(
+            (c) => c.paramKey === "agenda",
+          )?.paramValue;
+          try {
+            let arr;
+            try {
+              arr = JSON.parse(agenda);
+            } catch {
+              arr = agenda;
+            }
+            return (
+              <Box
+                sx={{
+                  // bgcolor: "background.default", // warna agak gelap
+                  // color: "white", // teks putih biar kontras
+                  borderRadius: 4, // sudut melengkung
+                  p: 2, // padding dalam box
+                  mb: 2, // jarak antar berita
+                  border: "1.5px solid #1976d2",
+                  // minHeight: "80vh"
+                }}
+              >
+                <List
+                  sx={{
+                    fontSize: { xs: "0.875rem", md: "1rem" },
+                    listStyleType: "decimal", // nomor otomatis
+                    pl: 3,
+                  }}
+                >
+                  {arr.map((item, idx) => (
+                    <ListItem
+                      key={idx}
+                      sx={{ display: "list-item", py: 0.5 }} // biar nomor muncul & jarak rapat
+                    >
+                      <ListItemText
+                        primary={item}
+                        sx={{
+                          "& .MuiListItemText-primary": {
+                            fontSize: { xs: "0.750rem", md: "1rem" },
+                          },
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            );
+          } catch {
+            return null;
+          }
+        })()}
       </Paper>
     </>
   );
