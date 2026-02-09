@@ -3,7 +3,7 @@ import { apiClient, handleError } from "../../service/BaseApi";
 const API_ENDPOINTS = {
   REGISTER_PPDB: process.env.REACT_APP_REGISTER_PPDB,
   SISWA: process.env.REACT_APP_SISWA,
-  //   CHANGE_PASSWORD: process.env.REACT_APP_CHANGE_PASSWORD,
+  GENERAL_PARAM: process.env.REACT_APP_GENERAL_PARAM,
   //   ROLE: process.env.REACT_APP_ROLE,
   //   UPLOAD_FOTO: process.env.REACT_APP_UPLOAD_FOTO,
   //   FORGOT_PASSWORD: process.env.REACT_APP_FORGOT_PASSWORD,
@@ -225,6 +225,54 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Delete calon siswa");
+    }
+  },
+
+  // CONTENT
+  async getContent() {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.GENERAL_PARAM);
+      console.log("RESPONSE API GENERAL PARAM:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "get data Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "get data Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "get data general param");
+    }
+  },
+
+  async saveEditContent(key, payload) {
+    try {
+      const response = await apiClient.put(
+        `${API_ENDPOINTS.GENERAL_PARAM}/key/${key}`,
+        payload,
+      );
+      console.log("RESPONSE API SAVE CONTENT:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Save content Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Save content Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Save Content");
     }
   },
 };

@@ -9,8 +9,9 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import GridViewTwoToneIcon from "@mui/icons-material/GridViewTwoTone";
-import AppRegistration  from "@mui/icons-material/AppRegistration";
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
+import AppRegistration from "@mui/icons-material/AppRegistration";
+import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveTwoTone";
+import DatasetTwoToneIcon from "@mui/icons-material/DatasetTwoTone";
 
 export const sidebarMenu = [
   {
@@ -97,17 +98,17 @@ export const sidebarMenu = [
     icon: <ExpandMoreIcon />,
     children: [
       {
-        label: "Role",
-        path: "/pengaturan/role",
-        icon: <PersonIcon />,
-        roles: ["admin", "guru"],
+        label: "Content",
+        path: "/pengaturan/content",
+        icon: <DatasetTwoToneIcon />,
+        roles: ["admin"],
       },
-      {
-        label: "Menu",
-        path: "/pengaturan/menu",
-        icon: <SettingsIcon />,
-        roles: ["admin", "guru"],
-      },
+      // {
+      //   label: "Menu",
+      //   path: "/pengaturan/menu",
+      //   icon: <SettingsIcon />,
+      //   roles: ["admin", "guru"],
+      // },
     ],
   },
   {
@@ -117,7 +118,7 @@ export const sidebarMenu = [
     roles: ["admin"],
     // tidak perlu roles → otomatis general
   },
-   {
+  {
     label: "Arsip",
     path: "/arsip",
     icon: <ArchiveTwoToneIcon />,

@@ -31,6 +31,25 @@ export default function PpdbRegisterPage() {
   const [loading, setLoading] = useState(false);
   const [openToast, setOpenToast] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [openPpdb, setIsOpenPpdb] = useState(true);
+
+  const getDataContent = async (param) => {
+    try {
+      const response = await HomeService.getContent();
+      if (response.success) {
+        const isPpdbOpen = response?.data.find(
+          (el) => el.paramKey === "ppdb_menu",
+        ).isActive;
+        setIsOpenPpdb(isPpdbOpen);
+      } else {
+        setErrorMsg(response.message || "Gagal get data");
+        setOpenToast(true);
+      }
+    } catch (err) {
+      setOpenToast(true);
+      setErrorMsg(err.message || "Terjadi kesalahan tak terduga");
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,6 +57,11 @@ export default function PpdbRegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!openPpdb) {
+      setErrorMsg("PPDB belum dibuka");
+      setOpenToast(true);
+      return;
+    }
     setLoading(true);
     try {
       const response = await HomeService.registerPPDB(form);
@@ -68,6 +92,10 @@ export default function PpdbRegisterPage() {
       top: 0,
       behavior: "smooth",
     });
+  }, []);
+
+  useEffect(() => {
+    getDataContent();
   }, []);
 
   return (

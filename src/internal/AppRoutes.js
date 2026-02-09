@@ -21,6 +21,7 @@ import Mapel from "../pages/manajemen/mapel";
 import Admin from "../pages/manajemen/admin";
 import Guru from "../pages/manajemen/guru";
 import MgmtKelas from "../pages/manajemen/kelas";
+import Content from "../pages/setting/content";
 // import PPDBRegistrasi from "../pages/ppdb_old";
 import PPDBRegistrasi from "../pages/ppdb";
 import Arsip from "../pages/arsip";
@@ -64,6 +65,7 @@ export default function AppRoutes() {
             <Route path="manajemen/kelas/:id" element={<DetailKelas />} />
             <Route path="ppdb-registrasi" element={<PPDBRegistrasi />} />
             <Route path="arsip" element={<Arsip />} />
+            <Route path="pengaturan/content" element={<Content />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

@@ -6,6 +6,10 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const HpmePPDB = () => {
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+  const tahunAjaran = `${currentYear}/${nextYear}`;
+
   useEffect(() => {
     AOS.init({
       duration: 1000, // durasi animasi (ms)
@@ -43,12 +47,12 @@ const HpmePPDB = () => {
         sx={{
           color: "white",
           textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
-          textAlign: "left",
+          textAlign: "center",
           fontSize: "clamp(1.5rem, 4vw, 3rem)",
           //   p: 0,
         }}
       >
-        Pendaftaran Siswa Baru Tahun Ajaran 2025/2026
+        {`Pendaftaran Siswa Baru Tahun Ajaran ${tahunAjaran} telah dibuka...`}
       </Typography>
       <Typography
         variant="h6"
