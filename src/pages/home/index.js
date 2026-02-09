@@ -561,10 +561,18 @@ function Beranda() {
             textAlign: "center",
           }}
         >
-          <Typography data-aos="fade-right" data-aos-delay="100">
+          <Typography
+            data-aos="fade-right"
+            data-aos-delay="100"
+            sx={{ fontSize: { xs: "0.875rem", md: "1rem" } }}
+          >
             Portal Sekolah
           </Typography>
-          <Typography data-aos="fade-right" data-aos-delay="100">
+          <Typography
+            data-aos="fade-right"
+            data-aos-delay="100"
+            sx={{ fontSize: { xs: "0.875rem", md: "1rem" } }}
+          >
             Jl. Pendidikan No. 123, Jakarta
           </Typography>
 
@@ -587,8 +595,16 @@ function Beranda() {
                 gap: 1,
               }}
             >
-              <EmailIcon />
-              <Typography data-aos="fade-right" data-aos-delay="100">
+              <EmailIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" },
+                }}
+              />
+              <Typography
+                data-aos="fade-right"
+                data-aos-delay="100"
+                sx={{ fontSize: { xs: "0.875rem", md: "1rem" } }}
+              >
                 portalSekolah@gmail.com
               </Typography>
             </Box>
@@ -602,7 +618,7 @@ function Beranda() {
                 alignItems: "center",
                 justifyContent: "flex-start",
                 // width: "200px",
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 transition: "all 0.3s",
                 "&:hover": {
                   textDecoration: "none",
@@ -611,10 +627,20 @@ function Beranda() {
                   boxShadow: 3,
                   transform: "translateY(-2px) scale(1.05)", // sedikit naik
                 },
+                p: { xs: 0.5, md: 1 },
+                borderRadius: 2,
               }}
             >
-              <WhatsAppIcon />
-              <Typography data-aos="fade-right" data-aos-delay="100">
+              <WhatsAppIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" },
+                }}
+              />
+              <Typography
+                data-aos="fade-right"
+                data-aos-delay="100"
+                sx={{ fontSize: { xs: "0.875rem", md: "1rem" } }}
+              >
                 085214210194
               </Typography>
             </Box>
@@ -631,7 +657,11 @@ function Beranda() {
               pl: 4,
             }}
           >
-            <Typography data-aos="fade-left" data-aos-delay="100">
+            <Typography
+              data-aos="fade-left"
+              data-aos-delay="100"
+              sx={{ fontSize: { xs: "0.875rem", md: "1rem" } }}
+            >
               Connect with us:
             </Typography>
             <Box
@@ -642,7 +672,7 @@ function Beranda() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 textDecoration: "none",
                 color: "inherit",
                 transition: "all 0.3s",
@@ -653,9 +683,15 @@ function Beranda() {
                   boxShadow: 3,
                   transform: "translateY(-2px) scale(1.05)", // sedikit naik
                 },
+                p: { xs: 0.5, md: 1 },
+                borderRadius: 2,
               }}
             >
-              <FacebookIcon />
+              <FacebookIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" },
+                }}
+              />
               <Typography
                 data-aos="fade-left"
                 data-aos-delay="100"
@@ -663,18 +699,7 @@ function Beranda() {
                   fontWeight: 500,
                   position: "relative",
                   textDecoration: "none",
-                  // "&:hover::after": {
-                  //   textDecoration: "none",
-                  //   content: '""',
-                  //   position: "absolute",
-                  //   left: 0,
-                  //   bottom: -2,
-                  //   width: "100%",
-                  //   height: "2px",
-                  //   bgcolor: "white",
-                  //   // boxShadow: 3, // bayangan saat hover
-                  //   // transform: "scale(1.05)",
-                  // },
+                  fontSize: { xs: "0.875rem", md: "1rem" },
                 }}
               >
                 Facebook
@@ -688,7 +713,7 @@ function Beranda() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 textDecoration: "none",
                 color: "inherit",
                 transition: "all 0.3s",
@@ -699,9 +724,15 @@ function Beranda() {
                   boxShadow: 3,
                   transform: "translateY(-2px) scale(1.05)", // sedikit naik
                 },
+                p: { xs: 0.5, md: 1 },
+                borderRadius: 2,
               }}
             >
-              <TwitterIcon />
+              <TwitterIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" },
+                }}
+              />
               <Typography
                 data-aos="fade-left"
                 data-aos-delay="100"
@@ -709,6 +740,7 @@ function Beranda() {
                   fontWeight: 500,
                   position: "relative",
                   textDecoration: "none",
+                  fontSize: { xs: "0.875rem", md: "1rem" },
                 }}
               >
                 Twitter
@@ -722,7 +754,7 @@ function Beranda() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 textDecoration: "none",
                 color: "inherit",
                 transition: "all 0.3s",
@@ -733,9 +765,15 @@ function Beranda() {
                   boxShadow: 3,
                   transform: "translateY(-2px) scale(1.05)", // sedikit naik
                 },
+                p: { xs: 0.5, md: 1 },
+                borderRadius: 2,
               }}
             >
-              <YouTubeIcon />
+              <YouTubeIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" },
+                }}
+              />
               <Typography
                 data-aos="fade-left"
                 data-aos-delay="100"
@@ -743,6 +781,7 @@ function Beranda() {
                   fontWeight: 500,
                   position: "relative",
                   textDecoration: "none",
+                  fontSize: { xs: "0.875rem", md: "1rem" },
                 }}
               >
                 Youtube
@@ -756,7 +795,7 @@ function Beranda() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 textDecoration: "none",
                 color: "inherit",
                 transition: "all 0.3s",
@@ -767,9 +806,15 @@ function Beranda() {
                   boxShadow: 3,
                   transform: "translateY(-2px) scale(1.05)", // sedikit naik
                 },
+                p: { xs: 0.5, md: 1 },
+                borderRadius: 2,
               }}
             >
-              <InstagramIcon />
+              <InstagramIcon
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.5rem" }, // icon lebih kecil di mobile
+                }}
+              />
               <Typography
                 data-aos="fade-left"
                 data-aos-delay="100"
@@ -777,6 +822,7 @@ function Beranda() {
                   fontWeight: 500,
                   position: "relative",
                   textDecoration: "none",
+                  fontSize: { xs: "0.875rem", md: "1rem" },
                 }}
               >
                 Instagram
@@ -788,7 +834,13 @@ function Beranda() {
 
           {/* Teks di bawah Divider, rata kiri */}
           <Typography
-            sx={{ color: "white", textAlign: "left", mt: 1, pl: 4 }}
+            sx={{
+              color: "white",
+              textAlign: "left",
+              mt: 1,
+              pl: 4,
+              fontSize: { xs: "0.875rem", md: "1rem" },
+            }}
             // data-aos="fade-up"
             // data-aos-delay="100"
           >
