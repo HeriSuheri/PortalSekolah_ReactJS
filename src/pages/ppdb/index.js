@@ -1463,69 +1463,86 @@ export default function PPDBRegistrasi() {
                         {s.catatanValidasi}
                       </TableCell>
                       <TableCell>
-                        {s.status === "DITERIMA" ? (
-                          <>
-                            <Tooltip title="Edit">
-                              <IconButton
-                                color="primary"
-                                onClick={() => handleOpenEdit(s)}
-                                // disabled={
-                                //   user?.nomorInduk !==
-                                //   location?.state?.kelas?.waliGuruNip
-                                // }
-                                // disabled={handleDisabled()}
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            {/* <Tooltip title="Delete">
-                              <IconButton
-                                color="error"
-                                onClick={() => {
-                                  setOpenConfirmDelete(true);
-                                  setIdDelete(s.id);
-                                  // setJumlahSiswa(null);
-                                }}
-                                disabled
-                                // disabled={
-                                //   user?.nomorInduk !==
-                                //   location?.state?.kelas?.waliGuruNip
-                                // }
-                                // disabled={handleDisabled()}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip> */}
-                          </>
+                        {s.hasClassroom === false ? (
+                          s.status === "DITERIMA" ? (
+                            <>
+                              <Tooltip title="Edit">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => handleOpenEdit(s)}
+                                  // disabled={
+                                  //   user?.nomorInduk !==
+                                  //   location?.state?.kelas?.waliGuruNip
+                                  // }
+                                  // disabled={handleDisabled()}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              {/* <Tooltip title="Delete">
+                                  <IconButton
+                                    color="error"
+                                    onClick={() => {
+                                      setOpenConfirmDelete(true);
+                                      setIdDelete(s.id);
+                                      // setJumlahSiswa(null);
+                                    }}
+                                    disabled
+                                    // disabled={
+                                    //   user?.nomorInduk !==
+                                    //   location?.state?.kelas?.waliGuruNip
+                                    // }
+                                    // disabled={handleDisabled()}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip> */}
+                            </>
+                          ) : (
+                            <>
+                              <Tooltip title="Tambah">
+                                <IconButton
+                                  color="success"
+                                  onClick={() => handleOpenTambah(s)}
+                                >
+                                  <AddIcon />
+                                </IconButton>
+                              </Tooltip>
+                              {/* <Tooltip title="Delete">
+                                  <IconButton
+                                    color="error"
+                                    onClick={() => {
+                                      setOpenConfirmDelete(true);
+                                      setIdDelete(s.id);
+                                      // setJumlahSiswa(null);
+                                    }}
+                                    disabled
+                                    // disabled={
+                                    //   user?.nomorInduk !==
+                                    //   location?.state?.kelas?.waliGuruNip
+                                    // }
+                                    // disabled={handleDisabled()}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip> */}
+                            </>
+                          )
                         ) : (
-                          <>
-                            <Tooltip title="Tambah">
-                              <IconButton
-                                color="success"
-                                onClick={() => handleOpenTambah(s)}
-                              >
-                                <AddIcon />
-                              </IconButton>
-                            </Tooltip>
-                            {/* <Tooltip title="Delete">
-                              <IconButton
-                                color="error"
-                                onClick={() => {
-                                  setOpenConfirmDelete(true);
-                                  setIdDelete(s.id);
-                                  // setJumlahSiswa(null);
-                                }}
-                                disabled
-                                // disabled={
-                                //   user?.nomorInduk !==
-                                //   location?.state?.kelas?.waliGuruNip
-                                // }
-                                // disabled={handleDisabled()}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip> */}
-                          </>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                              fontStyle: "italic",
+                              fontSize: {
+                                xs: "0.50rem",
+                                sm: "0.65rem",
+                                md: "0.85rem",
+                              }, // mobile lebih kecil
+                            }}
+                          >
+                            SISWA SUDAH TERDAFTAR
+                          </Typography>
                         )}
                       </TableCell>
                     </TableRow>
