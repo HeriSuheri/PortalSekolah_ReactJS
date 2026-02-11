@@ -26,6 +26,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import EmailIcon from "@mui/icons-material/Email";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import HomeService from "./HomeServive";
+import KegiatanSlider from "./KegiatanSlider";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -65,6 +66,7 @@ function Beranda() {
     { text: "Tentang", href: "#tentang" },
     { text: "Berita", href: "#berita" },
     { text: "Agenda", href: "#agenda" },
+    { text: "Kegiatan", href: "#kegiatan" },
     { text: "Kontak", href: "#kontak" },
     { text: "PPDB", href: "/homePPDB" },
     { text: "Login", href: "/login" },
@@ -75,6 +77,7 @@ function Beranda() {
     { text: "Tentang", href: "#tentang" },
     { text: "Berita", href: "#berita" },
     { text: "Agenda", href: "#agenda" },
+    { text: "Kegiatan", href: "#kegiatan" },
     { text: "Kontak", href: "#kontak" },
     { text: "Login", href: "/login" },
   ];
@@ -547,6 +550,33 @@ function Beranda() {
                   return null;
                 }
               })()}
+            </Box>
+            <Box sx={{ bgcolor: "#f5f5f5" }}>
+              <Divider
+                sx={{
+                  mb: 1,
+                  borderColor: "grey",
+                  borderBottomWidth: 3,
+                }}
+              />
+            </Box>
+            {/* kegiatan */}
+            <Box id="kegiatan" sx={{ scrollMarginTop: "64px" }}>
+              <Typography
+                variant="h4"
+                gutterBottom
+                data-aos="fade-up"
+                data-aos-delay="100"
+                sx={{
+                  fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)",
+                  fontWeight: "bold",
+                }}
+              >
+                Kegiatan
+              </Typography>
+              <Box sx={{ p: 4, backgroundColor: "#A9A9A9", borderRadius: 4, mb: 0.5 }}>
+                <KegiatanSlider content={content} />
+              </Box>
             </Box>
           </Container>
         </Box>

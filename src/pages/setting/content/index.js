@@ -232,6 +232,13 @@ const Content = () => {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastSeverity, setToastSeverity] = useState("success");
+  const [newFile, setNewFile] = useState(null); // file image yang dipilih
+  const [newDescription, setNewDescription] = useState(""); // deskripsi acara baru
+  const [editFile, setEditFile] = useState(null); // file baru saat edit
+  const [previewImage, setPreviewImage] = useState(null);
+  const [editPreview, setEditPreview] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
+
   // const [openConfirm, setOpenConfirm] = useState(false);
   // const [deleteTarget, setDeleteTarget] = useState(null);
 
@@ -312,6 +319,7 @@ const Content = () => {
         setToastMessage("Content berhasil dihapus");
         setToastSeverity("success");
         setToastOpen(true);
+        setIsEdit(false);
       } else {
         setErrorMsg(response.message || "Gagal hapus content");
         setOpenToast(true);
@@ -432,13 +440,17 @@ const Content = () => {
   };
 
   const handleEdit = (paramKey, index, value) => {
+    console.log("Edit clicked:", paramKey, index, value);
     setEditIndex(`${paramKey}-${index}`);
     setEditValue(value);
+    setEditFile(null);
   };
 
   const handleCancelEdit = () => {
     setEditIndex(null);
     setEditValue("");
+    setEditPreview({});
+    setIsEdit(false);
   };
 
   //   const handleSaveEdit = async (paramKey, index, item) => {
@@ -528,11 +540,140 @@ const Content = () => {
     }
   };
 
+  // add acara
+  const handleAddAcara = async (paramKey) => {
+    if (!newFile || !newDescription) {
+      setErrorMsg("Image dan deskripsi wajib diisi");
+      setOpenToast(true);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const newItem = {
+        image: reader.result,
+        description: newDescription,
+      };
+
+      let parsedValue = [];
+      try {
+        const currentItem = content.find((c) => c.paramKey === paramKey);
+        parsedValue = JSON.parse(currentItem?.paramValue || "[]");
+      } catch {
+        parsedValue =
+          content.find((c) => c.paramKey === paramKey).paramValue || [];
+      }
+
+      parsedValue.push(newItem);
+
+      // sesuaikan dengan format backend
+      // const payload = { paramValue: JSON.stringify(parsedValue) };
+      const payload = { paramValue: parsedValue };
+
+      try {
+        const response = await HomeService.saveEditContent(paramKey, payload);
+        if (response.success) {
+          getDataContent("param");
+          setAddingKey(null);
+          setNewFile(null);
+          setNewDescription("");
+          setPreviewImage(null);
+          setToastMessage("Kegiatan berhasil ditambahkan");
+          setToastSeverity("success");
+          setToastOpen(true);
+        } else {
+          setErrorMsg(response.message || "Gagal save kegiatan");
+          setOpenToast(true);
+        }
+      } catch (err) {
+        setErrorMsg(err.message || "Terjadi kesalahan");
+        setOpenToast(true);
+      }
+    };
+    reader.readAsDataURL(newFile);
+  };
+
+  // edit acara
+  const handleSaveEditAcara = async (paramKey, idx) => {
+    console.log("save");
+    try {
+      let parsedValue = [];
+      const currentItem = content.find((c) => c.paramKey === paramKey);
+      if (currentItem?.paramValue) {
+        try {
+          parsedValue = JSON.parse(currentItem.paramValue);
+        } catch {
+          parsedValue = Array.isArray(currentItem.paramValue)
+            ? currentItem.paramValue
+            : [];
+        }
+      }
+
+      console.log("PARSED VALUE:", parsedValue);
+
+      if (parsedValue[idx]) {
+        parsedValue[idx].description = editValue;
+
+        if (editFile) {
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            parsedValue[idx].image = reader.result;
+
+            const payload = { paramValue: parsedValue };
+            console.log("PAYLOAD:", payload);
+            const response = await HomeService.saveEditContent(
+              paramKey,
+              payload,
+            );
+
+            if (response.success) {
+              getDataContent("param");
+              setEditIndex(null);
+              setEditValue("");
+              setEditFile(null);
+              setToastMessage("Kegiatan berhasil diupdate");
+              setToastSeverity("success");
+              setToastOpen(true);
+              setEditPreview(null);
+            } else {
+              setErrorMsg(response.message || "Gagal update kegiatan");
+              setOpenToast(true);
+            }
+          };
+          reader.readAsDataURL(editFile);
+        } else {
+          const payload = { paramValue: parsedValue };
+          const response = await HomeService.saveEditContent(paramKey, payload);
+
+          if (response.success) {
+            getDataContent("param");
+            setEditIndex(null);
+            setEditValue("");
+            setToastMessage("Kegiatan berhasil diupdate");
+            setToastSeverity("success");
+            setToastOpen(true);
+          } else {
+            setErrorMsg(response.message || "Gagal update kegiatan");
+            setOpenToast(true);
+          }
+        }
+        setIsEdit(false);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Terjadi kesalahan");
+      setOpenToast(true);
+    }
+  };
+
   useEffect(() => {
     getDataContent();
   }, []);
 
   console.log("DATA CONTENT:", content);
+  console.log("EDIT FILE:", editFile);
+  console.log("EDIT VALUE", editValue);
+  console.log("NEW FILE:", newFile);
+  console.log("NEW DESCRIPTION:", newDescription);
 
   return (
     <>
@@ -607,25 +748,6 @@ const Content = () => {
                   >
                     {item.paramKey}
                   </Typography>
-                  {/* {(() => {
-                    let parsedValue;
-                    try {
-                      parsedValue = JSON.parse(item.paramValue);
-                    } catch {
-                      parsedValue = item.paramValue;
-                    }
-
-                    return (
-                      Array.isArray(parsedValue) && (
-                        <IconButton
-                          onClick={() => setIsAdding(true)}
-                          color="primary"
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      )
-                    );
-                  })()} */}
                 </Box>
 
                 <Typography
@@ -676,6 +798,364 @@ const Content = () => {
                       labelPlacement="start" // label di kiri, switch di kanan
                     />
                   </Box>
+                ) : item.paramKey === "kegiatan" ? (
+                  (() => {
+                    let parsedValueAcara;
+                    try {
+                      parsedValueAcara = JSON.parse(item.paramValue);
+                    } catch {
+                      parsedValueAcara = item.paramValue;
+                    }
+                    return (
+                      Array.isArray(parsedValueAcara) && (
+                        <List dense>
+                          {parsedValueAcara.map((val, idx) => (
+                            <ListItem
+                              key={idx}
+                              sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 3,
+                                mb: 4,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                {/* Image preview, klik untuk upload */}
+                                <Button
+                                  variant="outlined"
+                                  component="label"
+                                  sx={{ width: "100%" }}
+                                  disabled={!isEdit}
+                                >
+                                  <img
+                                    src={
+                                      editPreview?.[
+                                        `${item.paramKey}-${idx}`
+                                      ] || val.image
+                                    }
+                                    alt={val.description}
+                                    style={{
+                                      width: "200px",
+                                      height: "190px",
+                                      borderRadius: 8,
+                                    }}
+                                  />
+                                  <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) => {
+                                      const file = e.target.files[0];
+                                      if (!file) return;
+
+                                      // Validasi ukuran
+                                      if (file.size > 2 * 1024 * 1024) {
+                                        setErrorMsg("Ukuran file maksimal 2MB");
+                                        setOpenToast(true);
+                                        return;
+                                      }
+
+                                      // Validasi tipe
+                                      if (!file.type.startsWith("image/")) {
+                                        setErrorMsg("File harus berupa gambar");
+                                        setOpenToast(true);
+                                        return;
+                                      }
+
+                                      // Kalau lolos validasi → simpan ke state
+                                      setEditFile(file);
+
+                                      // Preview langsung
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        setEditPreview((prev) => ({
+                                          ...prev,
+                                          [`${item.paramKey}-${idx}`]:
+                                            reader.result,
+                                        }));
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }}
+                                  />
+                                </Button>
+
+                                {/* Description field */}
+                                {editIndex === `${item.paramKey}-${idx}` ? (
+                                  <>
+                                    <TextField
+                                      size="small"
+                                      value={editValue}
+                                      onChange={(e) =>
+                                        setEditValue(e.target.value)
+                                      }
+                                      fullWidth
+                                      placeholder="Masukkan deskripsi kegiatan"
+                                      multiline
+                                      minRows={1} // jumlah baris minimal
+                                      maxRows={1}
+                                      inputProps={{ maxLength: 50 }}
+                                      sx={{
+                                        "& .MuiInputLabel-root": {
+                                          fontSize: {
+                                            xs: "0.50rem",
+                                            sm: "0.750rem",
+                                            md: "1rem",
+                                          }, // label responsif
+                                        },
+                                        "& .MuiInputBase-input": {
+                                          fontSize: {
+                                            xs: "0.50rem",
+                                            sm: "0.750rem",
+                                            md: "1rem",
+                                          }, // isi input responsif
+                                        },
+                                      }}
+                                    />
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        position: "absolute",
+                                        right: 8,
+                                        bottom: -20,
+                                        color: "red",
+                                        fontSize: {
+                                          xs: "0.50rem",
+                                          sm: "0.75rem",
+                                          md: "0.90rem",
+                                        },
+                                      }}
+                                    >
+                                      {`Maksimal input deskripsi ${editValue.length}/50`}
+                                    </Typography>
+                                  </>
+                                ) : (
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      fontSize: {
+                                        xs: "0.50rem",
+                                        sm: "0.75rem",
+                                        md: "0.90rem",
+                                      },
+                                    }}
+                                  >
+                                    {val.description}
+                                  </Typography>
+                                )}
+                              </Box>
+
+                              {/* Action buttons */}
+                              <Box sx={{ display: "flex", gap: 1 }}>
+                                {editIndex === `${item.paramKey}-${idx}` ? (
+                                  <>
+                                    <Tooltip title="Save">
+                                      <IconButton
+                                        color="success"
+                                        onClick={() =>
+                                          handleSaveEditAcara(
+                                            item.paramKey,
+                                            idx,
+                                          )
+                                        }
+                                      >
+                                        <CheckIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Cancel">
+                                      <IconButton
+                                        color="error"
+                                        onClick={handleCancelEdit}
+                                      >
+                                        <CloseIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Tooltip title="Edit">
+                                      <IconButton
+                                        onClick={() => {
+                                          handleEdit(
+                                            item.paramKey,
+                                            idx,
+                                            val.description,
+                                          );
+                                          setIsEdit(true);
+                                        }}
+                                        color="primary"
+                                      >
+                                        <EditIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                      <IconButton
+                                        onClick={() =>
+                                          handleDelete(item.paramKey, idx, item)
+                                        }
+                                        color="error"
+                                      >
+                                        <DeleteIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                  </>
+                                )}
+                              </Box>
+                            </ListItem>
+                          ))}
+
+                          {/* Add new acara */}
+                          <>
+                            <Tooltip title="Add">
+                              <IconButton
+                                onClick={() => {
+                                  if (item?.paramValue.length === 10) {
+                                    setErrorMsg(
+                                      "Konten kegiatan maximal 5 items",
+                                    );
+                                    setOpenToast(true);
+                                    return;
+                                  }
+                                  setAddingKey(item.paramKey);
+                                }}
+                                color="primary"
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </Tooltip>
+                            {addingKey === item.paramKey && (
+                              <ListItem
+                                sx={{ flexDirection: "column", gap: 1 }}
+                              >
+                                <Button
+                                  variant="outlined"
+                                  component="label"
+                                  sx={{ width: "100%" }}
+                                >
+                                  {previewImage ? (
+                                    <img
+                                      src={previewImage}
+                                      alt="Preview"
+                                      style={{
+                                        width: "190px",
+                                        borderRadius: 8,
+                                        height: "200px", // tinggi otomatis
+                                      }}
+                                    />
+                                  ) : (
+                                    "Upload Image"
+                                  )}
+                                  <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) => {
+                                      const file = e.target.files[0];
+                                      if (!file) return;
+
+                                      if (file.size > 2 * 1024 * 1024) {
+                                        setErrorMsg("Ukuran file maksimal 2MB");
+                                        setOpenToast(true);
+                                        return;
+                                      }
+
+                                      if (!file.type.startsWith("image/")) {
+                                        setErrorMsg("File harus berupa gambar");
+                                        setOpenToast(true);
+                                        return;
+                                      }
+
+                                      setNewFile(file);
+
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        setPreviewImage(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }}
+                                  />
+                                </Button>
+                                <TextField
+                                  size="small"
+                                  value={newDescription}
+                                  onChange={(e) =>
+                                    setNewDescription(e.target.value)
+                                  }
+                                  fullWidth
+                                  placeholder="Masukkan deskripsi kegiatan"
+                                  multiline
+                                  minRows={1} // jumlah baris minimal
+                                  maxRows={1}
+                                  inputProps={{ maxLength: 50 }}
+                                  sx={{
+                                    "& .MuiInputLabel-root": {
+                                      fontSize: {
+                                        xs: "0.50rem",
+                                        sm: "0.750rem",
+                                        md: "1rem",
+                                      }, // label responsif
+                                    },
+                                    "& .MuiInputBase-input": {
+                                      fontSize: {
+                                        xs: "0.50rem",
+                                        sm: "0.750rem",
+                                        md: "1rem",
+                                      }, // isi input responsif
+                                    },
+                                  }}
+                                />
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    position: "absolute",
+                                    right: 8,
+                                    bottom: -20,
+                                    color: "red",
+                                    fontSize: {
+                                      xs: "0.50rem",
+                                      sm: "0.75rem",
+                                      md: "0.90rem",
+                                    },
+                                  }}
+                                >
+                                  {`Maksimal input deskripsi ${newDescription.length}/50`}
+                                </Typography>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                  <Tooltip title="Save">
+                                    <IconButton
+                                      color="success"
+                                      onClick={() =>
+                                        handleAddAcara(item.paramKey)
+                                      }
+                                    >
+                                      <CheckIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                  <Tooltip title="Cancel">
+                                    <IconButton
+                                      color="error"
+                                      onClick={() => {
+                                        setAddingKey(null);
+                                        setNewFile(null);
+                                        setNewDescription("");
+                                        setPreviewImage(null);
+                                      }}
+                                    >
+                                      <CloseIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                </Box>
+                              </ListItem>
+                            )}
+                          </>
+                        </List>
+                      )
+                    );
+                  })()
                 ) : (
                   (() => {
                     let parsedValue;
@@ -749,9 +1229,9 @@ const Content = () => {
                               <Typography
                                 sx={{
                                   fontSize: {
-                                    xs: "0.75rem",
-                                    sm: "1rem",
-                                    md: "1.25rem",
+                                    xs: "0.50rem",
+                                    sm: "0.75rem",
+                                    md: "0.90rem",
                                   }, // responsif
                                 }}
                               >
@@ -917,7 +1397,17 @@ const Content = () => {
                               </Tooltip>
                             </>
                           ) : (
-                            <Typography>{parsedValue}</Typography>
+                            <Typography
+                              sx={{
+                                fontSize: {
+                                  xs: "0.50rem",
+                                  sm: "0.75rem",
+                                  md: "0.90rem",
+                                },
+                              }}
+                            >
+                              {parsedValue}
+                            </Typography>
                           )}
                           <Box>
                             <Tooltip title="Edit">
@@ -946,42 +1436,6 @@ const Content = () => {
                             </Tooltip>
                           </Box>
                         </ListItem>
-                        {/* {isAdding && (
-                          <ListItem
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <TextField
-                              size="small"
-                              value={newValue}
-                              onChange={(e) => setNewValue(e.target.value)}
-                              sx={{ flexGrow: 1, mr: 1 }}
-                              multiline
-                              minRows={3} // jumlah baris minimal
-                              maxRows={6} // opsional, biar nggak terlalu tinggi
-                              placeholder="Masukkan item baru"
-                            />
-                            <IconButton
-                              color="success"
-                              onClick={() => handleAddNew(item.paramKey)}
-                              sx={{ mr: 1 }}
-                            >
-                              <CheckIcon />
-                            </IconButton>
-                            <IconButton
-                              color="error"
-                              onClick={() => {
-                                setIsAdding(false);
-                                setNewValue("");
-                              }}
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          </ListItem>
-                        )} */}
                       </List>
                     );
                   })()
