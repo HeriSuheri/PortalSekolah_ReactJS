@@ -9,11 +9,12 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  Avatar,
 } from "@mui/material";
 import LoginService from "../login/LoginService";
 import PopUpModal from "../../components/PopUpModal";
 import { ArrowBack } from "@mui/icons-material";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
 const EditProfile = () => {
@@ -36,6 +37,17 @@ const EditProfile = () => {
     console.log("FILE TERPILIH:", file);
     setFoto(file);
     setPreview(URL.createObjectURL(file));
+  };
+
+  const getInitials = (name) => {
+    if (!name) return "";
+    const parts = name.trim().split(" ");
+    // Ambil huruf pertama dari maksimal 2 kata
+    const initials = parts
+      .slice(0, 2)
+      .map((p) => p[0].toUpperCase())
+      .join("");
+    return initials;
   };
 
   const getRoles = async () => {
@@ -162,13 +174,13 @@ const EditProfile = () => {
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Tooltip title="Kembali">
-          <IconButton
-            onClick={() => navigate(-1)}
-            color="primary"
-            aria-label="kembali"
-          >
-            <ArrowBack />
-          </IconButton>
+            <IconButton
+              onClick={() => navigate(-1)}
+              color="primary"
+              aria-label="kembali"
+            >
+              <ArrowBack />
+            </IconButton>
           </Tooltip>
           <Typography variant="h6">Profile</Typography>
         </Box>
@@ -201,6 +213,18 @@ const EditProfile = () => {
                 border: "2px solid #ccc",
               }}
             />
+            {/* jika hanya pakai Initial name */}
+            {/* <Avatar
+              sx={{
+                width: 120,
+                height: 120,
+                bgcolor: "#1976d2",
+                fontSize: "2.5rem",
+                fontWeight: "bold",
+              }}
+            >
+              {getInitials(nama)}
+            </Avatar> */}
           </Box>
 
           <Button variant="outlined" component="label">

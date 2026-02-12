@@ -17,14 +17,17 @@ import { handleLogout } from "../util";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function Header({ toggleSidebar, openChangePasswordModal, openLogout }) {
+export default function Header({
+  toggleSidebar,
+  openChangePasswordModal,
+  openLogout,
+}) {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const user = JSON.parse(localStorage.getItem("userLogin"));
-  
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,6 +55,16 @@ export default function Header({ toggleSidebar, openChangePasswordModal, openLog
     handleMenuClose();
   };
 
+  const getInitials = (name) => {
+    if (!name) return "";
+    const parts = name.trim().split(" ");
+    // Ambil huruf pertama dari maksimal 2 kata
+    const initials = parts
+      .slice(0, 2)
+      .map((p) => p[0].toUpperCase())
+      .join("");
+    return initials;
+  };
 
   return (
     <AppBar
@@ -91,7 +104,7 @@ export default function Header({ toggleSidebar, openChangePasswordModal, openLog
               src={`http://localhost:8080${user?.fotoProfil}`}
               sx={{ width: 32, height: 32 }}
             >
-              {user?.nama?.charAt(0)}
+              {getInitials(user?.nama)}
             </Avatar>
           </IconButton>
           <Typography
