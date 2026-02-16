@@ -1174,6 +1174,8 @@ const Content = () => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
+                              width: "100%", // batasi lebar
+                              overflow: "hidden",
                             }}
                           >
                             {editIndex === `${item.paramKey}-${idx}` ? (
@@ -1196,6 +1198,7 @@ const Content = () => {
                                         sm: "0.875rem",
                                         md: "1rem",
                                       }, // isi input responsif
+                                      wordWrap: "break-word",
                                     },
                                     flexGrow: 1,
                                     mr: 1,
@@ -1233,6 +1236,9 @@ const Content = () => {
                                     sm: "0.75rem",
                                     md: "0.90rem",
                                   }, // responsif
+                                  whiteSpace: "pre-wrap", // biar newline tetap muncul
+                                  wordBreak: "break-word",
+                                  width: "90%",
                                 }}
                               >
                                 {val}
@@ -1341,6 +1347,8 @@ const Content = () => {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
+                            width: "100%", // batasi lebar
+                            overflow: "hidden",
                           }}
                         >
                           {editIndex === `${item.paramKey}-single` ? (
@@ -1363,6 +1371,7 @@ const Content = () => {
                                       sm: "0.875rem",
                                       md: "1rem",
                                     }, // isi input responsif
+                                    wordWrap: "break-word",
                                   },
                                   flexGrow: 1,
                                   mr: 1,
@@ -1404,6 +1413,9 @@ const Content = () => {
                                   sm: "0.75rem",
                                   md: "0.90rem",
                                 },
+                                whiteSpace: "pre-wrap", // biar newline tetap muncul
+                                wordBreak: "break-word",
+                                width: "90%",
                               }}
                             >
                               {parsedValue}

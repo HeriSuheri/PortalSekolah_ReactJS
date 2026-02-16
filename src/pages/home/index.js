@@ -367,7 +367,13 @@ function Beranda() {
                     (c) => c.paramKey === "program_unggulan",
                   )?.paramValue;
                   try {
-                    const arr = JSON.parse(unggulan);
+                    // const arr = JSON.parse(unggulan);
+                    let arr;
+                    try {
+                      arr = JSON.parse(unggulan);
+                    } catch {
+                      arr = unggulan;
+                    }
                     return arr.map((item, idx) => (
                       <ListItem key={idx} sx={{ py: 0.5, mt: "-5px" }}>
                         <ListItemIcon
@@ -438,7 +444,13 @@ function Beranda() {
                   (c) => c.paramKey === "berita",
                 )?.paramValue;
                 try {
-                  const arr = JSON.parse(berita); // array of string
+                  let arr;
+                  try {
+                    arr = JSON.parse(berita);
+                  } catch {
+                    arr = berita;
+                  }
+                  // const arr = JSON.parse(berita); // array of string
                   return arr.map((item, idx) => (
                     <Box
                       key={idx}
@@ -457,7 +469,7 @@ function Beranda() {
                         sx={{
                           fontSize: "clamp(0.875rem, 2vw, 1rem)",
                           textAlign: "justify", // rata kiri kanan
-                          textIndent: "2rem", // awal paragraf menjorok
+                          // textIndent: "2rem", // awal paragraf menjorok
                           wordBreak: "break-word", // pecah kata panjang
                         }}
                       >
@@ -574,7 +586,14 @@ function Beranda() {
               >
                 Kegiatan
               </Typography>
-              <Box sx={{ p: 4, backgroundColor: "#A9A9A9", borderRadius: 4, mb: 0.5 }}>
+              <Box
+                sx={{
+                  p: 4,
+                  backgroundColor: "#A9A9A9",
+                  borderRadius: 4,
+                  mb: 0.5,
+                }}
+              >
                 <KegiatanSlider content={content} />
               </Box>
             </Box>
