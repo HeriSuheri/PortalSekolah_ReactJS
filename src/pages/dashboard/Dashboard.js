@@ -44,9 +44,9 @@ export default function DashboardPage() {
   const getAdmins = async () => {
     setLoading(true);
     try {
-      const response = await AdminService.getAdmin({ page, size: rowsPerPage });
+      const response = await AdminService.getAllAdmin();
       if (response.success) {
-        setTotalAdmins(response.data?.totalElements || 0);
+        setTotalAdmins(response.data?.data.length || 0);
       } else {
         setErrorMsg(response.message || "Gagal mengambil data admin");
         setOpenToast(true);
@@ -62,9 +62,9 @@ export default function DashboardPage() {
   const getGuru = async () => {
     setLoading(true);
     try {
-      const response = await GuruService.getGuru({ page, size: rowsPerPage });
+      const response = await KelasService.getAllGuru();
       if (response.success) {
-        setTotalGuru(response.data?.totalElements || 0);
+        setTotalGuru(response.data?.data?.length || 0);
       } else {
         setErrorMsg(response.message || "Gagal mengambil data guru");
         setOpenToast(true);

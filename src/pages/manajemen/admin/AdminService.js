@@ -114,7 +114,7 @@ const DataService = {
   async deleteAdm(payload) {
     try {
       const response = await apiClient.delete(
-        `${API_ENDPOINTS.ADMIN}/${payload}`
+        `${API_ENDPOINTS.ADMIN}/${payload}`,
       );
       console.log("RESPONSE API DELETE ADMIN:", response);
       if (response.status === 200) {
@@ -132,6 +132,28 @@ const DataService = {
     } catch (error) {
       console.error("ERROR:", error);
       return handleError(error, "Delete Admin");
+    }
+  },
+
+  async getAllAdmin() {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.ADMIN}/all`);
+      console.log("RESPONSE API GET ALL ADMIN:", response);
+      if (response.status === 200) {
+        return {
+          success: true,
+          data: response.data,
+          message: response.data.message || "Get all admin Succesfully",
+        };
+      }
+      return {
+        success: false,
+        message: response.data.message || "Get all admin Failed",
+        data: null,
+      };
+    } catch (error) {
+      console.error("ERROR:", error);
+      return handleError(error, "Get guru");
     }
   },
 };
