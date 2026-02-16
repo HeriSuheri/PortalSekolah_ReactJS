@@ -825,6 +825,7 @@ const Content = () => {
                                   flexDirection: "column",
                                   alignItems: "center",
                                   gap: 1,
+                                  width: "60%"
                                 }}
                               >
                                 {/* Image preview, klik untuk upload */}
